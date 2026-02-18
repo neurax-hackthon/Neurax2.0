@@ -8,7 +8,6 @@ export default function Hero() {
     const vantaEffect = useRef(null);
 
     useEffect(() => {
-        // Load Vanta NET via CDN script
         const loadVanta = () => {
             if (window.VANTA && window.THREE && vantaRef.current && !vantaEffect.current) {
                 vantaEffect.current = window.VANTA.NET({
@@ -21,20 +20,18 @@ export default function Hero() {
                     minWidth: 200.00,
                     scale: 1.00,
                     scaleMobile: 1.00,
-                    color: 0x00f5ff,
-                    backgroundColor: 0x0a0e1a,
-                    points: 12.00,
-                    maxDistance: 22.00,
-                    spacing: 18.00,
+                    color: 0x2563eb,
+                    backgroundColor: 0xffffff,
+                    points: 10.00,
+                    maxDistance: 20.00,
+                    spacing: 16.00,
                 });
             }
         };
 
-        // Check if scripts already loaded
         if (window.VANTA && window.THREE) {
             loadVanta();
         } else {
-            // Load Three.js then Vanta
             const threeScript = document.createElement('script');
             threeScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
             threeScript.onload = () => {
@@ -58,19 +55,18 @@ export default function Hero() {
         <section id="hero" className="hero-section">
             <div ref={vantaRef} id="vanta-bg" />
 
-            {/* Gradient overlay */}
+            {/* Subtle overlay */}
             <div style={{
                 position: 'absolute', inset: 0, zIndex: 1,
-                background: 'radial-gradient(ellipse at center, rgba(0,245,255,0.03) 0%, rgba(10,14,26,0.6) 70%)',
+                background: 'linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.7) 100%)',
             }} />
 
             <motion.div
                 className="hero-content"
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
             >
-                {/* Badge */}
                 <motion.div
                     className="hero-badge"
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -80,20 +76,18 @@ export default function Hero() {
                     <span>⚡</span> Early Bird Registration Open
                 </motion.div>
 
-                {/* Glitch Title */}
-                <h1 className="hero-title">
-                    <span className="glitch" data-text="NEURAX">NEURAX</span>
+                <h1 className="hero-title" style={{ color: 'var(--text-primary)' }}>
+                    <span>NEURAX</span>
                     <br />
-                    <span style={{ color: 'var(--cyan)', textShadow: '0 0 40px rgba(0,245,255,0.6)' }}>2.0</span>
+                    2.0
                 </h1>
 
-                {/* Typewriter */}
                 <div className="hero-subtitle-wrapper">
                     <TypeAnimation
                         sequence={[
                             '24-Hour Hackathon · Build. Innovate. Win.',
                             2000,
-                            'Neural Networks · AI · Web3 · IoT · HealthTech',
+                            'AI · Web3 · IoT · HealthTech · Cybersecurity',
                             2000,
                             'CMR Technical Campus, Hyderabad',
                             2000,
@@ -103,55 +97,42 @@ export default function Hero() {
                         wrapper="span"
                         speed={50}
                         repeat={Infinity}
-                        style={{ color: 'var(--gray)' }}
+                        style={{ color: 'var(--text-secondary)', fontWeight: 500 }}
                     />
                 </div>
 
-                {/* Meta info */}
-                <div className="hero-meta">
-                    <div className="hero-meta-item">
-                        <span>📅</span>
-                        <span>March 28–29, 2026</span>
-                    </div>
-                    <div className="hero-meta-item">
-                        <span>📍</span>
-                        <span>CMR Technical Campus, Hyderabad</span>
-                    </div>
-                    <div className="hero-meta-item">
-                        <span>⏱️</span>
-                        <span>24 Hours</span>
-                    </div>
+                <div className="hero-meta" style={{ display: 'flex', gap: '32px', justifyContent: 'center', marginBottom: '40px', color: 'var(--text-secondary)', fontWeight: 600 }}>
+                    <div>📅 March 28–29, 2026</div>
+                    <div>📍 CMRTC, Hyderabad</div>
+                    <div>⏱️ 24 Hours</div>
                 </div>
 
-                {/* Countdown */}
                 <CountdownTimer />
 
-                {/* CTA Buttons */}
                 <div className="hero-cta">
                     <motion.a
                         href="#register"
                         className="btn-primary"
                         whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.97 }}
+                        whileTap={{ scale: 0.98 }}
                     >
                         ⚡ Register Now
                     </motion.a>
                     <motion.a
-                        href="#themes"
+                        href="#about"
                         className="btn-secondary"
                         whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={(e) => { e.preventDefault(); document.querySelector('#themes')?.scrollIntoView({ behavior: 'smooth' }); }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={(e) => { e.preventDefault(); document.querySelector('#about')?.scrollIntoView({ behavior: 'smooth' }); }}
                     >
-                        Explore Themes →
+                        Learn More ↓
                     </motion.a>
                 </div>
             </motion.div>
 
-            {/* Scroll hint */}
-            <div className="scroll-hint">
-                <div style={{ fontSize: '1.2rem' }}>↓</div>
-                <span>Scroll to explore</span>
+            <div className="scroll-hint" style={{ color: 'var(--text-tertiary)', bottom: '40px' }}>
+                <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>↓</div>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase' }}>Explore Neurax</span>
             </div>
         </section>
     );

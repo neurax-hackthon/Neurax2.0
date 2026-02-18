@@ -23,8 +23,8 @@ export default function CustomCursor() {
         };
 
         const animate = () => {
-            ringX += (mouseX - ringX) * 0.12;
-            ringY += (mouseY - ringY) * 0.12;
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
             if (ringRef.current) {
                 ringRef.current.style.left = ringX + 'px';
                 ringRef.current.style.top = ringY + 'px';
@@ -37,14 +37,23 @@ export default function CustomCursor() {
         const onLeave = () => setHovered(false);
 
         document.addEventListener('mousemove', onMove);
-        document.querySelectorAll('a, button, [role="button"]').forEach(el => {
-            el.addEventListener('mouseenter', onEnter);
-            el.addEventListener('mouseleave', onLeave);
-        });
+
+        const attachListeners = () => {
+            document.querySelectorAll('a, button, [role="button"], .interactive').forEach(el => {
+                el.addEventListener('mouseenter', onEnter);
+                el.addEventListener('mouseleave', onLeave);
+            });
+        };
+
+        attachListeners();
+        // Mutation observer to handle dynamic content
+        const observer = new MutationObserver(attachListeners);
+        observer.observe(document.body, { childList: true, subtree: true });
 
         return () => {
             document.removeEventListener('mousemove', onMove);
             cancelAnimationFrame(rafId);
+            observer.disconnect();
         };
     }, []);
 

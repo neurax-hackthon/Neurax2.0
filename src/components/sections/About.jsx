@@ -14,13 +14,13 @@ const containerVariants = {
     visible: { transition: { staggerChildren: 0.1 } },
 };
 const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
 export default function About() {
     return (
-        <section id="about" className="section">
+        <section id="about" className="section alt">
             <div className="container">
                 <SectionHeader
                     tag="// About the Event"
@@ -29,36 +29,34 @@ export default function About() {
                     desc="A premier hackathon experience designed to push the boundaries of innovation and technology."
                 />
 
-                <div className="about-grid">
+                <div className="about-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '64px', alignItems: 'center' }}>
                     {/* Left: Terminal + visual */}
                     <motion.div
-                        initial={{ opacity: 0, x: -40 }}
+                        initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.7 }}
                     >
-                        <div className="terminal-box">
-                            <div><span className="terminal-prompt">$ </span><span className="terminal-text">neurax --info</span></div>
-                            <div style={{ marginTop: '8px', color: 'var(--gray)' }}># Initializing NEURAX 2.0...</div>
-                            <div style={{ color: 'var(--green)' }}>✓ Event: 24-Hour Hackathon</div>
-                            <div style={{ color: 'var(--green)' }}>✓ Date: March 28–29, 2026</div>
-                            <div style={{ color: 'var(--green)' }}>✓ Venue: CMR Technical Campus</div>
-                            <div style={{ color: 'var(--green)' }}>✓ Prize Pool: ₹1,00,000+</div>
-                            <div style={{ color: 'var(--green)' }}>✓ Themes: 6 Tracks Available</div>
-                            <div style={{ color: 'var(--cyan)', marginTop: '8px' }}>$ Ready to innovate? Register now_</div>
+                        <div className="terminal-box" style={{ background: '#0F172A', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '32px', fontFamily: 'var(--font-mono)', fontSize: '0.9rem', lineHeight: '1.8', color: '#38BDF8', marginBottom: '32px', boxShadow: 'var(--shadow-lg)' }}>
+                            <div><span style={{ color: '#818CF8' }}>$ </span>neurax --info</div>
+                            <div style={{ marginTop: '12px', color: '#94A3B8' }}># Initializing NEURAX 2.0...</div>
+                            <div style={{ color: '#34D399', marginTop: '4px' }}>✓ Event: 24-Hour Hackathon</div>
+                            <div style={{ color: '#34D399' }}>✓ Date: March 28–29, 2026</div>
+                            <div style={{ color: '#34D399' }}>✓ Venue: CMR Technical Campus</div>
+                            <div style={{ color: '#34D399' }}>✓ Prize Pool: ₹1,00,000+</div>
+                            <div style={{ color: '#34D399', marginBottom: '12px' }}>✓ Tracks: 6 Deep-Tech Tracks</div>
+                            <div style={{ color: 'var(--accent-primary)', fontWeight: 'bold' }}>$ Ready to revolutionize? _</div>
                         </div>
 
-                        {/* Stats row */}
-                        <div style={{ display: 'flex', gap: '16px' }}>
+                        {/* Stats items */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                             {[
-                                { num: '300+', label: 'Participants' },
-                                { num: '50+', label: 'Teams' },
-                                { num: '₹1L+', label: 'Prize Pool' },
-                                { num: '10+', label: 'Mentors' },
+                                { num: '300+', label: 'Innovators' },
+                                { num: '₹1,00,000+', label: 'Prizes' },
                             ].map(s => (
-                                <GlassCard key={s.label} style={{ flex: 1, padding: '16px', textAlign: 'center' }}>
-                                    <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 900, color: 'var(--cyan)' }}>{s.num}</div>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--gray)', marginTop: '4px' }}>{s.label}</div>
+                                <GlassCard key={s.label} className="hover-lift" style={{ padding: '24px', textAlign: 'center' }}>
+                                    <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', fontWeight: 900, color: 'var(--accent-primary)' }}>{s.num}</div>
+                                    <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '4px', fontWeight: 600 }}>{s.label}</div>
                                 </GlassCard>
                             ))}
                         </div>
@@ -71,16 +69,16 @@ export default function About() {
                         whileInView="visible"
                         viewport={{ once: true }}
                     >
-                        <p style={{ color: 'var(--gray)', lineHeight: 1.8, marginBottom: '24px', fontSize: '1rem' }}>
+                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '32px', fontSize: '1.1rem' }}>
                             NEURAX 2.0 is CMR Technical Campus's flagship hackathon — a high-energy, 24-hour innovation marathon where brilliant minds come together to solve real-world challenges using cutting-edge technology.
                         </p>
-                        <div className="about-cards">
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                             {cards.map(card => (
                                 <motion.div key={card.title} variants={cardVariants}>
-                                    <GlassCard className="about-card">
-                                        <div className="about-card-icon">{card.icon}</div>
-                                        <div className="about-card-title">{card.title}</div>
-                                        <div className="about-card-text">{card.text}</div>
+                                    <GlassCard className="hover-lift" style={{ padding: '24px', height: '100%' }}>
+                                        <div style={{ fontSize: '2rem', marginBottom: '12px' }}>{card.icon}</div>
+                                        <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '8px' }}>{card.title}</div>
+                                        <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{card.text}</div>
                                     </GlassCard>
                                 </motion.div>
                             ))}

@@ -31,23 +31,27 @@ export default function Navbar() {
     return (
         <>
             <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
-                <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div className="container navbar-container">
                     <a className="nav-logo" href="#hero" onClick={(e) => { e.preventDefault(); handleNavClick('#hero'); }}>
                         🧠 NEURAX 2.0
                     </a>
-                    <ul className="nav-links">
-                        {navItems.map(item => (
-                            <li key={item.label}>
-                                <a href={item.href} onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}>
-                                    {item.label}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                    <a href="#register" className="btn-primary" style={{ fontSize: '0.8rem', padding: '10px 20px', display: 'none' }}
-                        id="nav-register-btn">
-                        Register Now
-                    </a>
+
+                    <div className="nav-content">
+                        <ul className="nav-links">
+                            {navItems.map(item => (
+                                <li key={item.label}>
+                                    <a href={item.href} onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}>
+                                        {item.label}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+
+                        <a href="#register" className="btn-primary nav-cta" onClick={(e) => { e.preventDefault(); handleNavClick('#register'); }}>
+                            Register
+                        </a>
+                    </div>
+
                     <button
                         className={`hamburger${menuOpen ? ' open' : ''}`}
                         onClick={() => setMenuOpen(!menuOpen)}
@@ -61,15 +65,15 @@ export default function Navbar() {
             <AnimatePresence>
                 {menuOpen && (
                     <motion.div
-                        className="mobile-nav open"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
+                        className="mobile-nav"
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
                     >
                         <button
                             onClick={() => setMenuOpen(false)}
-                            style={{ position: 'absolute', top: 24, right: 24, background: 'none', border: 'none', color: 'var(--white)', fontSize: '1.5rem', cursor: 'pointer' }}
+                            style={{ position: 'absolute', top: 24, right: 24, background: 'none', border: 'none', color: 'var(--text-primary)', fontSize: '1.5rem', cursor: 'pointer' }}
                         >✕</button>
                         {navItems.map(item => (
                             <a key={item.label} href={item.href} onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}>

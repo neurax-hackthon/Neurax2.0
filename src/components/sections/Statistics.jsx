@@ -4,10 +4,10 @@ import SectionHeader from '../ui/SectionHeader';
 import { useIntersection } from '../../hooks/useIntersection';
 
 const stats = [
-    { value: 24, suffix: 'H', label: 'Hours of Hacking', color: '#00F5FF', pct: 100 },
-    { value: 300, suffix: '+', label: 'Participants', color: '#8B5CF6', pct: 85 },
-    { value: 50, suffix: '+', label: 'Teams', color: '#FF2D78', pct: 70 },
-    { value: 10, suffix: '+', label: 'Expert Mentors', color: '#FFD700', pct: 60 },
+    { value: 24, suffix: 'H', label: 'Hours of Hacking', color: '#2563EB', pct: 100 },
+    { value: 300, suffix: '+', label: 'Participants', color: '#7C3AED', pct: 85 },
+    { value: 50, suffix: '+', label: 'Teams', color: '#DB2777', pct: 70 },
+    { value: 10, suffix: '+', label: 'Expert Mentors', color: '#D97706', pct: 60 },
 ];
 
 const RADIUS = 50;
@@ -17,47 +17,49 @@ export default function Statistics() {
     const [ref, isVisible] = useIntersection();
 
     return (
-        <section id="stats" className="section" style={{ background: 'rgba(17,24,39,0.3)' }}>
+        <section id="stats" className="section alt">
             <div className="container" ref={ref}>
                 <SectionHeader
                     tag="// By the Numbers"
                     title="NEURAX 2.0"
                     highlight="Stats"
-                    desc="The scale of innovation happening at NEURAX 2.0."
+                    desc="The impressive scale of innovation happening at NEURAX 2.0."
                 />
-                <div className="stats-grid">
+                <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '32px' }}>
                     {stats.map((s, i) => {
                         const dashOffset = CIRCUMFERENCE - (s.pct / 100) * CIRCUMFERENCE;
                         return (
                             <motion.div
                                 key={s.label}
-                                className="stat-card glass-card"
-                                initial={{ opacity: 0, scale: 0.8 }}
+                                className="stat-card shadow-card hover-lift"
+                                initial={{ opacity: 0, scale: 0.95 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: i * 0.1 }}
+                                style={{ padding: '40px 24px', textAlign: 'center' }}
                             >
-                                <div className="stat-ring-wrapper">
-                                    <svg className="stat-ring-svg" viewBox="0 0 120 120" width="120" height="120">
-                                        <circle className="stat-ring-bg" cx="60" cy="60" r={RADIUS} />
+                                <div className="stat-ring-wrapper" style={{ position: 'relative', width: '120px', height: '120px', margin: '0 auto 24px' }}>
+                                    <svg viewBox="0 0 120 120" width="120" height="120" style={{ transform: 'rotate(-90deg)' }}>
+                                        <circle cx="60" cy="60" r={RADIUS} fill="none" stroke="#F1F5F9" strokeWidth="8" />
                                         <motion.circle
-                                            className="stat-ring-fill"
                                             cx="60" cy="60" r={RADIUS}
+                                            fill="none"
                                             stroke={s.color}
+                                            strokeWidth="8"
+                                            strokeLinecap="round"
                                             strokeDasharray={CIRCUMFERENCE}
                                             initial={{ strokeDashoffset: CIRCUMFERENCE }}
                                             animate={isVisible ? { strokeDashoffset: dashOffset } : {}}
                                             transition={{ duration: 1.5, delay: i * 0.1, ease: 'easeOut' }}
-                                            style={{ filter: `drop-shadow(0 0 8px ${s.color})` }}
                                         />
                                     </svg>
-                                    <div className="stat-number" style={{ color: s.color }}>
+                                    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 900, color: 'var(--text-primary)' }}>
                                         {isVisible
                                             ? <CountUp end={s.value} suffix={s.suffix} duration={2} delay={i * 0.1} />
                                             : `0${s.suffix}`}
                                     </div>
                                 </div>
-                                <div className="stat-label">{s.label}</div>
+                                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>{s.label}</div>
                             </motion.div>
                         );
                     })}

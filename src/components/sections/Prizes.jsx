@@ -17,7 +17,7 @@ export default function Prizes() {
                     window.confetti({
                         particleCount: 150,
                         spread: 80,
-                        colors: ['#FFD700', '#00F5FF', '#FF2D78', '#8B5CF6'],
+                        colors: ['#2563EB', '#7C3AED', '#FFD700', '#34D399'],
                         origin: { y: 0.6 },
                     });
                 }
@@ -36,7 +36,7 @@ export default function Prizes() {
     const parseAmount = (str) => parseInt(str.replace(/[₹,]/g, ''), 10);
 
     return (
-        <section id="prizes" className="section">
+        <section id="prizes" className="section" style={{ background: 'var(--bg-primary)' }}>
             <div className="container" ref={ref}>
                 <SectionHeader
                     tag="// Prize Pool"
@@ -45,87 +45,107 @@ export default function Prizes() {
                     desc="Over ₹1,00,000 in prizes, trophies, certificates, and exclusive opportunities await the best teams."
                 />
 
-                {/* Podium */}
-                <div className="podium-wrapper">
+                <div className="podium-wrapper" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: '24px', marginTop: '60px', flexWrap: 'wrap' }}>
                     {/* 2nd Place */}
                     <motion.div
-                        className="podium-card second glass-card"
-                        initial={{ opacity: 0, y: 40 }}
+                        className="podium-card second shadow-card hover-lift"
+                        initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.1 }}
+                        style={{ padding: '40px 32px', textAlign: 'center', flex: 1, minWidth: '280px', maxWidth: '320px' }}
                     >
-                        <span className="podium-medal">🥈</span>
-                        <div className="podium-place">2nd Place</div>
-                        <div className="podium-amount">
+                        <span style={{ fontSize: '3.5rem', marginBottom: '16px', display: 'block' }}>🥈</span>
+                        <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-tertiary)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '8px' }}>2nd Place</div>
+                        <div style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', fontWeight: 900, color: '#94A3B8', marginBottom: '24px' }}>
                             {isVisible ? <CountUp end={parseAmount(prizes.second.amount)} prefix="₹" separator="," duration={2} /> : '₹0'}
                         </div>
-                        <ul className="podium-perks">
-                            {prizes.second.perks.map(p => <li key={p}>{p}</li>)}
+                        <ul style={{ listStyle: 'none', textAlign: 'left', padding: 0 }}>
+                            {prizes.second.perks.map(p => (
+                                <li key={p} style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '10px', display: 'flex', gap: '8px' }}>
+                                    <span style={{ color: '#34D399', fontWeight: 'bold' }}>✓</span> {p}
+                                </li>
+                            ))}
                         </ul>
                     </motion.div>
 
                     {/* 1st Place */}
                     <motion.div
-                        className="podium-card first"
-                        initial={{ opacity: 0, y: 60 }}
+                        className="podium-card first hover-lift"
+                        initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
+                        style={{
+                            padding: '60px 40px', textAlign: 'center', flex: 1, minWidth: '300px', maxWidth: '360px',
+                            background: '#FFFFFF', border: '2px solid #FFD700', borderRadius: '24px',
+                            boxShadow: '0 20px 40px rgba(255, 215, 0, 0.15)', position: 'relative',
+                            transform: 'translateY(-30px)', zIndex: 2
+                        }}
                     >
                         <div style={{
-                            position: 'absolute', top: -16, left: '50%', transform: 'translateX(-50%)',
-                            background: 'linear-gradient(135deg, var(--gold), #FFA500)',
-                            color: '#000', fontSize: '0.7rem', fontWeight: 800,
-                            padding: '4px 16px', borderRadius: '100px', letterSpacing: '2px', whiteSpace: 'nowrap',
+                            position: 'absolute', top: -20, left: '50%', transform: 'translateX(-50%)',
+                            background: 'linear-gradient(135deg, #FFD700, #FFA500)',
+                            color: '#000', fontSize: '0.75rem', fontWeight: 800,
+                            padding: '6px 20px', borderRadius: '100px', letterSpacing: '2px', whiteSpace: 'nowrap',
+                            boxShadow: '0 4px 12px rgba(255, 215, 0, 0.3)'
                         }}>
-                            ⭐ WINNER
+                            ⭐ WINNER ⭐
                         </div>
-                        <span className="podium-medal">🥇</span>
-                        <div className="podium-place">1st Place</div>
-                        <div className="podium-amount">
+                        <span style={{ fontSize: '4.5rem', marginBottom: '16px', display: 'block' }}>🥇</span>
+                        <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-tertiary)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '8px' }}>1st Place</div>
+                        <div style={{ fontFamily: 'var(--font-display)', fontSize: '3.5rem', fontWeight: 900, color: '#D97706', marginBottom: '24px' }}>
                             {isVisible ? <CountUp end={parseAmount(prizes.first.amount)} prefix="₹" separator="," duration={2.5} /> : '₹0'}
                         </div>
-                        <ul className="podium-perks">
-                            {prizes.first.perks.map(p => <li key={p}>{p}</li>)}
+                        <ul style={{ listStyle: 'none', textAlign: 'left', padding: 0 }}>
+                            {prizes.first.perks.map(p => (
+                                <li key={p} style={{ fontSize: '0.95rem', color: 'var(--text-primary)', fontWeight: 600, marginBottom: '12px', display: 'flex', gap: '10px' }}>
+                                    <span style={{ color: '#D97706', fontWeight: 'bold' }}>★</span> {p}
+                                </li>
+                            ))}
                         </ul>
                     </motion.div>
 
                     {/* 3rd Place */}
                     <motion.div
-                        className="podium-card third glass-card"
-                        initial={{ opacity: 0, y: 40 }}
+                        className="podium-card third shadow-card hover-lift"
+                        initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.2 }}
+                        style={{ padding: '40px 32px', textAlign: 'center', flex: 1, minWidth: '280px', maxWidth: '320px' }}
                     >
-                        <span className="podium-medal">🥉</span>
-                        <div className="podium-place">3rd Place</div>
-                        <div className="podium-amount">
+                        <span style={{ fontSize: '3.5rem', marginBottom: '16px', display: 'block' }}>🥉</span>
+                        <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-tertiary)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '8px' }}>3rd Place</div>
+                        <div style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', fontWeight: 900, color: '#CA8A04', marginBottom: '24px' }}>
                             {isVisible ? <CountUp end={parseAmount(prizes.third.amount)} prefix="₹" separator="," duration={2} /> : '₹0'}
                         </div>
-                        <ul className="podium-perks">
-                            {prizes.third.perks.map(p => <li key={p}>{p}</li>)}
+                        <ul style={{ listStyle: 'none', textAlign: 'left', padding: 0 }}>
+                            {prizes.third.perks.map(p => (
+                                <li key={p} style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '10px', display: 'flex', gap: '8px' }}>
+                                    <span style={{ color: '#34D399', fontWeight: 'bold' }}>✓</span> {p}
+                                </li>
+                            ))}
                         </ul>
                     </motion.div>
                 </div>
 
                 {/* Special Awards */}
                 <motion.div
-                    style={{ marginTop: '48px' }}
-                    initial={{ opacity: 0, y: 30 }}
+                    style={{ marginTop: '80px' }}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.3 }}
                 >
-                    <h3 style={{ fontFamily: 'var(--font-display)', textAlign: 'center', color: 'var(--white)', marginBottom: '24px', fontSize: '1.1rem' }}>
+                    <h3 style={{ fontFamily: 'var(--font-display)', textAlign: 'center', color: 'var(--text-primary)', marginBottom: '32px', fontSize: '1.25rem', fontWeight: 800 }}>
                         🎖️ Special Category Awards
                     </h3>
-                    <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
                         {prizes.special.map(s => (
-                            <div key={s.title} className="glass-card" style={{ padding: '16px 24px', textAlign: 'center', minWidth: '200px' }}>
-                                <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.85rem', fontWeight: 700, color: 'var(--violet)', marginBottom: '6px' }}>{s.title}</div>
-                                <div style={{ color: 'var(--gold)', fontWeight: 700, fontSize: '1rem' }}>{s.prize}</div>
+                            <div key={s.title} className="shadow-card hover-lift" style={{ padding: '24px 32px', textAlign: 'center', minWidth: '240px' }}>
+                                <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent-secondary)', marginBottom: '8px', letterSpacing: '1px', textTransform: 'uppercase' }}>{s.title}</div>
+                                <div style={{ color: '#D97706', fontWeight: 800, fontSize: '1.25rem' }}>{s.prize}</div>
                             </div>
                         ))}
                     </div>
