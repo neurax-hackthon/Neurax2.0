@@ -21,9 +21,9 @@ export default function Statistics() {
             <div className="container" ref={ref}>
                 <SectionHeader
                     tag="// By the Numbers"
-                    title="NEURAX 2.0"
+                    title="NEURAX 1.0"
                     highlight="Stats"
-                    desc="The impressive scale of innovation happening at NEURAX 2.0."
+                    desc="The impressive scale of innovation happened at NEURAX 1.0."
                 />
                 <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '32px' }}>
                     {stats.map((s, i) => {

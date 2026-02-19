@@ -318,7 +318,7 @@ h4 {
   z-index: 2;
   text-align: center;
   max-width: 900px;
-  padding: 0 24px;
+  padding: 80px 24px 60px;
 }
 
 .hero-badge {
@@ -360,6 +360,7 @@ h4 {
   gap: 16px;
   justify-content: center;
   flex-wrap: wrap;
+  margin-top: 8px;
 }
 
 .scroll-hint {
@@ -465,6 +466,29 @@ h4 {
   border: 1px solid var(--border-light);
   border-radius: 16px;
   box-shadow: var(--shadow-md);
+}
+
+/* ─── Terminal Cursor (TerminalTyper component) ─────────────────────────── */
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: currentColor;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
 }
 
 /* ─── Modal Overlay ─────────────────────────────────────────────────────── */
@@ -694,6 +718,21 @@ h4 {
   /* Register CTA box in Contact */
   .register-cta-box {
     padding: 36px 20px !important;
+  }
+
+  /* Gallery — collapse to single column on mobile */
+  .gallery-asymmetric {
+    grid-template-columns: 1fr !important;
+  }
+
+  .gallery-asymmetric>div:last-child {
+    grid-template-rows: repeat(3, auto) !important;
+    aspect-ratio: unset !important;
+  }
+
+  .gallery-asymmetric>div:last-child>div {
+    aspect-ratio: 4/3;
+    min-height: unset !important;
   }
 }
 

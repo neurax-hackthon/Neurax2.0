@@ -31,20 +31,5 @@ export const themes = [
         tags: ['Medical AI', 'Telemedicine', 'Wearables', 'EHR'],
         details: 'Build solutions that improve patient outcomes, streamline clinical workflows, or democratize healthcare access. Areas include AI-powered diagnostics, mental health apps, remote patient monitoring, or hospital management systems.',
     },
-    {
-        id: 5,
-        icon: '🎓',
-        title: 'EdTech & Future Learning',
-        desc: 'Reimagine education with adaptive learning, AR/VR classrooms, and AI tutors.',
-        tags: ['AR/VR', 'Gamification', 'LMS', 'Adaptive AI'],
-        details: 'Create next-generation educational tools that personalize learning, increase engagement, or improve accessibility. Projects may include AI tutoring systems, immersive VR classrooms, skill assessment platforms, or collaborative learning tools.',
-    },
-    {
-        id: 6,
-        icon: '🏙️',
-        title: 'Smart Cities & IoT',
-        desc: 'Connect the urban fabric. Build IoT solutions for smarter, safer, and more efficient cities.',
-        tags: ['IoT', 'Edge Computing', 'Smart Grid', 'Mobility'],
-        details: 'Design solutions for urban challenges including traffic management, waste collection optimization, public safety, energy efficiency, or citizen services. Projects should demonstrate real-time data processing and actionable insights.',
-    },
+
 ];

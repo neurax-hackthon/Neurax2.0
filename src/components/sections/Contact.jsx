@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import SectionHeader from '../ui/SectionHeader';
 
@@ -11,13 +10,6 @@ const socialLinks = [
 ];
 
 export default function Contact() {
-    const [copied, setCopied] = useState(false);
-
-    const copyEmail = () => {
-        navigator.clipboard.writeText('neurax@cmrcet.ac.in');
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
 
     return (
         <section id="contact" className="section" style={{ background: 'var(--bg-primary)' }}>
@@ -41,14 +33,14 @@ export default function Contact() {
                     >
                         <span style={{ fontSize: '3rem', marginBottom: '20px', display: 'block' }}>📧</span>
                         <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>Email Us</div>
-                        <div style={{ fontSize: '1rem', color: 'var(--accent-primary)', fontWeight: 600, marginBottom: '24px' }}>neurax@cmrcet.ac.in</div>
-                        <button
+                        <div style={{ fontSize: '1rem', color: 'var(--accent-primary)', fontWeight: 600, marginBottom: '24px' }}>neurax@cmrtc.ac.in</div>
+                        <a
+                            href="mailto:neurax@cmrtc.ac.in"
                             className="btn-secondary"
-                            onClick={copyEmail}
-                            style={{ width: '100%', padding: '12px' }}
+                            style={{ display: 'block', width: '100%', padding: '12px', textAlign: 'center', textDecoration: 'none' }}
                         >
-                            {copied ? '✓ Copied!' : '📋 Copy Email'}
-                        </button>
+                            ✉️ Send Mail
+                        </a>
                     </motion.div>
 
                     {/* Social Card */}

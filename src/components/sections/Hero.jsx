@@ -71,14 +71,14 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
             >
-                <motion.div
+                {/* <motion.div
                     className="hero-badge"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5 }}
                 >
-                    <span>⚡</span> Early Bird Registration Open
-                </motion.div>
+                    <span>⚡</span> Early Bird Registration Open 
+                </motion.div> */}
 
                 <h1 className="hero-title" style={{ color: 'var(--text-primary)' }}>
                     <span>NEURAX</span>
@@ -95,7 +95,7 @@ export default function Hero() {
                             2000,
                             'CMR Technical Campus, Hyderabad',
                             2000,
-                            '₹1,00,000+ Prize Pool · March 28-29, 2026',
+                            '₹1,00,000+ Prize Pool · March 14-15, 2026',
                             2000,
                         ]}
                         wrapper="span"
@@ -106,7 +106,7 @@ export default function Hero() {
                 </div>
 
                 <div className="hero-meta" style={{ display: 'flex', gap: '32px', justifyContent: 'center', marginBottom: '40px', color: 'var(--text-secondary)', fontWeight: 600, flexWrap: 'wrap' }}>
-                    <div>📅 March 28–29, 2026</div>
+                    <div>📅 March 14–15, 2026</div>
                     <div>📍 CMRTC, Hyderabad</div>
                     <div>⏱️ 24 Hours</div>
                 </div>
@@ -134,10 +134,7 @@ export default function Hero() {
                 </div>
             </motion.div>
 
-            <div className="scroll-hint" style={{ color: 'var(--text-tertiary)', bottom: '40px' }}>
-                <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>↓</div>
-                <span style={{ fontSize: '0.8rem', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase' }}>Explore Neurax</span>
-            </div>
+
         </section>
     );
 }

@@ -141,7 +141,7 @@ export default function FAQ() {
                     <p style={{ color: 'var(--text-secondary)', marginBottom: '20px', fontSize: '1rem' }}>
                         Still have questions? We're here to help!
                     </p>
-                    <a href="mailto:neurax@cmrcet.ac.in" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <a href="mailto:neurax@cmrtc.ac.in" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                         📧 Contact Us
                     </a>
                 </motion.div>

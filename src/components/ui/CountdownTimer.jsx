@@ -1,7 +1,7 @@
 import { useCountdown } from '../../hooks/useCountdown';
 
-// Target: March 28, 2026 10:00 AM IST
-const EVENT_DATE = '2026-02-19T10:00:00+05:30';
+// Target: March 14, 2026 10:00 AM IST
+const EVENT_DATE = '2026-03-14T10:00:00+05:30';
 
 export default function CountdownTimer() {
     const { days, hours, minutes, seconds } = useCountdown(EVENT_DATE);

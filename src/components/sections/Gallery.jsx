@@ -1,28 +1,99 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SectionHeader from '../ui/SectionHeader';
+import { inaugurationImages, codingImages, teamworkImages, awardsImages } from '../../data/gallery';
 
-const tabs = ['All', 'Coding', 'Teamwork', 'Awards', 'Inauguration'];
-
-const galleryItems = [
-    { id: 1, category: 'Coding', caption: 'Late night coding sessions', color: 'linear-gradient(135deg, #EFF6FF, #DBEAFE)' },
-    { id: 2, category: 'Teamwork', caption: 'Teams brainstorming ideas', color: 'linear-gradient(135deg, #F5F3FF, #EDE9FE)' },
-    { id: 3, category: 'Awards', caption: 'Winners on stage', color: 'linear-gradient(135deg, #FFFBEB, #FEF3C7)' },
-    { id: 4, category: 'Inauguration', caption: 'Opening ceremony', color: 'linear-gradient(135deg, #FDF2F8, #FCE7F3)' },
-    { id: 5, category: 'Coding', caption: 'Debugging at midnight', color: 'linear-gradient(135deg, #F0FDF4, #DCFCE7)' },
-    { id: 6, category: 'Teamwork', caption: 'Collaboration in action', color: 'linear-gradient(135deg, #ECFEFF, #CFFAFE)' },
-    { id: 7, category: 'Awards', caption: 'Prize distribution', color: 'linear-gradient(135deg, #FFF7ED, #FFEDD5)' },
-    { id: 8, category: 'Inauguration', caption: 'Chief guest keynote', color: 'linear-gradient(135deg, #F1F5F9, #E2E8F0)' },
-    { id: 9, category: 'Coding', caption: 'Final hour sprint', color: 'linear-gradient(135deg, #FFF1F2, #FFE4E6)' },
-];
+const SLIDE_INTERVAL = 4000; // ms between auto-slides
+const FADE_DURATION = 550;  // ms fade transition
 
 const icons = { Coding: '💻', Teamwork: '🤝', Awards: '🏆', Inauguration: '🎤' };
 
+// ── Single image/placeholder renderer ────────────────────────────────────────
+function SlotImage({ item }) {
+    if (!item) return null;
+    if (item.src) {
+        return (
+            <img
+                src={item.src}
+                alt={item.caption}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            />
+        );
+    }
+    return (
+        <div style={{
+            position: 'absolute', inset: 0,
+            background: item.color || 'linear-gradient(135deg, #EFF6FF, #DBEAFE)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '2.5rem',
+        }}>
+            {icons[item.category] || '📷'}
+        </div>
+    );
+}
+
+// ── Reusable caption overlay ──────────────────────────────────────────────────
+function CaptionOverlay({ caption, fontSize = '0.95rem', padding = '18px' }) {
+    return (
+        <div style={{
+            position: 'absolute', inset: 0, pointerEvents: 'none',
+            background: 'linear-gradient(to top, rgba(15,23,42,0.65) 0%, transparent 55%)',
+            display: 'flex', alignItems: 'flex-end', padding,
+        }}>
+            <span style={{ color: '#fff', fontWeight: 700, fontSize }}>{caption}</span>
+        </div>
+    );
+}
+
+// ── Slideshow hook ────────────────────────────────────────────────────────────
+function useSlideshow(items) {
+    const [idx, setIdx] = useState(0);
+    const [fading, setFading] = useState(false);
+    const hoveringRef = useRef(false);
+    const len = items.length;
+
+    const advance = useCallback(() => {
+        if (hoveringRef.current || len <= 1) return;
+        setFading(true);
+        setTimeout(() => {
+            setIdx(i => (i + 1) % len);
+            setFading(false);
+        }, FADE_DURATION);
+    }, [len]);
+
+    useEffect(() => {
+        setIdx(0);
+        setFading(false);
+    }, [items]);
+
+    useEffect(() => {
+        if (len <= 1) return;
+        const timer = setInterval(advance, SLIDE_INTERVAL);
+        return () => clearInterval(timer);
+    }, [advance, len]);
+
+    return { idx, fading, hoveringRef, setIdx, current: items[idx] || items[0] };
+}
+
 export default function Gallery() {
-    const [activeTab, setActiveTab] = useState('All');
     const [lightbox, setLightbox] = useState(null);
 
-    const filtered = activeTab === 'All' ? galleryItems : galleryItems.filter(g => g.category === activeTab);
+    // Independent slideshows per column
+    const left = useSlideshow(inaugurationImages);
+    const rightT = useSlideshow(codingImages);   // top-right  = Coding
+    const rightM = useSlideshow(teamworkImages); // mid-right  = Teamwork
+    const rightB = useSlideshow(awardsImages);   // bot-right  = Awards
+
+    const fadeStyle = (fading) => ({
+        transition: `opacity ${FADE_DURATION}ms ease`,
+        opacity: fading ? 0 : 1,
+    });
+
+    const cardBase = (extra = {}) => ({
+        position: 'relative', overflow: 'hidden',
+        boxShadow: 'var(--shadow-md)', border: '1px solid var(--border-light)',
+        cursor: 'zoom-in', ...extra,
+    });
 
     return (
         <section id="gallery" className="section" style={{ background: 'var(--bg-primary)' }}>
@@ -34,113 +105,127 @@ export default function Gallery() {
                     desc="Relive the moments from NEURAX 1.0. NEURAX 2.0 will be even bigger!"
                 />
 
-                <div className="gallery-tabs" style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '40px', flexWrap: 'wrap' }}>
-                    {tabs.map(tab => (
-                        <button
-                            key={tab}
-                            className={`gallery-tab${activeTab === tab ? ' active' : ''}`}
-                            onClick={() => setActiveTab(tab)}
-                            style={{
-                                padding: '10px 24px',
-                                borderRadius: '100px',
-                                border: '1px solid var(--border-light)',
-                                background: activeTab === tab ? 'var(--accent-primary)' : 'var(--bg-secondary)',
-                                color: activeTab === tab ? '#fff' : 'var(--text-secondary)',
-                                fontSize: '0.9rem',
-                                fontWeight: 600,
-                                cursor: 'pointer',
-                                transition: 'all 0.3s ease'
-                            }}
+                {/* ── Asymmetric Grid ── */}
+                <div
+                    className="gallery-asymmetric"
+                    style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '16px', alignItems: 'stretch' }}
+                    onMouseEnter={() => {
+                        left.hoveringRef.current = true;
+                        rightT.hoveringRef.current = true;
+                        rightM.hoveringRef.current = true;
+                        rightB.hoveringRef.current = true;
+                    }}
+                    onMouseLeave={() => {
+                        left.hoveringRef.current = false;
+                        rightT.hoveringRef.current = false;
+                        rightM.hoveringRef.current = false;
+                        rightB.hoveringRef.current = false;
+                    }}
+                >
+                    {/* LEFT — Inauguration slideshow (large) */}
+                    <div
+                        onClick={() => setLightbox(left.current)}
+                        style={{ ...cardBase({ borderRadius: '20px', aspectRatio: '4/3' }), ...fadeStyle(left.fading) }}
+                    >
+                        <SlotImage item={left.current} />
+                        <CaptionOverlay caption={left.current?.caption} fontSize="1rem" padding="24px" />
+
+                        {/* Dot indicators */}
+                        {inaugurationImages.length > 1 && (
+                            <div style={{ position: 'absolute', bottom: '14px', right: '14px', display: 'flex', gap: '6px', zIndex: 2 }}>
+                                {inaugurationImages.map((_, i) => (
+                                    <div
+                                        key={i}
+                                        onClick={e => { e.stopPropagation(); if (!left.fading) left.setIdx(i); }}
+                                        style={{
+                                            width: i === left.idx ? '20px' : '8px', height: '8px',
+                                            borderRadius: '4px', cursor: 'pointer', transition: 'all 0.35s ease',
+                                            background: i === left.idx ? '#fff' : 'rgba(255,255,255,0.4)',
+                                        }}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* RIGHT — 3 slots stacked: Coding / Teamwork / Awards */}
+                    <div style={{ display: 'grid', gridTemplateRows: 'repeat(3, 1fr)', gap: '16px', aspectRatio: '3/4' }}>
+
+                        {/* TOP — Coding */}
+                        <div
+                            onClick={() => setLightbox(rightT.current)}
+                            style={{ ...cardBase({ borderRadius: '14px', minHeight: 0 }), ...fadeStyle(rightT.fading) }}
                         >
-                            {tab}
-                        </button>
-                    ))}
+                            <SlotImage item={rightT.current} />
+                            <CaptionOverlay caption={rightT.current?.caption} fontSize="0.8rem" padding="10px" />
+                        </div>
+
+                        {/* MID — Teamwork */}
+                        <div
+                            onClick={() => setLightbox(rightM.current)}
+                            style={{ ...cardBase({ borderRadius: '14px', minHeight: 0 }), ...fadeStyle(rightM.fading) }}
+                        >
+                            <SlotImage item={rightM.current} />
+                            <CaptionOverlay caption={rightM.current?.caption} fontSize="0.8rem" padding="10px" />
+                        </div>
+
+                        {/* BOT — Awards */}
+                        <div
+                            onClick={() => setLightbox(rightB.current)}
+                            style={{ ...cardBase({ borderRadius: '14px', minHeight: 0 }), ...fadeStyle(rightB.fading) }}
+                        >
+                            <SlotImage item={rightB.current} />
+                            <CaptionOverlay caption={rightB.current?.caption} fontSize="0.8rem" padding="10px" />
+                        </div>
+                    </div>
                 </div>
 
-                <motion.div className="gallery-grid" layout style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
-                    <AnimatePresence>
-                        {filtered.map((item, i) => (
-                            <motion.div
-                                key={item.id}
-                                layout
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                transition={{ duration: 0.3, delay: i * 0.05 }}
-                                onClick={() => setLightbox(item)}
-                                style={{
-                                    position: 'relative',
-                                    borderRadius: '20px',
-                                    overflow: 'hidden',
-                                    aspectRatio: '4/3',
-                                    cursor: 'zoom-in',
-                                    boxShadow: 'var(--shadow-md)',
-                                    border: '1px solid var(--border-light)'
-                                }}
-                                whileHover={{ transform: 'scale(1.02)', boxShadow: 'var(--shadow-lg)' }}
-                            >
-                                <div style={{
-                                    width: '100%', height: '100%',
-                                    background: item.color,
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    fontSize: '3.5rem',
-                                }}>
-                                    {icons[item.category] || '📷'}
-                                </div>
-                                <div style={{
-                                    position: 'absolute', inset: 0,
-                                    background: 'linear-gradient(to top, rgba(15, 23, 42, 0.6) 0%, transparent 50%)',
-                                    display: 'flex', alignItems: 'flex-end', padding: '24px'
-                                }}>
-                                    <div style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 600 }}>{item.caption}</div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-                </motion.div>
-
+                {/* ── Lightbox ── */}
                 <AnimatePresence>
                     {lightbox && (
                         <motion.div
-                            className="modal-overlay"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                             onClick={() => setLightbox(null)}
-                            style={{ background: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(8px)', zIndex: 10000 }}
+                            style={{
+                                position: 'fixed', inset: 0, display: 'flex', alignItems: 'center',
+                                justifyContent: 'center', zIndex: 10000, padding: '16px',
+                                background: 'rgba(15, 23, 42, 0.5)', backdropFilter: 'blur(8px)',
+                            }}
                         >
                             <motion.div
                                 initial={{ scale: 0.9, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 exit={{ scale: 0.9, opacity: 0 }}
-                                style={{
-                                    background: lightbox.color,
-                                    borderRadius: '24px',
-                                    width: '90vw', maxWidth: '800px', height: 'auto', aspectRatio: '16/9',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    fontSize: '6rem', position: 'relative',
-                                    boxShadow: 'var(--shadow-xl)',
-                                    border: '1px solid var(--border-light)'
-                                }}
                                 onClick={e => e.stopPropagation()}
+                                style={{
+                                    borderRadius: '24px', width: '90vw', maxWidth: '800px',
+                                    aspectRatio: '16/9', position: 'relative', overflow: 'hidden',
+                                    background: lightbox.src ? '#0F172A' : (lightbox.color || '#EFF6FF'),
+                                    boxShadow: 'var(--shadow-xl)', border: '1px solid var(--border-light)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    fontSize: '6rem',
+                                }}
                             >
-                                {icons[lightbox.category]}
+                                {lightbox.src ? (
+                                    <img src={lightbox.src} alt={lightbox.caption}
+                                        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                                ) : (
+                                    icons[lightbox.category]
+                                )}
                                 <div style={{
                                     position: 'absolute', bottom: 0, left: 0, right: 0,
-                                    background: 'linear-gradient(to top, rgba(15, 23, 42, 0.8), transparent)',
-                                    padding: '32px', borderRadius: '0 0 24px 24px',
-                                    color: '#fff', fontSize: '1.25rem', fontWeight: 600, textAlign: 'center'
-                                }}>
-                                    {lightbox.caption}
-                                </div>
+                                    background: 'linear-gradient(to top, rgba(15,23,42,0.8), transparent)',
+                                    padding: '32px', color: '#fff', fontSize: '1.25rem',
+                                    fontWeight: 600, textAlign: 'center',
+                                }}>{lightbox.caption}</div>
                                 <button
                                     onClick={() => setLightbox(null)}
                                     style={{
-                                        position: 'absolute', top: 20, right: 20,
+                                        position: 'absolute', top: 16, right: 16,
                                         background: '#fff', border: 'none', color: 'var(--text-primary)',
                                         width: '40px', height: '40px', borderRadius: '50%',
                                         cursor: 'pointer', display: 'flex', alignItems: 'center',
-                                        justifyContent: 'center', fontSize: '1.2rem', boxShadow: 'var(--shadow-md)'
+                                        justifyContent: 'center', fontSize: '1.1rem', boxShadow: 'var(--shadow-md)',
                                     }}
                                 >✕</button>
                             </motion.div>

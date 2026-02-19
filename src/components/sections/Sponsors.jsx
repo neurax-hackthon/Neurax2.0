@@ -69,33 +69,7 @@ export default function Sponsors() {
                 <TickerRow items={sponsors.supporting} speed="30s" reverse />
             </div>
 
-            <div className="container" style={{ textAlign: 'center', marginTop: '80px' }}>
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    style={{
-                        background: '#FFFFFF',
-                        border: '1px solid var(--border-light)',
-                        borderRadius: '24px',
-                        padding: '48px 32px',
-                        display: 'inline-block',
-                        maxWidth: '600px',
-                        boxShadow: 'var(--shadow-lg)'
-                    }}
-                >
-                    <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>🤝</div>
-                    <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)', marginBottom: '12px', fontSize: '1.5rem', fontWeight: 800 }}>
-                        Become a Sponsor
-                    </h3>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '32px', lineHeight: 1.7 }}>
-                        Partner with NEURAX 2.0 and connect with 300+ talented students and innovators. Showcase your brand at the premier hackathon of CMR Technical Campus.
-                    </p>
-                    <a href="mailto:neurax@cmrcet.ac.in" className="btn-primary" style={{ padding: '14px 40px' }}>
-                        Get Sponsorship Deck
-                    </a>
-                </motion.div>
-            </div>
+
         </section>
     );
 }

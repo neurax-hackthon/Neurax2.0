@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import SectionHeader from '../ui/SectionHeader';
 import GlassCard from '../ui/GlassCard';
+import TerminalTyper from '../ui/TerminalTyper';
 
 const cards = [
     { icon: '🎯', title: 'What is NEURAX?', text: 'A 24-hour hackathon where students build innovative tech solutions to real-world problems.' },
@@ -37,16 +38,7 @@ export default function About() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.7 }}
                     >
-                        <div className="terminal-box" style={{ background: '#0F172A', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '32px', fontFamily: 'var(--font-mono)', fontSize: '0.9rem', lineHeight: '1.8', color: '#38BDF8', marginBottom: '32px', boxShadow: 'var(--shadow-lg)' }}>
-                            <div><span style={{ color: '#818CF8' }}>$ </span>neurax --info</div>
-                            <div style={{ marginTop: '12px', color: '#94A3B8' }}># Initializing NEURAX 2.0...</div>
-                            <div style={{ color: '#34D399', marginTop: '4px' }}>✓ Event: 24-Hour Hackathon</div>
-                            <div style={{ color: '#34D399' }}>✓ Date: March 28–29, 2026</div>
-                            <div style={{ color: '#34D399' }}>✓ Venue: CMR Technical Campus</div>
-                            <div style={{ color: '#34D399' }}>✓ Prize Pool: ₹1,00,000+</div>
-                            <div style={{ color: '#34D399', marginBottom: '12px' }}>✓ Tracks: 6 Deep-Tech Tracks</div>
-                            <div style={{ color: 'var(--accent-primary)', fontWeight: 'bold' }}>$ Ready to revolutionize? _</div>
-                        </div>
+                        <TerminalTyper />
 
                         {/* Stats items */}
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
