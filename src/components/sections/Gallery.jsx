@@ -57,7 +57,7 @@ export default function Gallery() {
                     ))}
                 </div>
 
-                <motion.div className="gallery-grid" layout style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+                <motion.div className="gallery-grid" layout style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
                     <AnimatePresence>
                         {filtered.map((item, i) => (
                             <motion.div

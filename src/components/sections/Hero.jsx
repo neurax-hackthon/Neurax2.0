@@ -8,6 +8,10 @@ export default function Hero() {
     const vantaEffect = useRef(null);
 
     useEffect(() => {
+        // Skip heavy Vanta animation on touch/mobile devices to prevent performance lag
+        const isMobile = window.matchMedia('(pointer: coarse)').matches;
+        if (isMobile) return;
+
         const loadVanta = () => {
             if (window.VANTA && window.THREE && vantaRef.current && !vantaEffect.current) {
                 vantaEffect.current = window.VANTA.NET({
@@ -101,7 +105,7 @@ export default function Hero() {
                     />
                 </div>
 
-                <div className="hero-meta" style={{ display: 'flex', gap: '32px', justifyContent: 'center', marginBottom: '40px', color: 'var(--text-secondary)', fontWeight: 600 }}>
+                <div className="hero-meta" style={{ display: 'flex', gap: '32px', justifyContent: 'center', marginBottom: '40px', color: 'var(--text-secondary)', fontWeight: 600, flexWrap: 'wrap' }}>
                     <div>📅 March 28–29, 2026</div>
                     <div>📍 CMRTC, Hyderabad</div>
                     <div>⏱️ 24 Hours</div>

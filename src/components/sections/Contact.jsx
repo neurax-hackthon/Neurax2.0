@@ -29,7 +29,7 @@ export default function Contact() {
                     desc="Have questions? We'd love to hear from you. Reach out through any of the channels below."
                 />
 
-                <div className="contact-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
+                <div className="contact-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '32px' }}>
                     {/* Email Card */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -120,7 +120,7 @@ export default function Contact() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
                 >
-                    <div style={{ background: '#FFFFFF', border: '2px solid var(--accent-primary)', borderRadius: '32px', padding: '64px 40px', maxWidth: '800px', margin: '0 auto', boxShadow: '0 20px 50px rgba(37, 99, 235, 0.1)' }}>
+                    <div className="register-cta-box" style={{ background: '#FFFFFF', border: '2px solid var(--accent-primary)', borderRadius: '32px', padding: '64px 40px', maxWidth: '800px', margin: '0 auto', boxShadow: '0 20px 50px rgba(37, 99, 235, 0.1)' }}>
                         <div style={{ fontSize: '4rem', marginBottom: '20px' }}>🚀</div>
                         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', fontWeight: 900, color: 'var(--text-primary)', marginBottom: '16px' }}>
                             Ready to <span style={{ background: 'var(--accent-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Innovate?</span>

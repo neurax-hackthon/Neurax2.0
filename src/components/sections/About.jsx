@@ -29,7 +29,7 @@ export default function About() {
                     desc="A premier hackathon experience designed to push the boundaries of innovation and technology."
                 />
 
-                <div className="about-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '64px', alignItems: 'center' }}>
+                <div className="about-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '48px', alignItems: 'center' }}>
                     {/* Left: Terminal + visual */}
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}

@@ -66,7 +66,7 @@ export default function Themes() {
                     highlight="Themes"
                     desc="Choose your track and build solutions that matter. Six cutting-edge domains to explore."
                 />
-                <div className="themes-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
+                <div className="themes-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '32px' }}>
                     {themes.map((theme, i) => (
                         <motion.div
                             key={theme.id}

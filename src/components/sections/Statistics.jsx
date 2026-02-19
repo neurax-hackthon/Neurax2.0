@@ -25,7 +25,7 @@ export default function Statistics() {
                     highlight="Stats"
                     desc="The impressive scale of innovation happening at NEURAX 2.0."
                 />
-                <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '32px' }}>
+                <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '32px' }}>
                     {stats.map((s, i) => {
                         const dashOffset = CIRCUMFERENCE - (s.pct / 100) * CIRCUMFERENCE;
                         return (

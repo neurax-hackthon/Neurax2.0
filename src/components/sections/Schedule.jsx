@@ -12,7 +12,7 @@ export default function Schedule() {
                     highlight="Schedule"
                     desc="Every moment of NEURAX 2.0 is packed with action, mentorship, and innovation."
                 />
-                <div className="schedule-days-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '40px', alignItems: 'start' }}>
+                <div className="schedule-days-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '40px', alignItems: 'start' }}>
                     {/* Day 1 */}
                     <motion.div
                         className="schedule-day-column"

@@ -24,7 +24,7 @@ export default function Footer() {
         <>
             <footer className="footer" style={{ backgroundColor: 'var(--bg-tertiary)', borderTop: '1px solid var(--border-light)', padding: '80px 0 40px' }}>
                 <div className="container">
-                    <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '48px', marginBottom: '64px' }}>
+                    <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '48px', marginBottom: '64px' }}>
                         <div>
                             <div className="footer-brand-name" style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: '900', marginBottom: '16px', color: 'var(--text-primary)' }}>🧠 NEURAX 2.0</div>
                             <p className="footer-brand-desc" style={{ color: 'var(--text-secondary)', maxWidth: '320px', lineHeight: '1.6' }}>

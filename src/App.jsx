@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import Home from './pages/Home';
 import PageLoader from './components/layout/PageLoader';
-import CustomCursor from './components/layout/CustomCursor';
 import ScrollProgress from './components/ui/ScrollProgress';
 
 function App() {
@@ -15,7 +14,6 @@ function App() {
   return (
     <>
       <ScrollProgress />
-      <CustomCursor />
       {loading && <PageLoader />}
       <Home />
     </>
