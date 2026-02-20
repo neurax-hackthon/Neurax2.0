@@ -44,7 +44,7 @@ export default function Hero() {
                 // Rich neural network feel: more nodes, responsive to mouse,
                 // faster movement, tighter connections → looks alive & dynamic
                 const desktopConfig = {
-                    points: 12.00,       // Dense enough to look impressive
+                    points: 10.00,       // Dense enough to look impressive
                     maxDistance: 22.00,  // Longer reach → more connections
                     spacing: 14.00,      // Tighter grid → rich web effect
                     speed: 1.20,         // Energetic but not chaotic

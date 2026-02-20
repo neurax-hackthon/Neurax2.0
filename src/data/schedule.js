@@ -12,7 +12,7 @@ export const schedule = {
             title: 'Opening Ceremony',
             desc: 'Welcome note, rules briefing, and official inauguration.',
             icon: '🎤',
-            isLive: true,
+            isLive: false,
         },
         {
             time: '10:00 AM',
