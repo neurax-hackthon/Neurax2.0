@@ -8,48 +8,40 @@ export default function Hero() {
     const vantaEffect = useRef(null);
 
     useEffect(() => {
-        // More precise mobile detection
         const isMobile = window.innerWidth <= 768;
         const isTablet = window.innerWidth > 768 && window.innerWidth <= 1024;
 
         const loadVanta = () => {
             if (window.VANTA && window.THREE && vantaRef.current && !vantaEffect.current) {
 
-                // ─── MOBILE CONFIG ───────────────────────────────────────────
-                // Ultra-clean sparse constellation: few nodes, slow anti-gravity
-                // drift, minimal lines — looks premium not cluttered
+                // 🔥 Improved Mobile Config (More Premium Feel)
                 const mobileConfig = {
-                    points: 4.00,        // Very few nodes → clean & minimal
-                    maxDistance: 20.00,  // Only nearby nodes connect → sparse lines
-                    spacing: 38.00,      // Wide spacing → elegant constellation feel
-                    speed: 0.60,         // Slow peaceful drift (anti-gravity feel)
-                    showDots: true,      // Keep dots but they'll be few & spaced out
-                    mouseControls: false,
-                    touchControls: false, // No interaction → stays calm on scroll/touch
-                };
-
-                // ─── TABLET CONFIG ───────────────────────────────────────────
-                // Balanced between mobile and desktop
-                const tabletConfig = {
-                    points: 7.00,
-                    maxDistance: 18.00,
-                    spacing: 24.00,
-                    speed: 0.80,
+                    points: 9.00,
+                    maxDistance: 22.00,
+                    spacing: 22.00,
+                    speed: 0.85,
                     showDots: true,
                     mouseControls: true,
-                    touchControls: false,
+                    touchControls: true,
                 };
 
-                // ─── DESKTOP CONFIG ──────────────────────────────────────────
-                // Rich neural network feel: more nodes, responsive to mouse,
-                // faster movement, tighter connections → looks alive & dynamic
-                const desktopConfig = {
-                    points: 12.00,       // Dense enough to look impressive
-                    maxDistance: 22.00,  // Longer reach → more connections
-                    spacing: 14.00,      // Tighter grid → rich web effect
-                    speed: 1.20,         // Energetic but not chaotic
+                const tabletConfig = {
+                    points: 9.00,
+                    maxDistance: 20.00,
+                    spacing: 18.00,
+                    speed: 1.00,
                     showDots: true,
-                    mouseControls: true, // Mouse repels/attracts nodes → satisfying
+                    mouseControls: true,
+                    touchControls: true,
+                };
+
+                const desktopConfig = {
+                    points: 9.00,
+                    maxDistance: 22.00,
+                    spacing: 16.00,
+                    speed: 1.20,
+                    showDots: true,
+                    mouseControls: true,
                     touchControls: true,
                 };
 
@@ -66,22 +58,14 @@ export default function Hero() {
                     minHeight: 200.00,
                     minWidth: 200.00,
                     scale: 1.00,
-                    scaleMobile: 0.80,
-
-                    // ─── COLOR THEME ─────────────────────────────────────────
-                    // Rich blue lines on white background → matches your brand
-                    // Tip: change color to 0x6366f1 for an indigo/purple vibe
+                    scaleMobile: 1.00, // 🔥 No reduction
                     color: 0x2563eb,
                     backgroundColor: 0xffffff,
-
                     ...activeConfig,
                 });
             }
         };
 
-        // ─── RESIZE HANDLER ──────────────────────────────────────────────────
-        // Destroys and reinitializes Vanta when screen size changes
-        // (e.g., rotating phone, resizing browser window)
         const handleResize = () => {
             if (vantaEffect.current) {
                 vantaEffect.current.destroy();
@@ -116,39 +100,30 @@ export default function Hero() {
     }, []);
 
     return (
-        <section id="hero" className="hero-section">
-            <div ref={vantaRef} id="vanta-bg" />
+        <section id="hero" className="hero-section relative overflow-hidden">
+            <div ref={vantaRef} id="vanta-bg" className="absolute inset-0" />
 
-            {/* ─── OVERLAY ────────────────────────────────────────────────────
-                Slightly stronger fade on mobile so text is always readable
-                over the sparse network. On desktop it's very subtle.
-            ──────────────────────────────────────────────────────────────── */}
-            <div style={{
-                position: 'absolute',
-                inset: 0,
-                zIndex: 1,
-                background: 'linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.65) 100%)',
-            }} />
+            {/* 🔥 Balanced Overlay (Better Visibility) */}
+            <div
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    zIndex: 1,
+                    background:
+                        'linear-gradient(to bottom, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.50) 100%)',
+                }}
+            />
 
             <motion.div
-                className="hero-content"
+                className="hero-content relative z-10"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
             >
-                {/* <motion.div
-                    className="hero-badge"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5 }}
-                >
-                    <span>⚡</span> Early Bird Registration Open
-                </motion.div> */}
-
-                <h1 className="hero-title" style={{ color: 'var(--text-primary)' }}>
-                    <span>NEURAX</span>
-                    <br />
-                    2.0
+                {/* 🔥 No forced <br /> */}
+                <h1 className="hero-title text-center">
+                    <span className="md:block">NEURAX</span>
+                    <span className="md:block">2.0</span>
                 </h1>
 
                 <div className="hero-subtitle-wrapper">
@@ -170,15 +145,18 @@ export default function Hero() {
                     />
                 </div>
 
-                <div className="hero-meta" style={{
-                    display: 'flex',
-                    gap: '32px',
-                    justifyContent: 'center',
-                    marginBottom: '40px',
-                    color: 'var(--text-secondary)',
-                    fontWeight: 600,
-                    flexWrap: 'wrap',
-                }}>
+                <div
+                    className="hero-meta"
+                    style={{
+                        display: 'flex',
+                        gap: '32px',
+                        justifyContent: 'center',
+                        marginBottom: '40px',
+                        color: 'var(--text-secondary)',
+                        fontWeight: 600,
+                        flexWrap: 'wrap',
+                    }}
+                >
                     <div>📅 March 14–15, 2026</div>
                     <div>📍 CMRTC, Hyderabad</div>
                     <div>⏱️ 24 Hours</div>
@@ -195,6 +173,7 @@ export default function Hero() {
                     >
                         ⚡ Register Now
                     </motion.a>
+
                     <motion.a
                         href="#about"
                         className="btn-secondary"
@@ -202,7 +181,9 @@ export default function Hero() {
                         whileTap={{ scale: 0.98 }}
                         onClick={(e) => {
                             e.preventDefault();
-                            document.querySelector('#about')?.scrollIntoView({ behavior: 'smooth' });
+                            document
+                                .querySelector('#about')
+                                ?.scrollIntoView({ behavior: 'smooth' });
                         }}
                     >
                         Learn More ↓
