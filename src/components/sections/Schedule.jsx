@@ -12,15 +12,14 @@ export default function Schedule() {
                     highlight="Schedule"
                     desc="Every moment of NEURAX 2.0 is packed with action, mentorship, and innovation."
                 />
-                <div className="schedule-days-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '40px', alignItems: 'start' }}>
+                <div className="schedule-days-grid">
                     {/* Day 1 */}
                     <motion.div
-                        className="schedule-day-column"
+                        className="schedule-day-column shadow-card"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5 }}
-                        style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-light)', borderRadius: '24px', padding: '40px', boxShadow: 'var(--shadow-md)' }}
                     >
                         <div className="schedule-day-header" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '40px', paddingBottom: '20px', borderBottom: '1px solid var(--border-light)' }}>
                             <span style={{ fontSize: '2rem' }}>📅</span>
@@ -67,12 +66,11 @@ export default function Schedule() {
 
                     {/* Day 2 */}
                     <motion.div
-                        className="schedule-day-column"
+                        className="schedule-day-column shadow-card"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.2 }}
-                        style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-light)', borderRadius: '24px', padding: '40px', boxShadow: 'var(--shadow-md)' }}
                     >
                         <div className="schedule-day-header" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '40px', paddingBottom: '20px', borderBottom: '1px solid var(--border-light)' }}>
                             <span style={{ fontSize: '2rem' }}>📅</span>

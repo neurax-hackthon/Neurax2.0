@@ -30,7 +30,7 @@ export default function About() {
                     desc="A premier hackathon experience designed to push the boundaries of innovation and technology."
                 />
 
-                <div className="about-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '48px', alignItems: 'center' }}>
+                <div className="about-grid">
                     {/* Left: Terminal + visual */}
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
@@ -41,7 +41,7 @@ export default function About() {
                         <TerminalTyper />
 
                         {/* Stats items */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                        <div className="about-stats-grid">
                             {[
                                 { num: '300+', label: 'Innovators' },
                                 { num: '₹1,00,000+', label: 'Prizes' },
@@ -61,10 +61,10 @@ export default function About() {
                         whileInView="visible"
                         viewport={{ once: true }}
                     >
-                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '32px', fontSize: '1.1rem' }}>
+                        <p className="about-intro">
                             NEURAX 2.0 is CMR Technical Campus's flagship hackathon — a high-energy, 24-hour innovation marathon where brilliant minds come together to solve real-world challenges using cutting-edge technology.
                         </p>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                        <div className="about-cards-grid">
                             {cards.map(card => (
                                 <motion.div key={card.title} variants={cardVariants}>
                                     <GlassCard className="hover-lift" style={{ padding: '24px', height: '100%' }}>

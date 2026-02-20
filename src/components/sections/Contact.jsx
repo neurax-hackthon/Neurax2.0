@@ -21,15 +21,14 @@ export default function Contact() {
                     desc="Have questions? We'd love to hear from you. Reach out through any of the channels below."
                 />
 
-                <div className="contact-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '32px' }}>
+                <div className="contact-grid">
                     {/* Email Card */}
                     <motion.div
+                        className="contact-card shadow-card hover-lift"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5 }}
-                        className="hover-lift"
-                        style={{ background: '#FFFFFF', border: '1px solid var(--border-light)', borderRadius: '24px', padding: '40px', textAlign: 'center' }}
                     >
                         <span style={{ fontSize: '3rem', marginBottom: '20px', display: 'block' }}>📧</span>
                         <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>Email Us</div>
@@ -45,12 +44,11 @@ export default function Contact() {
 
                     {/* Social Card */}
                     <motion.div
+                        className="contact-card shadow-card hover-lift"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.1 }}
-                        className="hover-lift"
-                        style={{ background: '#FFFFFF', border: '1px solid var(--border-light)', borderRadius: '24px', padding: '40px', textAlign: 'center' }}
                     >
                         <span style={{ fontSize: '3rem', marginBottom: '20px', display: 'block' }}>🌐</span>
                         <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>Follow Us</div>
@@ -76,14 +74,12 @@ export default function Contact() {
                         </div>
                     </motion.div>
 
-                    {/* Location Card */}
                     <motion.div
+                        className="contact-card shadow-card hover-lift"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.2 }}
-                        className="hover-lift"
-                        style={{ background: '#FFFFFF', border: '1px solid var(--border-light)', borderRadius: '24px', padding: '40px', textAlign: 'center' }}
                     >
                         <span style={{ fontSize: '3rem', marginBottom: '20px', display: 'block' }}>📍</span>
                         <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>Venue</div>
@@ -106,7 +102,7 @@ export default function Contact() {
 
                 {/* Register CTA */}
                 <motion.div
-                    style={{ textAlign: 'center', marginTop: '100px', marginBottom: '40px' }}
+                    className="register-cta-wrapper"
                     initial={{ opacity: 0, scale: 0.98 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}

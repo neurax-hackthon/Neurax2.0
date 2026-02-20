@@ -76,11 +76,6 @@ export default function Prizes() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        style={{
-                            padding: '40px 32px', textAlign: 'center', flex: 1, minWidth: '260px', maxWidth: '360px',
-                            background: '#FFFFFF', border: '2px solid #FFD700', borderRadius: '24px',
-                            boxShadow: '0 20px 40px rgba(255, 215, 0, 0.25)', position: 'relative'
-                        }}
                     >
                         <div style={{
                             position: 'absolute', top: -20, left: '50%', transform: 'translateX(-50%)',
@@ -112,7 +107,6 @@ export default function Prizes() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        style={{ padding: '40px 32px', textAlign: 'center', flex: 1, minWidth: '260px', maxWidth: '320px' }}
                     >
                         <span style={{ fontSize: '3.5rem', marginBottom: '16px', display: 'block' }}>🥉</span>
                         <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-tertiary)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '8px' }}>3rd Place</div>

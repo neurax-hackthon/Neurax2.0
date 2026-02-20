@@ -27,7 +27,7 @@ export default function FAQ() {
                     desc="Everything you need to know about NEURAX 2.0. Can't find your answer? Email us!"
                 />
 
-                <div className="faq-search" style={{ maxWidth: '600px', margin: '0 auto 40px', position: 'relative' }}>
+                <div className="faq-search">
                     <div style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', fontSize: '1.2rem' }}>🔍</div>
                     <input
                         type="text"
@@ -49,7 +49,7 @@ export default function FAQ() {
                     />
                 </div>
 
-                <div className="faq-tabs" style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '48px', flexWrap: 'wrap' }}>
+                <div className="faq-tabs">
                     {categories.map(cat => (
                         <button
                             key={cat}
@@ -71,7 +71,7 @@ export default function FAQ() {
                     ))}
                 </div>
 
-                <div className="faq-list" style={{ maxWidth: '800px', margin: '0 auto' }}>
+                <div className="faq-list">
                     {filtered.length === 0 ? (
                         <div style={{ textAlign: 'center', color: 'var(--text-tertiary)', padding: '60px', background: '#FFFFFF', borderRadius: '24px', border: '1px solid var(--border-light)' }}>
                             No questions found. Try a different search term.
@@ -88,16 +88,9 @@ export default function FAQ() {
                             >
                                 <div
                                     onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                                    className="faq-item-header"
                                     style={{
-                                        padding: '24px 32px',
-                                        background: '#FFFFFF',
                                         borderRadius: openIndex === i ? '20px 20px 0 0' : '20px',
-                                        border: '1px solid var(--border-light)',
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.3s ease',
                                         boxShadow: openIndex === i ? 'none' : 'var(--shadow-sm)'
                                     }}
                                 >
@@ -133,7 +126,7 @@ export default function FAQ() {
                 </div>
 
                 <motion.div
-                    style={{ textAlign: 'center', marginTop: '64px' }}
+                    className="faq-bottom-cta"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}

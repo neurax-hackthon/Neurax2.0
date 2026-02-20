@@ -328,15 +328,7 @@ export default function Gallery() {
                     />
 
                     {/* ── Asymmetric grid ── */}
-                    <div
-                        className="gallery-grid"
-                        style={{
-                            display: 'grid',
-                            gridTemplateColumns: '2fr 1fr',
-                            gap: '16px',
-                            alignItems: 'stretch', /* left card stretches to match right column height */
-                        }}
-                    >
+                    <div className="gallery-grid">
                         {/* ── LEFT — Large featured panel with auto + manual nav ── */}
                         <div
                             style={{
@@ -372,14 +364,7 @@ export default function Gallery() {
                         </div>
 
                         {/* ── RIGHT — 3 stacked slots ── */}
-                        <div
-                            className="gallery-right"
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '16px',
-                            }}
-                        >
+                        <div className="gallery-right">
                             {rightSlots.map(({ images, label }) => (
                                 <div
                                     key={label}

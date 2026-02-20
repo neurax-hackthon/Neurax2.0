@@ -5,7 +5,7 @@ import { sponsors } from '../../data/sponsors';
 function TickerRow({ items, speed = '25s', reverse = false }) {
     const doubled = [...items, ...items];
     return (
-        <div className="sponsors-ticker" style={{ marginBottom: '24px', overflow: 'hidden', padding: '12px 0' }}>
+        <div className="sponsors-ticker">
             <div
                 className="ticker-track"
                 style={{
@@ -18,18 +18,6 @@ function TickerRow({ items, speed = '25s', reverse = false }) {
                     <div
                         key={i}
                         className="sponsor-logo shadow-card"
-                        style={{
-                            padding: '20px 48px',
-                            fontSize: '1.25rem',
-                            fontWeight: 800,
-                            color: 'var(--text-tertiary)',
-                            background: '#FFFFFF',
-                            borderRadius: '16px',
-                            marginRight: '24px',
-                            border: '1px solid var(--border-light)',
-                            transition: 'all 0.3s ease',
-                            cursor: 'pointer'
-                        }}
                     >
                         {s.name}
                     </div>
@@ -51,7 +39,7 @@ export default function Sponsors() {
                 />
             </div>
 
-            <div style={{ marginBottom: '32px' }}>
+            <div className="sponsors-group first">
                 <div className="container">
                     <div style={{ textAlign: 'center', color: 'var(--text-tertiary)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '24px' }}>
                         Title Sponsors
@@ -60,7 +48,7 @@ export default function Sponsors() {
                 <TickerRow items={sponsors.title} speed="20s" />
             </div>
 
-            <div style={{ marginBottom: '48px' }}>
+            <div className="sponsors-group second">
                 <div className="container">
                     <div style={{ textAlign: 'center', color: 'var(--text-tertiary)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '24px' }}>
                         Supporting Partners

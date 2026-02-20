@@ -25,7 +25,7 @@ export default function Statistics() {
                     highlight="Stats"
                     desc="The impressive scale of innovation happened at NEURAX 1.0."
                 />
-                <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '32px' }}>
+                <div className="stats-grid">
                     {stats.map((s, i) => {
                         const dashOffset = CIRCUMFERENCE - (s.pct / 100) * CIRCUMFERENCE;
                         return (
@@ -36,7 +36,6 @@ export default function Statistics() {
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                                style={{ padding: '40px 24px', textAlign: 'center' }}
                             >
                                 <div className="stat-ring-wrapper" style={{ position: 'relative', width: '120px', height: '120px', margin: '0 auto 24px' }}>
                                     <svg viewBox="0 0 120 120" width="120" height="120" style={{ transform: 'rotate(-90deg)' }}>

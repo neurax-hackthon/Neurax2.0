@@ -66,7 +66,7 @@ export default function Themes() {
                     highlight="Themes"
                     desc="Choose your track and build solutions that matter. Six cutting-edge domains to explore."
                 />
-                <div className="themes-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '32px' }}>
+                <div className="themes-grid">
                     {themes.map((theme, i) => (
                         <motion.div
                             key={theme.id}
@@ -74,14 +74,7 @@ export default function Themes() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: i * 0.1 }}
-                            className="hover-lift"
-                            style={{
-                                background: '#FFFFFF',
-                                border: '1px solid var(--border-light)',
-                                borderRadius: '20px',
-                                padding: '32px',
-                                cursor: 'pointer'
-                            }}
+                            className="theme-card shadow-card hover-lift"
                             onClick={() => setSelected(theme)}
                         >
                             <span style={{ fontSize: '3rem', marginBottom: '16px', display: 'block' }}>{theme.icon}</span>

@@ -20,7 +20,7 @@ export default function WhyParticipate() {
                     highlight="Participate?"
                     desc="Four compelling reasons why NEURAX 2.0 is the hackathon you can't afford to miss."
                 />
-                <div className="why-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '24px' }}>
+                <div className="why-grid">
                     {reasons.map((r, i) => (
                         <motion.div
                             key={r.title}
