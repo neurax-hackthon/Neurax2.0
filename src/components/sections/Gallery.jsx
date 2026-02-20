@@ -1,238 +1,442 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import SectionHeader from '../ui/SectionHeader';
-import { inaugurationImages, codingImages, teamworkImages, awardsImages } from '../../data/gallery';
+import { leftSlideImages, codingImages, activityImages, organizationImages } from '../../data/gallery';
 
-const SLIDE_INTERVAL = 4000; // ms between auto-slides
-const FADE_DURATION = 550;  // ms fade transition
+// ─────────────────────────────────────────────────────────────────────────────
+// Constants
+// ─────────────────────────────────────────────────────────────────────────────
+const FADE_MS = 450;       // fade duration in ms
+const SLIDE_INTERVAL = 3500; // auto-advance interval for left panel
 
-const icons = { Coding: '💻', Teamwork: '🤝', Awards: '🏆', Inauguration: '🎤' };
-
-// ── Single image/placeholder renderer ────────────────────────────────────────
-function SlotImage({ item }) {
+// ─────────────────────────────────────────────────────────────────────────────
+// Helper — single image or gradient placeholder
+// ─────────────────────────────────────────────────────────────────────────────
+function SlotImage({ item, style = {} }) {
     if (!item) return null;
     if (item.src) {
         return (
             <img
                 src={item.src}
                 alt={item.caption}
-                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                style={{
+                    position: 'absolute', inset: 0,
+                    width: '100%', height: '100%',
+                    objectFit: 'cover', display: 'block',
+                    ...style,
+                }}
             />
         );
     }
     return (
         <div style={{
             position: 'absolute', inset: 0,
-            background: item.color || 'linear-gradient(135deg, #EFF6FF, #DBEAFE)',
+            background: item.color || 'linear-gradient(135deg,#EFF6FF,#DBEAFE)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '2.5rem',
+            fontSize: '3rem', userSelect: 'none',
         }}>
-            {icons[item.category] || '📷'}
+            {item.category === 'Coding' ? '💻'
+                : item.category === 'Teamwork' ? '🤝'
+                    : item.category === 'Awards' ? '🏆' : '🎤'}
         </div>
     );
 }
 
-// ── Reusable caption overlay ──────────────────────────────────────────────────
-function CaptionOverlay({ caption, fontSize = '0.95rem', padding = '18px' }) {
+// Caption component removed — no labels shown on images
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Fade wrapper — one single <img> whose src is swapped; opacity handles fade.
+// Blinking is avoided because we NEVER unmount the image element.
+// ─────────────────────────────────────────────────────────────────────────────
+function FadeSlot({ item, style = {} }) {
+    const [opacity, setOpacity] = useState(1);
+    const [displayed, setDisplayed] = useState(item);
+
+    useEffect(() => {
+        if (!item || item === displayed) return;
+        // Step 1 — fade out
+        setOpacity(0);
+        const t = setTimeout(() => {
+            // Step 2 — swap content while invisible
+            setDisplayed(item);
+            // Step 3 — fade back in (next paint)
+            requestAnimationFrame(() => setOpacity(1));
+        }, FADE_MS);
+        return () => clearTimeout(t);
+    }, [item]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    return (
+        <div style={{ ...style, transition: `opacity ${FADE_MS}ms ease`, opacity }}>
+            <SlotImage item={displayed} />
+        </div>
+    );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Nav arrow button (semi-transparent, no layout shift)
+// ─────────────────────────────────────────────────────────────────────────────
+const NavBtn = ({ dir, onClick }) => (
+    <button
+        onClick={onClick}
+        aria-label={dir === 'prev' ? 'Previous image' : 'Next image'}
+        style={{
+            position: 'absolute',
+            top: '50%', transform: 'translateY(-50%)',
+            [dir === 'prev' ? 'left' : 'right']: '12px',
+            zIndex: 4,
+            background: 'rgba(255,255,255,0.75)',
+            border: 'none', borderRadius: '50%',
+            width: '38px', height: '38px',
+            cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '1rem', color: '#0F172A',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+            transition: 'background 0.2s',
+        }}
+        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.95)')}
+        onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.75)')}
+    >
+        {dir === 'prev' ? '‹' : '›'}
+    </button>
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Dot indicator strip
+// ─────────────────────────────────────────────────────────────────────────────
+function Dots({ count, active, onSelect }) {
+    if (count <= 1) return null;
     return (
         <div style={{
-            position: 'absolute', inset: 0, pointerEvents: 'none',
-            background: 'linear-gradient(to top, rgba(15,23,42,0.65) 0%, transparent 55%)',
-            display: 'flex', alignItems: 'flex-end', padding,
+            position: 'absolute', bottom: '12px', left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex', gap: '6px', zIndex: 4,
         }}>
-            <span style={{ color: '#fff', fontWeight: 700, fontSize }}>{caption}</span>
+            {Array.from({ length: count }, (_, i) => (
+                <div
+                    key={i}
+                    onClick={e => { e.stopPropagation(); onSelect(i); }}
+                    style={{
+                        width: i === active ? '20px' : '8px',
+                        height: '8px', borderRadius: '4px',
+                        background: i === active ? '#fff' : 'rgba(255,255,255,0.45)',
+                        cursor: 'pointer',
+                        transition: 'width 0.3s ease, background 0.3s ease',
+                    }}
+                />
+            ))}
         </div>
     );
 }
 
-// ── Slideshow hook ────────────────────────────────────────────────────────────
-function useSlideshow(items) {
-    const [idx, setIdx] = useState(0);
-    const [fading, setFading] = useState(false);
-    const hoveringRef = useRef(false);
-    const len = items.length;
+// ─────────────────────────────────────────────────────────────────────────────
+// Lightweight Modal — no framer-motion, no re-render flash
+// ─────────────────────────────────────────────────────────────────────────────
+function Modal({ images, startIndex, onClose }) {
+    const [idx, setIdx] = useState(startIndex);
+    const [opacity, setOpacity] = useState(1);
+    const [displayed, setDisplayed] = useState(images[startIndex]);
 
-    const advance = useCallback(() => {
-        if (hoveringRef.current || len <= 1) return;
-        setFading(true);
+    // Disable body scroll while open
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => { document.body.style.overflow = ''; };
+    }, []);
+
+    // Keyboard navigation
+    useEffect(() => {
+        const handler = (e) => {
+            if (e.key === 'ArrowRight') go(1);
+            if (e.key === 'ArrowLeft') go(-1);
+            if (e.key === 'Escape') onClose();
+        };
+        window.addEventListener('keydown', handler);
+        return () => window.removeEventListener('keydown', handler);
+    }, [idx]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const go = useCallback((dir) => {
+        const next = (idx + dir + images.length) % images.length;
+        setOpacity(0);
         setTimeout(() => {
-            setIdx(i => (i + 1) % len);
-            setFading(false);
-        }, FADE_DURATION);
-    }, [len]);
+            setIdx(next);
+            setDisplayed(images[next]);
+            requestAnimationFrame(() => setOpacity(1));
+        }, FADE_MS);
+    }, [idx, images]);
 
-    useEffect(() => {
-        setIdx(0);
-        setFading(false);
-    }, [items]);
-
-    useEffect(() => {
-        if (len <= 1) return;
-        const timer = setInterval(advance, SLIDE_INTERVAL);
-        return () => clearInterval(timer);
-    }, [advance, len]);
-
-    return { idx, fading, hoveringRef, setIdx, current: items[idx] || items[0] };
-}
-
-export default function Gallery() {
-    const [lightbox, setLightbox] = useState(null);
-
-    // Independent slideshows per column
-    const left = useSlideshow(inaugurationImages);
-    const rightT = useSlideshow(codingImages);   // top-right  = Coding
-    const rightM = useSlideshow(teamworkImages); // mid-right  = Teamwork
-    const rightB = useSlideshow(awardsImages);   // bot-right  = Awards
-
-    const fadeStyle = (fading) => ({
-        transition: `opacity ${FADE_DURATION}ms ease`,
-        opacity: fading ? 0 : 1,
-    });
-
-    const cardBase = (extra = {}) => ({
-        position: 'relative', overflow: 'hidden',
-        boxShadow: 'var(--shadow-md)', border: '1px solid var(--border-light)',
-        cursor: 'zoom-in', ...extra,
-    });
+    const item = displayed;
 
     return (
-        <section id="gallery" className="section" style={{ background: 'var(--bg-primary)' }}>
-            <div className="container">
-                <SectionHeader
-                    tag="// Memories"
-                    title="Event"
-                    highlight="Gallery"
-                    desc="Relive the moments from NEURAX 1.0. NEURAX 2.0 will be even bigger!"
-                />
+        // Overlay — click outside to close
+        <div
+            onClick={onClose}
+            style={{
+                position: 'fixed', inset: 0, zIndex: 10000,
+                background: 'rgba(10,10,20,0.82)',
+                backdropFilter: 'blur(10px)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                padding: '16px',
+                animation: 'modalFadeIn 0.25s ease',
+            }}
+        >
+            {/* Card — stop propagation so clicks inside don't close */}
+            <div
+                onClick={e => e.stopPropagation()}
+                style={{
+                    position: 'relative',
+                    width: '90vw', maxWidth: '820px',
+                    aspectRatio: '16/9',
+                    borderRadius: '20px',
+                    overflow: 'hidden',
+                    background: item?.src ? '#0F172A' : (item?.color || '#EFF6FF'),
+                    boxShadow: '0 32px 80px rgba(0,0,0,0.5)',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                }}
+            >
+                {/* Image area with fade */}
+                <div style={{ position: 'absolute', inset: 0, transition: `opacity ${FADE_MS}ms ease`, opacity }}>
+                    <SlotImage item={item} />
+                </div>
 
-                {/* ── Asymmetric Grid ── */}
-                <div
-                    className="gallery-asymmetric"
-                    style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '16px', alignItems: 'stretch' }}
-                    onMouseEnter={() => {
-                        left.hoveringRef.current = true;
-                        rightT.hoveringRef.current = true;
-                        rightM.hoveringRef.current = true;
-                        rightB.hoveringRef.current = true;
+                {/* Prev / Next */}
+                {images.length > 1 && (
+                    <>
+                        <NavBtn dir="prev" onClick={() => go(-1)} />
+                        <NavBtn dir="next" onClick={() => go(1)} />
+                    </>
+                )}
+
+                {/* Dots */}
+                <Dots count={images.length} active={idx} onSelect={(i) => {
+                    if (i === idx) return;
+                    const dir = i > idx ? 1 : -1;
+                    setOpacity(0);
+                    setTimeout(() => {
+                        setIdx(i);
+                        setDisplayed(images[i]);
+                        requestAnimationFrame(() => setOpacity(1));
+                    }, FADE_MS);
+                }} />
+
+                {/* Close button */}
+                <button
+                    onClick={onClose}
+                    aria-label="Close"
+                    style={{
+                        position: 'absolute', top: '14px', right: '14px', zIndex: 5,
+                        background: 'rgba(255,255,255,0.9)',
+                        border: 'none', borderRadius: '50%',
+                        width: '38px', height: '38px', cursor: 'pointer',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '1rem', color: '#0F172A',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+                        transition: 'background 0.2s',
                     }}
-                    onMouseLeave={() => {
-                        left.hoveringRef.current = false;
-                        rightT.hoveringRef.current = false;
-                        rightM.hoveringRef.current = false;
-                        rightB.hoveringRef.current = false;
-                    }}
+                    onMouseEnter={e => (e.currentTarget.style.background = '#fff')}
+                    onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.9)')}
                 >
-                    {/* LEFT — Inauguration slideshow (large) */}
+                    ✕
+                </button>
+            </div>
+
+            {/* Counter badge */}
+            {images.length > 1 && (
+                <div style={{
+                    position: 'absolute', bottom: '28px', left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: 'rgba(255,255,255,0.12)',
+                    backdropFilter: 'blur(6px)',
+                    color: '#fff', fontSize: '.85rem',
+                    padding: '4px 14px', borderRadius: '20px',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                }}>
+                    {idx + 1} / {images.length}
+                </div>
+            )}
+        </div>
+    );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Shared card base styles
+// ─────────────────────────────────────────────────────────────────────────────
+const cardBase = {
+    position: 'relative',
+    overflow: 'hidden',
+    boxShadow: 'var(--shadow-md)',
+    border: '1px solid var(--border-light)',
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Gallery Component
+// ─────────────────────────────────────────────────────────────────────────────
+export default function Gallery() {
+    // Left featured panel state
+    const [leftIdx, setLeftIdx] = useState(0);
+    const leftImages = leftSlideImages;  // inauguration + awards combined
+
+    // Modal state: null = closed, { images, startIndex } = open
+    const [modal, setModal] = useState(null);
+
+    // ── Auto-slideshow for left panel ──
+    const hoverRef = useRef(false);
+    useEffect(() => {
+        if (leftImages.length <= 1) return;
+        const timer = setInterval(() => {
+            if (hoverRef.current) return; // pause on hover
+            setLeftIdx(i => (i + 1) % leftImages.length);
+        }, SLIDE_INTERVAL);
+        return () => clearInterval(timer);
+    }, [leftImages.length]);
+
+    // Right panel: one image per slot — clicking opens all images from that folder in the modal
+    const rightSlots = [
+        { images: codingImages, label: 'Coding' },
+        { images: activityImages, label: 'Activity' },
+        { images: organizationImages, label: 'Organization' },
+    ];
+
+    // Left nav helpers
+    const goLeft = (dir) => {
+        setLeftIdx(i => (i + dir + leftImages.length) % leftImages.length);
+    };
+
+    return (
+        <>
+            {/* Global keyframe for modal animation */}
+            <style>{`
+                @keyframes modalFadeIn {
+                    from { opacity: 0; }
+                    to   { opacity: 1; }
+                }
+                @media (max-width: 720px) {
+                    .gallery-grid {
+                        grid-template-columns: 1fr !important;
+                    }
+                    .gallery-right {
+                        grid-template-rows: repeat(3, 200px) !important;
+                        aspect-ratio: unset !important;
+                    }
+                }
+            `}</style>
+
+            <section id="gallery" className="section" style={{ background: 'var(--bg-primary)' }}>
+                <div className="container">
+                    <SectionHeader
+                        tag="// Memories"
+                        title="Event"
+                        highlight="Gallery"
+                        desc="Relive the moments from NEURAX 1.0. NEURAX 2.0 will be even bigger!"
+                    />
+
+                    {/* ── Asymmetric grid ── */}
                     <div
-                        onClick={() => setLightbox(left.current)}
-                        style={{ ...cardBase({ borderRadius: '20px', aspectRatio: '4/3' }), ...fadeStyle(left.fading) }}
+                        className="gallery-grid"
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns: '2fr 1fr',
+                            gap: '16px',
+                            alignItems: 'stretch', /* left card stretches to match right column height */
+                        }}
                     >
-                        <SlotImage item={left.current} />
-                        <CaptionOverlay caption={left.current?.caption} fontSize="1rem" padding="24px" />
-
-                        {/* Dot indicators */}
-                        {inaugurationImages.length > 1 && (
-                            <div style={{ position: 'absolute', bottom: '14px', right: '14px', display: 'flex', gap: '6px', zIndex: 2 }}>
-                                {inaugurationImages.map((_, i) => (
-                                    <div
-                                        key={i}
-                                        onClick={e => { e.stopPropagation(); if (!left.fading) left.setIdx(i); }}
-                                        style={{
-                                            width: i === left.idx ? '20px' : '8px', height: '8px',
-                                            borderRadius: '4px', cursor: 'pointer', transition: 'all 0.35s ease',
-                                            background: i === left.idx ? '#fff' : 'rgba(255,255,255,0.4)',
-                                        }}
-                                    />
-                                ))}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* RIGHT — 3 slots stacked: Coding / Teamwork / Awards */}
-                    <div style={{ display: 'grid', gridTemplateRows: 'repeat(3, 1fr)', gap: '16px', aspectRatio: '3/4' }}>
-
-                        {/* TOP — Coding */}
+                        {/* ── LEFT — Large featured panel with auto + manual nav ── */}
                         <div
-                            onClick={() => setLightbox(rightT.current)}
-                            style={{ ...cardBase({ borderRadius: '14px', minHeight: 0 }), ...fadeStyle(rightT.fading) }}
+                            style={{
+                                ...cardBase,
+                                borderRadius: '20px',
+                                minHeight: '200px', /* collapse guard; height driven by right column */
+                                cursor: 'zoom-in',
+                            }}
+                            onClick={() => setModal({ images: leftImages, startIndex: leftIdx })}
+                            onMouseEnter={() => { hoverRef.current = true; }}
+                            onMouseLeave={() => { hoverRef.current = false; }}
                         >
-                            <SlotImage item={rightT.current} />
-                            <CaptionOverlay caption={rightT.current?.caption} fontSize="0.8rem" padding="10px" />
+                            {/* Single FadeSlot — no blinking because element never unmounts */}
+                            <FadeSlot
+                                item={leftImages[leftIdx]}
+                                style={{ position: 'absolute', inset: 0 }}
+                            />
+
+                            {/* Prev / Next — stop click propagation to avoid opening modal */}
+                            {leftImages.length > 1 && (
+                                <>
+                                    <NavBtn dir="prev" onClick={e => { e.stopPropagation(); goLeft(-1); }} />
+                                    <NavBtn dir="next" onClick={e => { e.stopPropagation(); goLeft(1); }} />
+                                </>
+                            )}
+
+                            {/* Dots */}
+                            <Dots
+                                count={leftImages.length}
+                                active={leftIdx}
+                                onSelect={i => setLeftIdx(i)}
+                            />
                         </div>
 
-                        {/* MID — Teamwork */}
+                        {/* ── RIGHT — 3 stacked slots ── */}
                         <div
-                            onClick={() => setLightbox(rightM.current)}
-                            style={{ ...cardBase({ borderRadius: '14px', minHeight: 0 }), ...fadeStyle(rightM.fading) }}
+                            className="gallery-right"
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '16px',
+                            }}
                         >
-                            <SlotImage item={rightM.current} />
-                            <CaptionOverlay caption={rightM.current?.caption} fontSize="0.8rem" padding="10px" />
-                        </div>
+                            {rightSlots.map(({ images, label }) => (
+                                <div
+                                    key={label}
+                                    style={{
+                                        ...cardBase,
+                                        borderRadius: '14px',
+                                        aspectRatio: '16/9',
+                                        cursor: 'zoom-in',
+                                    }}
+                                    onClick={() => setModal({ images, startIndex: 0 })}
+                                >
+                                    {/* Image */}
+                                    <SlotImage item={images[0]} />
 
-                        {/* BOT — Awards */}
-                        <div
-                            onClick={() => setLightbox(rightB.current)}
-                            style={{ ...cardBase({ borderRadius: '14px', minHeight: 0 }), ...fadeStyle(rightB.fading) }}
-                        >
-                            <SlotImage item={rightB.current} />
-                            <CaptionOverlay caption={rightB.current?.caption} fontSize="0.8rem" padding="10px" />
+                                    {/* Folder name label — bottom left */}
+                                    <div style={{
+                                        position: 'absolute', bottom: 0, left: 0, right: 0,
+                                        background: 'linear-gradient(to top, rgba(15,23,42,0.72) 0%, transparent 100%)',
+                                        padding: '20px 12px 8px',
+                                        pointerEvents: 'none',
+                                        zIndex: 3,
+                                        display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
+                                    }}>
+                                        <span style={{
+                                            color: '#fff', fontWeight: 700, fontSize: '.82rem',
+                                            letterSpacing: '0.04em', textTransform: 'uppercase',
+                                        }}>
+                                            {label}
+                                        </span>
+                                        {/* Photo count badge */}
+                                        {images.length > 1 && (
+                                            <span style={{
+                                                background: 'rgba(255,255,255,0.2)',
+                                                backdropFilter: 'blur(4px)',
+                                                color: '#fff', fontSize: '.68rem', fontWeight: 700,
+                                                padding: '2px 8px', borderRadius: '20px',
+                                                border: '1px solid rgba(255,255,255,0.3)',
+                                            }}>
+                                                +{images.length - 1} more
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
+            </section>
 
-                {/* ── Lightbox ── */}
-                <AnimatePresence>
-                    {lightbox && (
-                        <motion.div
-                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                            onClick={() => setLightbox(null)}
-                            style={{
-                                position: 'fixed', inset: 0, display: 'flex', alignItems: 'center',
-                                justifyContent: 'center', zIndex: 10000, padding: '16px',
-                                background: 'rgba(15, 23, 42, 0.5)', backdropFilter: 'blur(8px)',
-                            }}
-                        >
-                            <motion.div
-                                initial={{ scale: 0.9, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                exit={{ scale: 0.9, opacity: 0 }}
-                                onClick={e => e.stopPropagation()}
-                                style={{
-                                    borderRadius: '24px', width: '90vw', maxWidth: '800px',
-                                    aspectRatio: '16/9', position: 'relative', overflow: 'hidden',
-                                    background: lightbox.src ? '#0F172A' : (lightbox.color || '#EFF6FF'),
-                                    boxShadow: 'var(--shadow-xl)', border: '1px solid var(--border-light)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    fontSize: '6rem',
-                                }}
-                            >
-                                {lightbox.src ? (
-                                    <img src={lightbox.src} alt={lightbox.caption}
-                                        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                                ) : (
-                                    icons[lightbox.category]
-                                )}
-                                <div style={{
-                                    position: 'absolute', bottom: 0, left: 0, right: 0,
-                                    background: 'linear-gradient(to top, rgba(15,23,42,0.8), transparent)',
-                                    padding: '32px', color: '#fff', fontSize: '1.25rem',
-                                    fontWeight: 600, textAlign: 'center',
-                                }}>{lightbox.caption}</div>
-                                <button
-                                    onClick={() => setLightbox(null)}
-                                    style={{
-                                        position: 'absolute', top: 16, right: 16,
-                                        background: '#fff', border: 'none', color: 'var(--text-primary)',
-                                        width: '40px', height: '40px', borderRadius: '50%',
-                                        cursor: 'pointer', display: 'flex', alignItems: 'center',
-                                        justifyContent: 'center', fontSize: '1.1rem', boxShadow: 'var(--shadow-md)',
-                                    }}
-                                >✕</button>
-                            </motion.div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
-        </section>
+            {/* ── Modal — rendered outside section to avoid stacking context issues ── */}
+            {modal && (
+                <Modal
+                    images={modal.images}
+                    startIndex={modal.startIndex}
+                    onClose={() => setModal(null)}
+                />
+            )}
+        </>
     );
 }

@@ -1,53 +1,61 @@
 /**
  * Gallery Data — NEURAX 2.0
  *
- * HOW TO ADD IMAGES:
- * 1. Drop your photo into the correct folder inside public/gallery/
- *    ├── public/gallery/inauguration/  → LEFT COLUMN slideshow
- *    ├── public/gallery/coding/        → RIGHT top slot
- *    ├── public/gallery/teamwork/      → RIGHT middle slot
- *    └── public/gallery/awards/        → RIGHT bottom slot
+ * FOLDER MAP  (drop photos into the correct folder inside public/gallery/)
+ * ─────────────────────────────────────────────────────────────────────────
+ *  public/gallery/inauguration/   → LEFT slideshow  (inauguration)
+ *  public/gallery/awards/         → LEFT slideshow  (awards, jpg/jpeg/png/webp only)
+ *  public/gallery/coding/         → RIGHT slot 1    "Coding"
+ *  public/gallery/activity/       → RIGHT slot 2    "Activity"
+ *  public/gallery/organization/   → RIGHT slot 3    "Organization"
  *
- * 2. Add an entry below matching the file path exactly.
- *    src format: '/gallery/<subfolder>/<filename>'
- *
- * NOTE: .HEIC files are NOT supported in browsers. Use .jpg / .jpeg / .png / .webp only.
+ * NOTE: .HEIC files are NOT supported in browsers. Use .jpg/.jpeg/.png/.webp only.
  */
 
-// ── Inauguration — LEFT column slideshow ─────────────────────────────────────
-export const inaugurationImages = [
-    { id: 'i1', category: 'Inauguration', caption: 'Opening ceremony', src: '/gallery/inauguration/IMG_20250921_020955.jpg' },
-    { id: 'i2', category: 'Inauguration', caption: 'Inauguration moment', src: '/gallery/inauguration/IMG_20250921_024727.jpg' },
-    { id: 'i3', category: 'Inauguration', caption: 'Event kick-off', src: '/gallery/inauguration/IMG_20250921_040859.jpg' },
-    { id: 'i4', category: 'Inauguration', caption: 'Guest address', src: '/gallery/inauguration/IMG_20250921_094706.jpg' },
-    { id: 'i5', category: 'Inauguration', caption: 'Stage moments', src: '/gallery/inauguration/IMG_20250921_112327.jpg' },
-    { id: 'i6', category: 'Inauguration', caption: 'Chief guest keynote', src: '/gallery/inauguration/IMG_20250921_112447.jpg' },
+// ── LEFT column — combined Inauguration + Awards slideshow ───────────────────
+export const leftSlideImages = [
+    // Inauguration
+    { id: 'i1', caption: 'Opening ceremony', src: '/gallery/inauguration/IMG_20250921_020955.jpg' },
+    { id: 'i2', caption: 'Inauguration moment', src: '/gallery/inauguration/IMG_20250921_024727.jpg' },
+    { id: 'i3', caption: 'Event kick-off', src: '/gallery/inauguration/IMG_20250921_040859.jpg' },
+    { id: 'i4', caption: 'Guest address', src: '/gallery/inauguration/IMG_20250921_094706.jpg' },
+    { id: 'i5', caption: 'Stage moments', src: '/gallery/inauguration/IMG_20250921_112327.jpg' },
+    { id: 'i6', caption: 'Chief guest keynote', src: '/gallery/inauguration/IMG_20250921_112447.jpg' },
+    // Awards  (.HEIC skipped — browser unsupported)
+    { id: 'a1', caption: 'Winners on stage', src: '/gallery/awards/IMG_20250921_011308.jpg' },
+    { id: 'a2', caption: 'Prize distribution', src: '/gallery/awards/IMG_20250921_113818.jpg' },
+    { id: 'a3', caption: 'Award ceremony', src: '/gallery/awards/id_card.jpeg' },
 ];
 
-// ── Coding — RIGHT top slot, slideshow ───────────────────────────────────────
+// ── RIGHT slot 1 — Coding ────────────────────────────────────────────────────
 export const codingImages = [
-    { id: 'c1', category: 'Coding', caption: 'Late night coding sessions', src: '/gallery/coding/IMG_20250921_011308.jpg' },
-    { id: 'c2', category: 'Coding', caption: 'Debugging at midnight', src: '/gallery/coding/IMG_20250921_113818.jpg' },
+    { id: 'c1', caption: 'Late night coding sessions', src: '/gallery/coding/IMG_20250921_011308.jpg' },
+    { id: 'c2', caption: 'Debugging at midnight', src: '/gallery/coding/IMG_20250921_113818.jpg' },
 ];
 
-// ── Teamwork — RIGHT middle slot (add images here) ────────────────────────────
-export const teamworkImages = [
-    // No images uploaded yet — placeholder shown until you add photos here
-    { id: 't1', category: 'Teamwork', caption: 'Teams brainstorming ideas', src: '', color: 'linear-gradient(135deg, #F5F3FF, #EDE9FE)' },
-    { id: 't2', category: 'Teamwork', caption: 'Collaboration in action', src: '', color: 'linear-gradient(135deg, #ECFEFF, #CFFAFE)' },
+// ── RIGHT slot 2 — Activity ──────────────────────────────────────────────────
+// Drop photos into public/gallery/activity/ and add entries here.
+export const activityImages = [
+    // Placeholder shown until photos are added
+    { id: 'act1', caption: 'Activity highlights', src: '', color: 'linear-gradient(135deg,#F0FDF4,#DCFCE7)' },
 ];
 
-// ── Awards — RIGHT bottom slot ────────────────────────────────────────────────
-export const awardsImages = [
-    { id: 'a1', category: 'Awards', caption: 'Winners on stage', src: '/gallery/awards/IMG_20250921_011308.jpg' },
-    { id: 'a2', category: 'Awards', caption: 'Prize distribution', src: '/gallery/awards/IMG_20250921_113818.jpg' },
-    { id: 'a3', category: 'Awards', caption: 'Award ceremony', src: '/gallery/awards/id_card.jpeg' },
+// ── RIGHT slot 3 — Organization ──────────────────────────────────────────────
+// Drop photos into public/gallery/organization/ and add entries here.
+export const organizationImages = [
+    // Placeholder shown until photos are added
+    { id: 'org1', caption: 'Our organizers', src: '', color: 'linear-gradient(135deg,#FFF7ED,#FED7AA)' },
 ];
 
-// ── Flat list used by the "All" tab filter (legacy support) ──────────────────
+// ── Legacy flat list (kept for any existing imports) ─────────────────────────
 export const galleryItems = [
-    ...inaugurationImages,
+    ...leftSlideImages,
     ...codingImages,
-    ...teamworkImages,
-    ...awardsImages,
+    ...activityImages,
+    ...organizationImages,
 ];
+
+// ── Legacy named exports (kept so old imports don't break) ───────────────────
+export const inaugurationImages = leftSlideImages;
+export const awardsImages = leftSlideImages;
+export const teamworkImages = activityImages;
