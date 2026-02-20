@@ -326,14 +326,33 @@ h4 {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #EFF6FF;
-  border: 1px solid #DBEAFE;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.2);
   color: var(--accent-primary);
-  padding: 8px 16px;
+  padding: 8px 20px;
   border-radius: 100px;
   font-size: 0.85rem;
   font-weight: 700;
   margin-bottom: 32px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.hero-meta {
+  display: flex;
+  gap: clamp(16px, 4vw, 32px);
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.hero-meta-item {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .hero-title {
@@ -366,11 +385,29 @@ h4 {
 
 .scroll-hint {
   position: absolute;
-  bottom: 40px;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 40px;
+}
+
+.scroll-hint-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-tertiary);
+}
+
+.scroll-hint-icon {
+  font-size: 1.25rem;
+  color: var(--accent-primary);
 }
 
 /* ─── Countdown ─────────────────────────────────────────────────────────── */

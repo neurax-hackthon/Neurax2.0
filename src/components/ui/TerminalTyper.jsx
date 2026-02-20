@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useIntersection } from '../../hooks/useIntersection';
 
 // Each line: text to type + color + optional top-margin
 const LINES = [
@@ -16,6 +17,8 @@ const CHAR_DELAY = 35;   // ms per character
 const LINE_PAUSE = 400;  // ms pause between lines
 
 export default function TerminalTyper() {
+    const [intersectRef, isVisible] = useIntersection({ threshold: 0.1 });
+
     // completedLines = array of fully-typed line objects
     // currentIndex   = which line we're currently typing
     // currentText    = partial text of the current line being typed
@@ -33,6 +36,9 @@ export default function TerminalTyper() {
     };
 
     useEffect(() => {
+        // Only start typing once the section enters the viewport
+        if (!isVisible) return;
+
         if (currentIndex >= LINES.length) {
             setDone(true);
             return;
@@ -65,7 +71,7 @@ export default function TerminalTyper() {
         timers.current.push(t);
 
         return clearTimers;
-    }, [currentIndex]);
+    }, [currentIndex, isVisible]);
 
     const containerStyle = {
         background: '#0F172A',
@@ -83,7 +89,7 @@ export default function TerminalTyper() {
     };
 
     return (
-        <div style={containerStyle} aria-label="Terminal animation">
+        <div ref={intersectRef} style={containerStyle} aria-label="Terminal animation">
             {/* Fully typed lines */}
             {completedLines.map((line, i) => (
                 <div
