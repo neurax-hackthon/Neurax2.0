@@ -8,16 +8,14 @@ export default function Hero() {
     const vantaEffect = useRef(null);
 
     useEffect(() => {
-        // Skip heavy Vanta animation on touch/mobile devices to prevent performance lag
         const isMobile = window.matchMedia('(pointer: coarse)').matches;
-        if (isMobile) return;
 
         const loadVanta = () => {
             if (window.VANTA && window.THREE && vantaRef.current && !vantaEffect.current) {
                 vantaEffect.current = window.VANTA.NET({
                     el: vantaRef.current,
                     THREE: window.THREE,
-                    mouseControls: true,
+                    mouseControls: !isMobile,
                     touchControls: true,
                     gyroControls: false,
                     minHeight: 200.00,
