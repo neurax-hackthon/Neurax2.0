@@ -17,7 +17,7 @@ export default function Prizes() {
                     window.confetti({
                         particleCount: 150,
                         spread: 80,
-                        colors: ['#2563EB', '#7C3AED', '#FFD700', '#34D399'],
+                        colors: ['#0891b2', '#059669', '#FFD700', '#10b981'],
                         origin: { y: 0.6 },
                     });
                 }
@@ -63,7 +63,7 @@ export default function Prizes() {
                         <ul style={{ listStyle: 'none', textAlign: 'left', padding: 0 }}>
                             {prizes.second.perks.map(p => (
                                 <li key={p} style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '10px', display: 'flex', gap: '8px' }}>
-                                    <span style={{ color: '#34D399', fontWeight: 'bold' }}>✓</span> {p}
+                                    <span style={{ color: '#10b981', fontWeight: 'bold' }}>✓</span> {p}
                                 </li>
                             ))}
                         </ul>
@@ -116,7 +116,7 @@ export default function Prizes() {
                         <ul style={{ listStyle: 'none', textAlign: 'left', padding: 0 }}>
                             {prizes.third.perks.map(p => (
                                 <li key={p} style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '10px', display: 'flex', gap: '8px' }}>
-                                    <span style={{ color: '#34D399', fontWeight: 'bold' }}>✓</span> {p}
+                                    <span style={{ color: '#10b981', fontWeight: 'bold' }}>✓</span> {p}
                                 </li>
                             ))}
                         </ul>

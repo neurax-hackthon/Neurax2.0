@@ -4,8 +4,8 @@ import SectionHeader from '../ui/SectionHeader';
 import { useIntersection } from '../../hooks/useIntersection';
 
 const stats = [
-    { value: 24, suffix: 'H', label: 'Hours of Hacking', color: '#2563EB', pct: 100 },
-    { value: 300, suffix: '+', label: 'Participants', color: '#7C3AED', pct: 85 },
+    { value: 24, suffix: 'H', label: 'Hours of Hacking', color: '#0891b2', pct: 100 },
+    { value: 300, suffix: '+', label: 'Participants', color: '#059669', pct: 85 },
     { value: 50, suffix: '+', label: 'Teams', color: '#DB2777', pct: 70 },
     { value: 10, suffix: '+', label: 'Expert Mentors', color: '#D97706', pct: 60 },
 ];

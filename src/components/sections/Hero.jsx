@@ -69,9 +69,9 @@ export default function Hero() {
                     scaleMobile: 0.80,
 
                     // ─── COLOR THEME ─────────────────────────────────────────
-                    // Rich blue lines on white background → matches your brand
-                    // Tip: change color to 0x6366f1 for an indigo/purple vibe
-                    color: 0x2563eb,
+                    // Cyan lines on white background → matches neurax2025 identity
+                    // cyan-600 (#0891b2) → emerald-600 (#059669) gradient system
+                    color: 0x0891b2,
                     backgroundColor: 0xffffff,
 
                     ...activeConfig,
