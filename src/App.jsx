@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Home from './pages/Home';
 import PageLoader from './components/layout/PageLoader';
 import ScrollProgress from './components/ui/ScrollProgress';
@@ -16,6 +17,7 @@ function App() {
       <ScrollProgress />
       {loading && <PageLoader />}
       <Home />
+      <SpeedInsights />
     </>
   );
 }
