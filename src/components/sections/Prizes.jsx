@@ -42,7 +42,7 @@ export default function Prizes() {
                     tag="// Prize Pool"
                     title="Win"
                     highlight="Big Prizes"
-                    desc="Over ₹1,00,000 in prizes, trophies, certificates, and exclusive opportunities await the best teams."
+                    desc="Over ₹50,000 in prizes, trophies, certificates, and exclusive opportunities await the best teams."
                 />
 
                 <div className="podium-wrapper" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: '24px', marginTop: '60px', flexWrap: 'wrap' }}>
@@ -58,7 +58,7 @@ export default function Prizes() {
                         <span style={{ fontSize: '3.5rem', marginBottom: '16px', display: 'block' }}>🥈</span>
                         <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-tertiary)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '8px' }}>2nd Place</div>
                         <div style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', fontWeight: 900, color: '#94A3B8', marginBottom: '24px' }}>
-                            {isVisible ? <CountUp end={parseAmount(prizes.second.amount)} prefix="₹" separator="," duration={2} /> : '₹0'}
+                            {isVisible ? <CountUp end={parseAmount(prizes.second.amount)} prefix="₹" suffix="+" separator="," duration={2} /> : '₹0+'}
                         </div>
                         <ul style={{ listStyle: 'none', textAlign: 'left', padding: 0 }}>
                             {prizes.second.perks.map(p => (
@@ -89,7 +89,7 @@ export default function Prizes() {
                         <span style={{ fontSize: '4.5rem', marginBottom: '16px', display: 'block' }}>🥇</span>
                         <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-tertiary)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '8px' }}>1st Place</div>
                         <div style={{ fontFamily: 'var(--font-display)', fontSize: '3.5rem', fontWeight: 900, color: '#D97706', marginBottom: '24px' }}>
-                            {isVisible ? <CountUp end={parseAmount(prizes.first.amount)} prefix="₹" separator="," duration={2.5} /> : '₹0'}
+                            {isVisible ? <CountUp end={parseAmount(prizes.first.amount)} prefix="₹" suffix="+" separator="," duration={2.5} /> : '₹0+'}
                         </div>
                         <ul style={{ listStyle: 'none', textAlign: 'left', padding: 0 }}>
                             {prizes.first.perks.map(p => (
@@ -111,7 +111,7 @@ export default function Prizes() {
                         <span style={{ fontSize: '3.5rem', marginBottom: '16px', display: 'block' }}>🥉</span>
                         <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-tertiary)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '8px' }}>3rd Place</div>
                         <div style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', fontWeight: 900, color: '#CA8A04', marginBottom: '24px' }}>
-                            {isVisible ? <CountUp end={parseAmount(prizes.third.amount)} prefix="₹" separator="," duration={2} /> : '₹0'}
+                            {isVisible ? <CountUp end={parseAmount(prizes.third.amount)} prefix="₹" suffix="+" separator="," duration={2} /> : '₹0+'}
                         </div>
                         <ul style={{ listStyle: 'none', textAlign: 'left', padding: 0 }}>
                             {prizes.third.perks.map(p => (

@@ -108,7 +108,7 @@ export default function Contact() {
                         <p style={{ color: 'var(--text-secondary)', marginBottom: '40px', lineHeight: 1.8, fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto 40px' }}>
                             Join 300+ students at NEURAX 2.0. Register your team today and be part of the next wave of innovation at CMR Technical Campus.
                         </p>
-                        <a href="#register" className="btn-primary hover-glow" style={{ fontSize: '1.1rem', padding: '20px 60px', borderRadius: '100px' }}>
+                        <a href="https://forms.gle/yby8D1xRLXTyrVRy7" target="_blank" rel="noopener noreferrer" className="btn-primary hover-glow" style={{ fontSize: '1.1rem', padding: '20px 60px', borderRadius: '100px' }}>
                             ⚡ Register Your Team Now
                         </a>
                     </div>

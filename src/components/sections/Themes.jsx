@@ -41,7 +41,9 @@ function ThemeModal({ theme, onClose }) {
                     <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1rem', marginBottom: '32px' }}>{theme.details}</p>
 
                     <motion.a
-                        href="#register"
+                        href="https://forms.gle/yby8D1xRLXTyrVRy7"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="btn-primary"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.98 }}

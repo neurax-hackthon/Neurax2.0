@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import SectionHeader from '../ui/SectionHeader';
 import { leftSlideImages, codingImages, activityImages, organizationImages } from '../../data/gallery';
+import heic2any from 'heic2any';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Constants
@@ -12,19 +13,80 @@ const SLIDE_INTERVAL = 3500; // auto-advance interval for left panel
 // Helper — single image or gradient placeholder
 // ─────────────────────────────────────────────────────────────────────────────
 function SlotImage({ item, style = {} }) {
+    const [src, setSrc] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!item?.src) {
+            setSrc(null);
+            return;
+        }
+
+        const isHeic = item.src.toLowerCase().endsWith('.heic');
+        const encodedPath = encodeURI(item.src);
+
+        if (isHeic) {
+            setLoading(true);
+            // Check session storage cache
+            const cached = sessionStorage.getItem(`heic_${item.src}`);
+            if (cached) {
+                setSrc(cached);
+                setLoading(false);
+            } else {
+                fetch(encodedPath)
+                    .then(res => {
+                        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                        return res.blob();
+                    })
+                    .then(blob => {
+                        return heic2any({
+                            blob,
+                            toType: 'image/jpeg',
+                            quality: 0.6
+                        });
+                    })
+                    .then(converted => {
+                        const blob = Array.isArray(converted) ? converted[0] : converted;
+                        const url = URL.createObjectURL(blob);
+                        sessionStorage.setItem(`heic_${item.src}`, url);
+                        setSrc(url);
+                        setLoading(false);
+                    })
+                    .catch(err => {
+                        console.warn(`HEIC conversion failed for ${item.src}:`, err);
+                        setLoading(false);
+                    });
+            }
+        } else {
+            setSrc(encodedPath);
+            setLoading(false);
+        }
+    }, [item?.src]);
+
     if (!item) return null;
-    if (item.src) {
+
+    if (src || loading) {
         return (
-            <img
-                src={item.src}
-                alt={item.caption}
-                style={{
-                    position: 'absolute', inset: 0,
-                    width: '100%', height: '100%',
-                    objectFit: 'cover', display: 'block',
-                    ...style,
-                }}
-            />
+            <div style={{ position: 'absolute', inset: 0, background: '#1e293b', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {loading && (
+                    <div className="animate-pulse" style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem' }}>
+                        Loading...
+                    </div>
+                )}
+                <img
+                    src={src}
+                    alt={item.caption}
+                    style={{
+                        position: 'absolute', inset: 0,
+                        width: '100%', height: '100%',
+                        objectFit: 'cover', display: src ? 'block' : 'none',
+                        transition: 'opacity 0.3s ease',
+                        opacity: loading ? 0 : 1,
+                        ...style,
+                    }}
+                    onLoad={() => setLoading(false)}
+                />
+            </div>
         );
     }
     return (

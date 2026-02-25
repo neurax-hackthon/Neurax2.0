@@ -17,7 +17,7 @@ export const timelineEvents = [
     {
         date: 'Mar 8, 2026',
         event: 'Round 1 – Abstract submission Deadline',
-        sub: 'Submit your Abstract of ur project',
+        sub: 'Submit your project abstract for evaluation',
         icon: '📄',
         active: false,
     },

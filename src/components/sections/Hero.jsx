@@ -181,7 +181,9 @@ export default function Hero() {
 
                 <div className="hero-cta">
                     <motion.a
-                        href="#register"
+                        href="https://forms.gle/yby8D1xRLXTyrVRy7"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="btn-primary main-cta"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.98 }}

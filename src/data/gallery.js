@@ -15,35 +15,37 @@
 // ── LEFT column — combined Inauguration + Awards slideshow ───────────────────
 export const leftSlideImages = [
     // Inauguration
-    { id: 'i1', caption: 'Opening ceremony', src: '/gallery/inauguration/IMG_20250921_020955.jpg' },
-    { id: 'i2', caption: 'Inauguration moment', src: '/gallery/inauguration/IMG_20250921_024727.jpg' },
-    { id: 'i3', caption: 'Event kick-off', src: '/gallery/inauguration/IMG_20250921_040859.jpg' },
-    { id: 'i4', caption: 'Guest address', src: '/gallery/inauguration/IMG_20250921_094706.jpg' },
-    { id: 'i5', caption: 'Stage moments', src: '/gallery/inauguration/IMG_20250921_112327.jpg' },
-    { id: 'i6', caption: 'Chief guest keynote', src: '/gallery/inauguration/IMG_20250921_112447.jpg' },
-    // Awards  (.HEIC skipped — browser unsupported)
-    { id: 'a1', caption: 'Winners on stage', src: '/gallery/awards/IMG_20250921_011308.jpg' },
-    { id: 'a2', caption: 'Prize distribution', src: '/gallery/awards/IMG_20250921_113818.jpg' },
-    { id: 'a3', caption: 'Award ceremony', src: '/gallery/awards/id_card.jpeg' },
+    { id: 'i1', caption: 'Inauguration 1', src: '/gallery/inauguration/1.jpg' },
+    { id: 'i2', caption: 'Inauguration 2', src: '/gallery/inauguration/2.jpg' },
+    { id: 'i3', caption: 'Inauguration 3', src: '/gallery/inauguration/3.jpg' },
+    { id: 'i4', caption: 'Inauguration 4', src: '/gallery/inauguration/4.heic' },
+    { id: 'i5', caption: 'Inauguration 5', src: '/gallery/inauguration/5.jpg' },
+    { id: 'i6', caption: 'Inauguration 6', src: '/gallery/inauguration/6.heic' },
+    { id: 'i7', caption: 'Inauguration 7', src: '/gallery/inauguration/7.heic' },
+    // Awards
+    { id: 'a1', caption: '1st Prize', src: '/gallery/awards/one_prize.HEIC' },
+    { id: 'a2', caption: '2nd Prize', src: '/gallery/awards/2nd prize.HEIC' },
+    { id: 'a3', caption: '3rd Prize', src: '/gallery/awards/3rd prize.HEIC' },
+    { id: 'a4', caption: 'Organizer Team', src: '/gallery/awards/organizer team.HEIC' },
+    { id: 'a5', caption: 'Top Finalists', src: '/gallery/awards/top finalists.jpg' },
 ];
 
 // ── RIGHT slot 1 — Coding ────────────────────────────────────────────────────
 export const codingImages = [
-    { id: 'c1', caption: 'Late night coding sessions', src: '/gallery/coding/IMG_20250921_011308.jpg' },
-    { id: 'c2', caption: 'Debugging at midnight', src: '/gallery/coding/IMG_20250921_113818.jpg' },
+    { id: 'c1', caption: 'Coding Session', src: '/gallery/coding/IMG_20250921_011308.jpg' },
+    { id: 'c2', caption: 'Coding Activity', src: '/gallery/coding/coding1.jpg' },
+    { id: 'c3', caption: 'Coding Speech', src: '/gallery/coding/coing speech2.HEIC' },
+    { id: 'c4', caption: 'Last Coding', src: '/gallery/coding/last coding.HEIC' },
 ];
 
 // ── RIGHT slot 2 — Activity ──────────────────────────────────────────────────
-// Drop photos into public/gallery/activity/ and add entries here.
 export const activityImages = [
-    // Placeholder shown until photos are added
+    // Reusing some from inauguration if activity is empty, or keeping as placeholder
     { id: 'act1', caption: 'Activity highlights', src: '', color: 'linear-gradient(135deg,#F0FDF4,#DCFCE7)' },
 ];
 
 // ── RIGHT slot 3 — Organization ──────────────────────────────────────────────
-// Drop photos into public/gallery/organization/ and add entries here.
 export const organizationImages = [
-    // Placeholder shown until photos are added
     { id: 'org1', caption: 'Our organizers', src: '', color: 'linear-gradient(135deg,#FFF7ED,#FED7AA)' },
 ];
 

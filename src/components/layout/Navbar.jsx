@@ -47,7 +47,7 @@ export default function Navbar() {
                             ))}
                         </ul>
 
-                        <a href="#register" className="btn-primary nav-cta" onClick={(e) => { e.preventDefault(); handleNavClick('#register'); }}>
+                        <a href="https://forms.gle/yby8D1xRLXTyrVRy7" target="_blank" rel="noopener noreferrer" className="btn-primary nav-cta">
                             Register
                         </a>
                     </div>
@@ -80,7 +80,7 @@ export default function Navbar() {
                                 {item.label}
                             </a>
                         ))}
-                        <a href="#register" className="btn-primary" onClick={() => setMenuOpen(false)}>
+                        <a href="https://forms.gle/yby8D1xRLXTyrVRy7" target="_blank" rel="noopener noreferrer" className="btn-primary" onClick={() => setMenuOpen(false)}>
                             Register Now
                         </a>
                     </motion.div>
