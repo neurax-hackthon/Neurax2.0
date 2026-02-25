@@ -44,7 +44,7 @@ export default function About() {
                         <div className="about-stats-grid">
                             {[
                                 { num: '300+', label: 'Innovators' },
-                                { num: '₹XX,XXX+', label: 'Prizes' },
+                                { num: '₹50,000+', label: 'Prize pool' },
                             ].map(s => (
                                 <GlassCard key={s.label} className="hover-lift" style={{ padding: '24px', textAlign: 'center' }}>
                                     <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', fontWeight: 900, color: 'var(--accent-primary)' }}>{s.num}</div>

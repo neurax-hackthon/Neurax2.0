@@ -1,13 +1,6 @@
 import { motion } from 'framer-motion';
 import SectionHeader from '../ui/SectionHeader';
 
-const socialLinks = [
-    { icon: '𝕏', href: '#', label: 'Twitter/X' },
-    { icon: '📸', href: '#', label: 'Instagram' },
-    { icon: '💼', href: '#', label: 'LinkedIn' },
-    { icon: '📘', href: '#', label: 'Facebook' },
-    { icon: '💬', href: '#', label: 'Discord' },
-];
 
 export default function Contact() {
 
@@ -42,7 +35,7 @@ export default function Contact() {
                         </a>
                     </motion.div>
 
-                    {/* Social Card */}
+                    {/* Murari Card */}
                     <motion.div
                         className="contact-card shadow-card hover-lift"
                         initial={{ opacity: 0, y: 20 }}
@@ -50,28 +43,27 @@ export default function Contact() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.1 }}
                     >
-                        <span style={{ fontSize: '3rem', marginBottom: '20px', display: 'block' }}>🌐</span>
-                        <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>Follow Us</div>
-                        <div style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginBottom: '24px' }}>Stay updated on all platforms</div>
-                        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-                            {socialLinks.map(s => (
-                                <a
-                                    key={s.label} href={s.href}
-                                    style={{
-                                        width: '44px', height: '44px', borderRadius: '50%',
-                                        background: 'var(--bg-secondary)', color: 'var(--text-primary)',
-                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                        fontSize: '1.25rem', textDecoration: 'none', transition: 'all 0.3s ease',
-                                        border: '1px solid var(--border-light)'
-                                    }}
-                                    onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--accent-primary)'; e.currentTarget.style.color = '#fff'; }}
-                                    onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--bg-secondary)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
-                                    aria-label={s.label}
-                                >
-                                    {s.icon}
-                                </a>
-                            ))}
-                        </div>
+                        <span style={{ fontSize: '3rem', marginBottom: '20px', display: 'block' }}>👨‍🎓</span>
+                        <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>Murari</div>
+                        <div style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginBottom: '24px' }}>Student Coordinator</div>
+                        <a
+                            href="https://wa.me/917995760212?text=Hello%20NEURAX%20Team,%0A%0AI%20have%20a%20query%20regarding%20NEURAX%202.0%20Hackathon.%20Kindly%20provide%20the%20necessary%20information.%0A%0AThank%20you." target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-primary"
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '8px',
+                                width: '100%',
+                                padding: '12px',
+                                textAlign: 'center',
+                                textDecoration: 'none',
+                                borderRadius: '8px'
+                            }}
+                        >
+                            <span style={{ fontSize: '1.2rem' }}>💬</span> Connect on WhatsApp
+                        </a>
                     </motion.div>
 
                     <motion.div

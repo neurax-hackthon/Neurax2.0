@@ -161,7 +161,7 @@ export default function Hero() {
                             2000,
                             'CMR Technical Campus, Hyderabad',
                             2000,
-                            '₹XX,XXX+ Prize Pool · March 14-15, 2026',
+                            '₹50,000+ Prize Pool · March 14-15, 2026',
                             2000,
                         ]}
                         wrapper="span"
