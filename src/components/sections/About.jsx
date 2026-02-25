@@ -6,7 +6,7 @@ import TerminalTyper from '../ui/TerminalTyper';
 const cards = [
     { icon: '🎯', title: 'What is NEURAX?', text: 'A 24-hour hackathon where students build innovative tech solutions to real-world problems.' },
     { icon: '🧠', title: 'Our Objective', text: 'Foster innovation, collaboration, and technical excellence among the next generation of engineers.' },
-    { icon: '👥', title: 'Who Can Join?', text: 'UG & PG students from any college, any branch. Teams of 2–4 members.' },
+    { icon: '👥', title: 'Who Can Join?', text: 'UG & PG students from any college, any branch. Teams of 3–4 members.' },
     { icon: '⏱️', title: 'Why 24 Hours?', text: 'Simulate real startup pressure. Build fast, think smart, and deliver a working prototype.' },
 ];
 
@@ -44,7 +44,7 @@ export default function About() {
                         <div className="about-stats-grid">
                             {[
                                 { num: '300+', label: 'Innovators' },
-                                { num: '₹1,00,000+', label: 'Prizes' },
+                                { num: '₹XX,XXX+', label: 'Prizes' },
                             ].map(s => (
                                 <GlassCard key={s.label} className="hover-lift" style={{ padding: '24px', textAlign: 'center' }}>
                                     <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', fontWeight: 900, color: 'var(--accent-primary)' }}>{s.num}</div>

@@ -7,14 +7,7 @@ export const themes = [
         tags: ['Python', 'TensorFlow', 'NLP', 'Computer Vision'],
         details: 'Develop AI-powered solutions addressing challenges in healthcare, education, agriculture, or finance. Projects may include predictive models, recommendation systems, NLP applications, or computer vision tools. Judged on innovation, accuracy, and real-world applicability.',
     },
-    {
-        id: 2,
-        icon: '🌐',
-        title: 'Web3 & Blockchain',
-        desc: 'Decentralize the future. Build DApps, smart contracts, and blockchain-based solutions for transparency.',
-        tags: ['Solidity', 'Ethereum', 'DeFi', 'NFT'],
-        details: 'Create decentralized applications leveraging blockchain technology. Focus areas include DeFi protocols, supply chain transparency, digital identity, or NFT marketplaces. Projects will be evaluated on smart contract security, UX, and innovation.',
-    },
+    
     {
         id: 3,
         icon: '🌱',

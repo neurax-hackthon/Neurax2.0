@@ -7,12 +7,12 @@ export const faqs = [
     {
         category: 'Registration',
         question: 'What is the team size?',
-        answer: 'Teams must consist of 2 to 4 members. Solo participation is not allowed. All team members must be currently enrolled students.',
+        answer: 'Teams must consist of 3 to 4 members. Solo participation is not allowed. All team members must be currently enrolled students.',
     },
     {
         category: 'Registration',
         question: 'Is there a registration fee?',
-        answer: 'Yes, there is a nominal registration fee of ₹500 per team. This covers your hackathon kit, meals, and participation certificate.',
+        answer: 'Yes, there is a nominal registration fee of ₹999 per team. This covers your hackathon kit, meals, and participation certificate.',
     },
     {
         category: 'Registration',
@@ -42,7 +42,7 @@ export const faqs = [
     {
         category: 'Logistics',
         question: 'What should I bring to the hackathon?',
-        answer: 'Bring your laptop, charger, any hardware you plan to use, your college ID card, and a printed copy of your registration confirmation. Power strips will be available at the venue.',
+        answer: 'Bring your laptop, charger, any hardware you plan to use, your college ID card. Power strips will be available at the venue.',
     },
     {
         category: 'Logistics',

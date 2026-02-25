@@ -8,8 +8,8 @@ const LINES = [
     { text: '✓ Event: 24-Hour Hackathon', color: '#10b981', mt: '4px' },
     { text: '✓ Date: March 14–15, 2026', color: '#10b981', mt: '0' },
     { text: '✓ Venue: CMR Technical Campus', color: '#10b981', mt: '0' },
-    { text: '✓ Prize Pool: ₹1,00,000+', color: '#10b981', mt: '0' },
-    { text: '✓ Tracks: 6 Deep-Tech Tracks', color: '#10b981', mt: '0', mb: '12px' },
+    { text: '✓ Prize Pool: ₹XX,XXX+', color: '#10b981', mt: '0' },
+    { text: '✓ Tracks: 3 Deep-Tech Tracks', color: '#10b981', mt: '0', mb: '12px' },
     { text: '$ Ready to revolutionize?', color: 'var(--accent-primary)', bold: true, mt: '0' },
 ];
 

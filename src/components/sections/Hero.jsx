@@ -157,11 +157,11 @@ export default function Hero() {
                         sequence={[
                             '24-Hour Hackathon · Build. Innovate. Win.',
                             2000,
-                            'AI · Web3 · IoT · HealthTech · Cybersecurity',
+                            'AI · Machine Learning · Clean Tech · HealthTech · MedAI ',
                             2000,
                             'CMR Technical Campus, Hyderabad',
                             2000,
-                            '₹1,00,000+ Prize Pool · March 14-15, 2026',
+                            '₹XX,XXX+ Prize Pool · March 14-15, 2026',
                             2000,
                         ]}
                         wrapper="span"

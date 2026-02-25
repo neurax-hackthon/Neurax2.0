@@ -50,7 +50,7 @@ export default function Footer() {
                             fontSize: '0.85rem'
                         }}
                     >
-                        Made with ❤️ by the NEURAX Tech Team
+                        Craft with ❤️ by the NEURAX Team
                     </div>
                 </div>
             </footer>
