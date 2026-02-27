@@ -100,17 +100,17 @@ function GalleryImage({ item, className = "", style = {} }) {
     const displaySrc = status === 'error' ? 'https://via.placeholder.com/800x600/f1f5f9/94a3b8?text=Image+Preview+Unavailable' : src;
 
     return (
-        <div className={`relative w-full h-full overflow-hidden bg-slate-100 ${className}`} style={style}>
+        <div className={`relative w-full h-full overflow-hidden ${className}`} style={style}>
             {/* Shimmer / Loading State */}
             {(status === 'loading' || status === 'idle') && (
-                <div className="absolute inset-0 z-10 overflow-hidden bg-slate-100">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer-sweep bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                <div className="absolute inset-0 z-10 overflow-hidden">
+                    <div className="absolute inset-0 -translate-x-full animate-shimmer-sweep bg-gradient-to-r from-transparent via-slate-200/20 to-transparent" />
                 </div>
             )}
 
             {/* Error Overlay (Only for Dev Debugging or if serious) */}
             {status === 'error' && (
-                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-100 p-4 text-center">
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-4 text-center">
                     <span className="text-2xl mb-2">⚠️</span>
                     <p className="text-[9px] text-red-400 mt-1 uppercase font-bold">Preview Unavailable</p>
                 </div>
@@ -119,7 +119,7 @@ function GalleryImage({ item, className = "", style = {} }) {
             {/* Empty State */}
             {!item?.src && status !== 'loading' && (
                 <div className="flex items-center justify-center w-full h-full"
-                    style={{ background: item?.color || 'var(--bg-tertiary)' }}>
+                    style={{ background: item?.color || 'transparent' }}>
                     <span className="text-4xl opacity-50">📸</span>
                 </div>
             )}
@@ -132,7 +132,7 @@ function GalleryImage({ item, className = "", style = {} }) {
                     onLoad={handleLoad}
                     onError={handleError}
                     loading="lazy"
-                    className={`w-full h-full object-cover object-center transition-opacity duration-700 ${(status === 'loaded' || status === 'error') ? 'opacity-100' : 'opacity-0'}`}
+                    className={`w-full h-full object-cover object-center transition-opacity duration-500 ${(status === 'loaded' || status === 'error') ? 'opacity-100' : 'opacity-0'}`}
                 />
             )}
         </div>
@@ -251,7 +251,7 @@ export default function Gallery() {
                                     initial={{ opacity: 0, scale: 1.05 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                                    transition={{ duration: 0.4, ease: "easeInOut" }}
                                     className="absolute inset-0"
                                 >
                                     <GalleryImage item={leftSlideImages[leftIdx]} />
