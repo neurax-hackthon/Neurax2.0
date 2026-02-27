@@ -5,7 +5,7 @@
 
 // Import all images from the gallery assets folder
 // We include both lowercase and uppercase extensions for robustness
-const allImages = import.meta.glob('../assets/gallery/**/*.{jpg,jpeg,png,heic,HEIC,webp,JPG,JPEG,PNG}', {
+const allImages = import.meta.glob('../assets/gallery/**/*.{jpg,jpeg,png,heic,HEIC,webp,JPG,JPEG,PNG,heif,HEIF}', {
     eager: true,
     query: '?url'
 });
@@ -15,16 +15,20 @@ const allImages = import.meta.glob('../assets/gallery/**/*.{jpg,jpeg,png,heic,HE
  */
 const getImagesByFolder = (folderName) => {
     return Object.entries(allImages)
-        .filter(([path]) => path.includes(`/gallery/${folderName}/`))
+        .filter(([path]) => {
+            const normalizedPath = path.toLowerCase();
+            return normalizedPath.includes(`/gallery/${folderName.toLowerCase()}/`);
+        })
         .map(([path, module], index) => {
             const fileName = path.split('/').pop();
-            const caption = fileName.split('.')[0]
+            // Clean caption: remove extension and replace special chars with spaces
+            const cleanName = fileName.replace(/\.[^/.]+$/, "")
                 .replace(/[_-]/g, ' ')
                 .replace(/\b\w/g, l => l.toUpperCase());
 
             return {
-                id: `${folderName}-${index}`,
-                caption: caption,
+                id: `${folderName}-${index}-${cleanName.replace(/\s+/g, '')}`,
+                caption: cleanName,
                 src: module.default || module // Vite return pattern
             };
         })

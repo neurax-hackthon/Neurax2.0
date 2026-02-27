@@ -63,6 +63,35 @@ export default function Statistics() {
                         );
                     })}
                 </div>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5 }}
+                    style={{ marginTop: '3rem', textAlign: 'center' }}
+                >
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', fontWeight: 500 }}>
+                        Want to explore more about our previous edition? <br className="md:hidden" />
+                        <a
+                            href="https://neurax2025.vercel.app"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                                color: 'var(--accent-primary)',
+                                fontWeight: 700,
+                                textDecoration: 'none',
+                                borderBottom: '2px solid var(--accent-primary)',
+                                marginLeft: '0.5rem',
+                                transition: 'all 0.3s ease'
+                            }}
+                            onMouseOver={(e) => { e.currentTarget.style.opacity = '0.8'; }}
+                            onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
+                        >
+                            Visit NEURAX 2025 Website →
+                        </a>
+                    </p>
+                </motion.div>
             </div>
         </section>
     );

@@ -11,73 +11,130 @@ const SLIDE_INTERVAL = 4000;
 
 function GalleryImage({ item, className = "", style = {} }) {
     const [src, setSrc] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [status, setStatus] = useState('idle'); // idle | loading | loaded | error
+    const objectUrlRef = useRef(null);
 
     useEffect(() => {
         let isMounted = true;
+
+        // Cleanup function to revoke object URLs
+        const cleanup = () => {
+            if (objectUrlRef.current) {
+                URL.revokeObjectURL(objectUrlRef.current);
+                objectUrlRef.current = null;
+            }
+        };
+
         if (!item?.src) {
             setSrc(null);
+            setStatus('idle');
             return;
         }
 
-        // Check if it's a HEIC file (handle both .heic and .HEIC, and ignore query params)
         const isHeic = /\.(heic|HEIC)(\?.*)?$/.test(item.src);
-        const encodedPath = item.src; // Vite processed URLs are already safe
+        const encodedPath = item.src;
+
+        setStatus('loading');
 
         if (isHeic) {
-            setLoading(true);
+            console.log("[HEIC Decode] File detected:", encodedPath);
             const cached = sessionStorage.getItem(`heic_${item.src}`);
             if (cached) {
+                console.log("[HEIC Decode] Cache hit:", encodedPath);
                 if (isMounted) {
                     setSrc(cached);
-                    setLoading(false);
+                    setStatus('loaded');
                 }
             } else {
                 fetch(encodedPath)
-                    .then(res => res.blob())
-                    .then(blob => heic2any({ blob, toType: 'image/jpeg', quality: 0.7 }))
+                    .then(res => {
+                        console.log("[HEIC Decode] Fetch response:", res.status, res.ok);
+                        if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+                        return res.blob();
+                    })
+                    .then(blob => {
+                        console.log("[HEIC Decode] Blob size:", blob.size, "type:", blob.type);
+                        if (blob.size === 0) throw new Error("Empty blob received");
+                        return heic2any({
+                            blob,
+                            toType: 'image/jpeg',
+                            quality: 0.7
+                        });
+                    })
                     .then(converted => {
+                        console.log("[HEIC Decode] Conversion success");
                         const blob = Array.isArray(converted) ? converted[0] : converted;
                         const url = URL.createObjectURL(blob);
+                        objectUrlRef.current = url;
                         sessionStorage.setItem(`heic_${item.src}`, url);
                         if (isMounted) {
                             setSrc(url);
-                            setLoading(false);
+                            setStatus('loaded');
                         }
                     })
                     .catch(err => {
-                        console.warn("HEIC error:", err);
-                        if (isMounted) setLoading(false);
+                        console.error("[HEIC Decode] CRITICAL FAILURE:", encodedPath, err);
+                        if (isMounted) setStatus('error');
                     });
             }
         } else {
             setSrc(encodedPath);
+            // Non-HEIC images will trigger onLoad or onError on the img element
         }
 
-        return () => { isMounted = false; };
+        return () => {
+            isMounted = false;
+            // Note: We don't revoke immediately on unmount because the image might still be visible
+            // in transitions. We depend on the next effect or final cleanup.
+        };
     }, [item?.src]);
 
-    if (!item?.src && !loading) {
-        return (
-            <div className="flex items-center justify-center w-full h-full"
-                style={{ background: item?.color || 'var(--bg-tertiary)' }}>
-                <span className="text-4xl opacity-50">📸</span>
-            </div>
-        );
-    }
+    const handleLoad = () => setStatus('loaded');
+    const handleError = (e) => {
+        if (status === 'error') return; // Prevent infinite loops
+        console.warn("Image load failed, showing fallback:", item.src);
+        setStatus('error');
+    };
+
+    // Fallback source if image fails or path is missing
+    const displaySrc = status === 'error' ? 'https://via.placeholder.com/800x600/f1f5f9/94a3b8?text=Image+Preview+Unavailable' : src;
 
     return (
-        <div className={`relative w-full h-full overflow-hidden ${className}`} style={style}>
-            {loading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-slate-100 z-10">
-                    <div className="w-8 h-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+        <div className={`relative w-full h-full overflow-hidden bg-slate-100 ${className}`} style={style}>
+            {/* Shimmer / Loading State */}
+            {(status === 'loading' || status === 'idle') && (
+                <div className="absolute inset-0 z-10 overflow-hidden bg-slate-100">
+                    <div className="absolute inset-0 -translate-x-full animate-shimmer-sweep bg-gradient-to-r from-transparent via-white/40 to-transparent" />
                 </div>
             )}
-            <img
-                src={src}
-                alt={item?.caption || "Gallery Image"}
-                className={`w-full h-full object-cover transition-opacity duration-700 ${src ? 'opacity-100' : 'opacity-0'}`}
-            />
+
+            {/* Error Overlay (Only for Dev Debugging or if serious) */}
+            {status === 'error' && (
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-100 p-4 text-center">
+                    <span className="text-2xl mb-2">⚠️</span>
+                    <p className="text-[9px] text-red-400 mt-1 uppercase font-bold">Preview Unavailable</p>
+                </div>
+            )}
+
+            {/* Empty State */}
+            {!item?.src && status !== 'loading' && (
+                <div className="flex items-center justify-center w-full h-full"
+                    style={{ background: item?.color || 'var(--bg-tertiary)' }}>
+                    <span className="text-4xl opacity-50">📸</span>
+                </div>
+            )}
+
+            {item?.src && (
+                <img
+                    key={item.src}
+                    src={displaySrc}
+                    alt={item?.caption || "Gallery Image"}
+                    onLoad={handleLoad}
+                    onError={handleError}
+                    loading="lazy"
+                    className={`w-full h-full object-cover object-center transition-opacity duration-700 ${(status === 'loaded' || status === 'error') ? 'opacity-100' : 'opacity-0'}`}
+                />
+            )}
         </div>
     );
 }

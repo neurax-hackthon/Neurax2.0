@@ -1327,3 +1327,12 @@ h4 {
     padding: 0 32px;
   }
 }
+/* --- Gallery Shimmer ----------------------------------------------------- */
+.animate-shimmer-sweep {
+  animation: shimmer-sweep 2s infinite;
+}
+
+@keyframes shimmer-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
