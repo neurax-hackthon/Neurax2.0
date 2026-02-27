@@ -35,29 +35,24 @@ export default function Sponsors() {
                     tag="// Our Partners"
                     title="Sponsors &"
                     highlight="Partners"
-                    desc="NEURAX 2.0 is made possible by our incredible sponsors and partners."
+                    desc="NEURAX 2.0 is supported by industry leaders and visionary organizations."
                 />
+
+                <motion.div
+                    className="revealing-soon-container"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <div className="revealing-soon-subtitle">Strategic Partners</div>
+                    <h3 className="revealing-soon-title">Revealing Soon</h3>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>
+                        We are currently finalizing our line-up of amazing sponsors.
+                    </p>
+                    <div className="pulse-dot"></div>
+                </motion.div>
             </div>
-
-            <div className="sponsors-group first">
-                <div className="container">
-                    <div style={{ textAlign: 'center', color: 'var(--text-tertiary)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '24px' }}>
-                        Title Sponsors
-                    </div>
-                </div>
-                <TickerRow items={sponsors.title} speed="20s" />
-            </div>
-
-            <div className="sponsors-group second">
-                <div className="container">
-                    <div style={{ textAlign: 'center', color: 'var(--text-tertiary)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '24px' }}>
-                        Supporting Partners
-                    </div>
-                </div>
-                <TickerRow items={sponsors.supporting} speed="30s" reverse />
-            </div>
-
-
         </section>
     );
 }

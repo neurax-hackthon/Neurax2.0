@@ -136,15 +136,15 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
             >
-                {/* <motion.div
+                <motion.div
                     className="hero-badge"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5 }}
                 >
-                     <span className="live-dot" />
-                    Early Bird Registration Open 
-                </motion.div>*/}
+                    <span className="live-dot" />
+                    Registration On Live
+                </motion.div>
 
                 <h1 className="hero-title" style={{ color: 'var(--text-primary)' }}>
                     <span>NEURAX</span>

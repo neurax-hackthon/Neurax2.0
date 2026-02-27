@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import logo from '../../assets/gallery/logo/logo.png';
 
 const navItems = [
     { label: 'About', href: '#about' },
@@ -33,7 +34,8 @@ export default function Navbar() {
             <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
                 <div className="container navbar-container">
                     <a className="nav-logo" href="#hero" onClick={(e) => { e.preventDefault(); handleNavClick('#hero'); }}>
-                        🧠 NEURAX 2.0
+                        <img src={logo} alt="NEURAX 2.0 Logo" className="logo-img" />
+                        NEURAX 2.0
                     </a>
 
                     <div className="nav-content">

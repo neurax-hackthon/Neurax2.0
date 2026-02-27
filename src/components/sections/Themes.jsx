@@ -38,7 +38,7 @@ function ThemeModal({ theme, onClose }) {
                         ))}
                     </div>
 
-                    <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1rem', marginBottom: '32px' }}>{theme.details}</p>
+                    <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1rem', marginBottom: '32px', whiteSpace: 'pre-wrap' }}>{theme.details}</p>
 
                     <motion.a
                         href="https://forms.gle/yby8D1xRLXTyrVRy7"

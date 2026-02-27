@@ -3,11 +3,11 @@ export const themes = [
         id: 1,
         icon: '🤖',
         title: 'AI & Machine Learning',
-        desc: 'Build intelligent systems that learn, adapt, and solve real-world problems using cutting-edge ML techniques.',
-        tags: ['Python', 'TensorFlow', 'NLP', 'Computer Vision'],
-        details: 'Develop AI-powered solutions addressing challenges in healthcare, education, agriculture, or finance. Projects may include predictive models, recommendation systems, NLP applications, or computer vision tools. Judged on innovation, accuracy, and real-world applicability.',
+        desc: 'Build autonomous agentic systems that decompose tasks, select tools, and execute workflows.',
+        tags: ['LLMs', 'RAG', 'Function Calling', 'Autonomous Planning'],
+        details: '🔥 PROBLEM STATEMENT: Design and develop an autonomous AI agent capable of decomposing complex tasks into sub-tasks, selecting appropriate tools (APIs, databases, search engines), maintaining contextual memory, and executing multi-step workflows with minimal human intervention.\n\n🎯 FOCUS AREAS: LLMs, RAG, Function Calling, Memory Systems, Autonomous Planning.\n\n📈 WHY IT\'S TRENDING: Agentic AI is the next evolution beyond chatbots and is a global research frontier.',
     },
-    
+
     {
         id: 3,
         icon: '🌱',
