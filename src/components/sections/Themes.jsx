@@ -30,7 +30,7 @@ function ThemeModal({ theme, onClose }) {
 
                     {theme.logo === 'salesforce' ? (
                         <div style={{ marginBottom: '20px' }}>
-                            <img src={salesforceLogo} alt="Salesforce" style={{ height: '52px', objectFit: 'contain', marginBottom: '10px', borderRadius: '8px' }} />
+                            <img src={salesforceLogo} alt="Salesforce" style={{ height: '80px', objectFit: 'contain', marginBottom: '10px', borderRadius: '8px' }} />
                         </div>
                     ) : (
                         <div style={{ fontSize: '3.5rem', marginBottom: '20px' }}>{theme.icon}</div>
@@ -93,7 +93,7 @@ export default function Themes() {
                         >
                             {theme.logo === 'salesforce' ? (
                                 <div style={{ marginBottom: '12px' }}>
-                                    <img src={salesforceLogo} alt="Salesforce" style={{ height: '40px', objectFit: 'contain', borderRadius: '6px' }} />
+                                    <img src={salesforceLogo} alt="Salesforce" style={{ height: '64px', objectFit: 'contain', borderRadius: '6px' }} />
                                 </div>
                             ) : (
                                 <span style={{ fontSize: '3rem', marginBottom: '16px', display: 'block' }}>{theme.icon}</span>

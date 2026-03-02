@@ -299,13 +299,13 @@ export default function Gallery() {
                                     className="transition-transform duration-700 group-hover:scale-110"
                                 />
 
-                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
+                                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors" />
 
-                                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent z-10">
+                                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/95 via-black/60 to-transparent z-10">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400">Section</span>
-                                            <h4 className="text-white font-bold">{slot.title}</h4>
+                                            <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>Section</span>
+                                            <h4 className="text-white font-bold" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.9)', fontSize: '1rem' }}>{slot.title}</h4>
                                         </div>
                                         <div className="bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-white border border-white/20">
                                             {slot.images.length} Photos

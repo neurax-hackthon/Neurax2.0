@@ -14,7 +14,7 @@ export const themes = [
         title: 'AgentForce Innovate',
         logo: 'salesforce',
         tagline: 'Build the Future with AI Agents',
-        desc: 'Build the future with AI Agents. Powered by Salesforce AgentForce — redefine how businesses operate with autonomous, intelligent agents.',
+        desc: 'Build the future with AI Agents. Collaborated with Salesforce AgentForce — redefine how businesses operate with autonomous, intelligent agents.',
         tags: ['AgentForce', 'Salesforce', 'AI Agents', 'Data Analytics', "ESG"],
         details: '🚀 POWERED BY SALESFORCE: AgentForce Innovate challenges you to build next-generation AI agents using Salesforce\'s AgentForce platform.\n\n🎯 TAGLINE: Build the Future with AI Agents\n\n🔥 FOCUS AREAS: Autonomous AI Agents, Salesforce Platform, CRM Automation, Einstein AI, Conversational Agents, Workflow Automation.\n\n📈 WHY IT\'S TRENDING: AgentForce by Salesforce is revolutionizing enterprise AI — empowering every business to deploy intelligent agents that work autonomously across sales, service, marketing, and more.',
     },

@@ -14,8 +14,6 @@ const partnerConfig = [
                 name: 'Salesforce',
                 logo: salesforceLogo,
                 desc: 'Empowering builders with the AgentForce platform — the future of autonomous AI agents for enterprise.',
-                tag: 'Title Sponsor',
-                tagColor: '#00A1E0',
             },
         ],
     },
@@ -61,20 +59,22 @@ function PartnerCard({ partner, accent, bg, border }) {
                 maxWidth: '360px',
             }}
         >
-            {/* Tag */}
-            <span style={{
-                background: `${accent}18`,
-                color: accent,
-                fontSize: '0.7rem',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                padding: '4px 14px',
-                borderRadius: '100px',
-                border: `1px solid ${accent}44`,
-                textTransform: 'uppercase',
-            }}>
-                {partner.tag}
-            </span>
+            {/* Tag — only shown if defined */}
+            {partner.tag && (
+                <span style={{
+                    background: `${accent}18`,
+                    color: accent,
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.08em',
+                    padding: '4px 14px',
+                    borderRadius: '100px',
+                    border: `1px solid ${accent}44`,
+                    textTransform: 'uppercase',
+                }}>
+                    {partner.tag}
+                </span>
+            )}
 
             {/* Logo */}
             <div style={{
