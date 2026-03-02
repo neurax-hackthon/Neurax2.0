@@ -53,6 +53,22 @@ export default function Footer() {
                         Craft with ❤️ by the NEURAX Team
                     </div>
                 </div>
+
+                {/* SEO indexing text */}
+                <p
+                    style={{
+                        maxWidth: '1200px',
+                        margin: '16px auto 0',
+                        padding: '0 20px',
+                        color: 'var(--text-tertiary)',
+                        fontSize: '0.78rem',
+                        textAlign: 'center',
+                        lineHeight: 1.6,
+                        opacity: 0.7,
+                    }}
+                >
+                    NeuraX 2.0 Hackathon 2026 is a National Level 24-Hour Hackathon organized by CMR Technical Campus in Hyderabad. Join hundreds of innovators competing in AI, Machine Learning, HealthTech &amp; more at this premier CMR Technical Campus Hackathon.
+                </p>
             </footer>
 
             <AnimatePresence>
