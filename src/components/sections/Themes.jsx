@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SectionHeader from '../ui/SectionHeader';
 import { themes } from '../../data/themes';
+import salesforceLogo from '../../assets/gallery/logo/salesforce.jpeg';
 
 function ThemeModal({ theme, onClose }) {
     return (
@@ -20,17 +21,28 @@ function ThemeModal({ theme, onClose }) {
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.9, opacity: 0 }}
                     onClick={e => e.stopPropagation()}
-                    style={{ background: '#FFFFFF', border: '1px solid var(--border-light)', borderRadius: '24px', padding: '48px', maxWidth: '600px', width: '90%', boxShadow: 'var(--shadow-xl)', position: 'relative' }}
+                    style={{ background: '#FFFFFF', border: '1px solid var(--border-light)', borderRadius: '24px', padding: '48px', maxWidth: '600px', width: '90%', boxShadow: 'var(--shadow-xl)', position: 'relative', maxHeight: '85vh', overflowY: 'auto' }}
                 >
                     <button
                         onClick={onClose}
                         style={{ position: 'absolute', top: 24, right: 24, background: 'var(--bg-secondary)', border: 'none', color: 'var(--text-primary)', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}
                     >✕</button>
 
-                    <div style={{ fontSize: '3.5rem', marginBottom: '20px' }}>{theme.icon}</div>
-                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '16px' }}>
+                    {theme.logo === 'salesforce' ? (
+                        <div style={{ marginBottom: '20px' }}>
+                            <img src={salesforceLogo} alt="Salesforce" style={{ height: '52px', objectFit: 'contain', marginBottom: '10px', borderRadius: '8px' }} />
+                        </div>
+                    ) : (
+                        <div style={{ fontSize: '3.5rem', marginBottom: '20px' }}>{theme.icon}</div>
+                    )}
+                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '6px' }}>
                         {theme.title}
                     </h3>
+                    {theme.tagline && (
+                        <p style={{ fontSize: '0.95rem', fontWeight: 600, color: '#00A1E0', marginBottom: '16px', letterSpacing: '0.02em' }}>
+                            {theme.tagline}
+                        </p>
+                    )}
 
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '24px' }}>
                         {theme.tags.map(t => (
@@ -79,8 +91,17 @@ export default function Themes() {
                             className="theme-card shadow-card hover-lift"
                             onClick={() => setSelected(theme)}
                         >
-                            <span style={{ fontSize: '3rem', marginBottom: '16px', display: 'block' }}>{theme.icon}</span>
-                            <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '12px' }}>{theme.title}</div>
+                            {theme.logo === 'salesforce' ? (
+                                <div style={{ marginBottom: '12px' }}>
+                                    <img src={salesforceLogo} alt="Salesforce" style={{ height: '40px', objectFit: 'contain', borderRadius: '6px' }} />
+                                </div>
+                            ) : (
+                                <span style={{ fontSize: '3rem', marginBottom: '16px', display: 'block' }}>{theme.icon}</span>
+                            )}
+                            <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '4px' }}>{theme.title}</div>
+                            {theme.tagline && (
+                                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#00A1E0', marginBottom: '12px', letterSpacing: '0.02em' }}>{theme.tagline}</div>
+                            )}
                             <div style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '20px' }}>{theme.desc}</div>
 
                             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '24px' }}>

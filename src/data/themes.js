@@ -10,11 +10,13 @@ export const themes = [
 
     {
         id: 3,
-        icon: '🌱',
-        title: 'Sustainability & CleanTech',
-        desc: 'Tech for a greener planet. Solve environmental challenges with innovative digital solutions.',
-        tags: ['IoT', 'Data Analytics', 'Green Tech', 'ESG'],
-        details: 'Address climate change, waste management, renewable energy, or water conservation through technology. Solutions can involve IoT sensor networks, data dashboards, carbon tracking apps, or smart grid optimization.',
+        icon: '☁️',
+        title: 'AgentForce Innovate',
+        logo: 'salesforce',
+        tagline: 'Build the Future with AI Agents',
+        desc: 'Build the future with AI Agents. Powered by Salesforce AgentForce — redefine how businesses operate with autonomous, intelligent agents.',
+        tags: ['AgentForce', 'Salesforce', 'AI Agents', 'Data Analytics', "ESG"],
+        details: '🚀 POWERED BY SALESFORCE: AgentForce Innovate challenges you to build next-generation AI agents using Salesforce\'s AgentForce platform.\n\n🎯 TAGLINE: Build the Future with AI Agents\n\n🔥 FOCUS AREAS: Autonomous AI Agents, Salesforce Platform, CRM Automation, Einstein AI, Conversational Agents, Workflow Automation.\n\n📈 WHY IT\'S TRENDING: AgentForce by Salesforce is revolutionizing enterprise AI — empowering every business to deploy intelligent agents that work autonomously across sales, service, marketing, and more.',
     },
     {
         id: 4,
