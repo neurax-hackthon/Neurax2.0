@@ -1,4 +1,12 @@
 User-agent: *
 Allow: /
 
+# Allow all major search engine bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap location
 Sitemap: https://neurax2-0.vercel.app/sitemap.xml
