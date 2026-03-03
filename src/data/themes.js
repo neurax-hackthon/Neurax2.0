@@ -22,9 +22,9 @@ export const themes = [
         id: 4,
         icon: '🏥',
         title: 'HealthTech & MedAI',
-        desc: 'Revolutionize healthcare with AI diagnostics, telemedicine, and patient-centric digital tools.',
-        tags: ['Medical AI', 'Telemedicine', 'Wearables', 'EHR'],
-        details: 'Build solutions that improve patient outcomes, streamline clinical workflows, or democratize healthcare access. Areas include AI-powered diagnostics, mental health apps, remote patient monitoring, or hospital management systems.',
+        desc: 'Build an AI-powered remote healthcare platform for early diagnosis, predictive risk monitoring, and workflow optimization.',
+        tags: ['AI Diagnostics', 'Remote Monitoring', 'Data Privacy', 'Workflow Automation'],
+        details: '🔥 PROBLEM STATEMENT: Design and develop an AI-powered remote healthcare platform that enables early diagnosis, predictive risk monitoring, secure patient data handling, and automated hospital workflow optimization — specifically targeting rural and underserved populations.\n\n🎯 CORE OBJECTIVE: Build a secure, intelligent telehealth ecosystem that can: Collect patient data remotely (symptoms, vitals, history), Predict health risk using AI models, Provide triage classification (Emergency / Urgent / Routine), Secure patient data with encryption or decentralized architecture, Automate hospital resource allocation (appointments, beds, doctor load).\n\n📦 REQUIRED MODULES: AI Diagnostic Module, Predictive Analytics Engine, Remote Care Module, Privacy & Security Layer, Workflow Automation Dashboard.\n\n🧠 CONSTRAINTS: Must include explainable AI output, data security mechanism, and demonstrate an end-to-end working prototype.',
     },
 
 ];
