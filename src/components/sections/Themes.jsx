@@ -52,16 +52,13 @@ function ThemeModal({ theme, onClose }) {
 
                     <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1rem', marginBottom: '32px', whiteSpace: 'pre-wrap' }}>{theme.details}</p>
 
-                    <motion.a
-                        href="https://forms.gle/yby8D1xRLXTyrVRy7"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    <motion.button
+                        disabled
                         className="btn-primary"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.98 }}
+                        style={{ opacity: 0.7, cursor: 'not-allowed', background: '#9ca3af', boxShadow: 'none' }}
                     >
-                        Register for Track
-                    </motion.a>
+                        🔒 Registrations Closed
+                    </motion.button>
                 </motion.div>
             </motion.div>
         </AnimatePresence>

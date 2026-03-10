@@ -4,7 +4,7 @@ export const timelineEvents = [
         event: 'Registration Opens',
         sub: 'Teams can start registering',
         icon: '📝',
-        active: true,
+        active: false,
     },
 
     {
@@ -22,11 +22,11 @@ export const timelineEvents = [
         active: false,
     },
     {
-        date: 'Mar 9, 2026',
+        date: 'Mar 10, 2026',
         event: 'Shortlisted Teams Announcement',
         sub: 'Selected teams will be notified via email',
         icon: '✅',
-        active: false,
+        active: true,
     },
     {
         date: 'Mar 11, 2026',

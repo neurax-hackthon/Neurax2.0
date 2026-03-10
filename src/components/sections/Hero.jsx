@@ -141,9 +141,10 @@ export default function Hero() {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5 }}
+                    style={{ background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#EF4444' }}
                 >
-                    <span className="live-dot" />
-                    Registration On Live
+                    <span className="live-dot" style={{ background: '#EF4444', boxShadow: '0 0 10px rgba(239, 68, 68, 0.3)' }} />
+                    Registrations Closed
                 </motion.div>
 
                 <h1 className="hero-title" style={{ color: 'var(--text-primary)' }}>
@@ -180,16 +181,13 @@ export default function Hero() {
                 <CountdownTimer />
 
                 <div className="hero-cta">
-                    <motion.a
-                        href="https://forms.gle/yby8D1xRLXTyrVRy7"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    <motion.button
+                        disabled
                         className="btn-primary main-cta"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.98 }}
+                        style={{ opacity: 0.7, cursor: 'not-allowed', background: '#9ca3af', boxShadow: 'none' }}
                     >
-                        ⚡ Register Now
-                    </motion.a>
+                        🔒 Registrations Closed
+                    </motion.button>
                     <motion.a
                         href="#about"
                         className="btn-secondary secondary-cta"

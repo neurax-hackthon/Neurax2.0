@@ -49,9 +49,9 @@ export default function Navbar() {
                             ))}
                         </ul>
 
-                        <a href="https://forms.gle/yby8D1xRLXTyrVRy7" target="_blank" rel="noopener noreferrer" className="btn-primary nav-cta">
-                            Register
-                        </a>
+                        <button disabled className="btn-primary nav-cta" style={{ opacity: 0.7, cursor: 'not-allowed' }}>
+                            Registrations Closed
+                        </button>
                     </div>
 
                     <button
@@ -82,9 +82,9 @@ export default function Navbar() {
                                 {item.label}
                             </a>
                         ))}
-                        <a href="https://forms.gle/yby8D1xRLXTyrVRy7" target="_blank" rel="noopener noreferrer" className="btn-primary" onClick={() => setMenuOpen(false)}>
-                            Register Now
-                        </a>
+                        <button disabled className="btn-primary" style={{ opacity: 0.7, cursor: 'not-allowed', width: '100%', marginTop: '20px' }} onClick={() => setMenuOpen(false)}>
+                            Registrations Closed
+                        </button>
                     </motion.div>
                 )}
             </AnimatePresence>
