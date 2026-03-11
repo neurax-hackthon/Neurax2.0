@@ -12,12 +12,17 @@ import Gallery from '../components/sections/Gallery';
 import FAQ from '../components/sections/FAQ';
 import Sponsors from '../components/sections/Sponsors';
 import Contact from '../components/sections/Contact';
+import LiveBanner from '../components/sections/LiveBanner';
+import { useHackathonState } from '../hooks/useHackathonState';
 
 export default function Home() {
+    const { launched, launchTime, customMessage } = useHackathonState();
+
     return (
         <>
             <Navbar />
             <main>
+                {launched && <LiveBanner launchTime={launchTime} customMessage={customMessage} />}
                 <Hero />
                 <About />
                 <WhyParticipate />

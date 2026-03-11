@@ -26,14 +26,14 @@ export const timelineEvents = [
         event: 'Shortlisted Teams Announcement',
         sub: 'Selected teams will be notified via email',
         icon: '✅',
-        active: true,
+        active: false,
     },
     {
         date: 'Mar 11, 2026',
         event: 'Final Confirmation Deadline',
         sub: 'Shortlisted teams confirm participation',
         icon: '✔️',
-        active: false,
+        active: true,
     },
     {
         date: 'Mar 14–15, 2026',

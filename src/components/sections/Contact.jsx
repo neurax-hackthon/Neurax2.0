@@ -85,9 +85,18 @@ export default function Contact() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="btn-secondary"
-                            style={{ display: 'block', width: '100%', padding: '12px', textDecoration: 'none' }}
+                            style={{ display: 'block', width: '100%', padding: '12px', textDecoration: 'none', marginBottom: '12px' }}
                         >
                             🗺️ View on Maps
+                        </a>
+                        <a
+                            href="https://drive.google.com/file/d/1nHPI2dEx3Pe340chTvIViC1hL88DVyqt/view?usp=drivesdk"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-secondary"
+                            style={{ display: 'block', width: '100%', padding: '12px', textDecoration: 'none' }}
+                        >
+                            📄 Directions (PDF)
                         </a>
                     </motion.div>
                 </div>

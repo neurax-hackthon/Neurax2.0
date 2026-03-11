@@ -47,10 +47,29 @@ export default function Footer() {
                     <div
                         style={{
                             color: 'var(--text-tertiary)',
-                            fontSize: '0.85rem'
+                            fontSize: '0.85rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px'
                         }}
                     >
-                        Craft with ❤️ by the NEURAX Team
+                        Craft with
+                        <button
+                            onClick={() => window.dispatchEvent(new Event('open-admin'))}
+                            style={{
+                                background: 'none',
+                                border: 'none',
+                                padding: 0,
+                                cursor: 'pointer',
+                                fontSize: '0.9rem',
+                                transition: 'transform 0.2s ease',
+                            }}
+                            onMouseOver={(e) => e.target.style.transform = 'scale(1.2)'}
+                            onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
+                            aria-label="Admin Login"
+                            title="Admin Login"
+                        >❤️</button>
+                        by the NEURAX Team
                     </div>
                 </div>
 

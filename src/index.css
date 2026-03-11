@@ -1327,12 +1327,1013 @@ h4 {
     padding: 0 32px;
   }
 }
+
 /* --- Gallery Shimmer ----------------------------------------------------- */
 .animate-shimmer-sweep {
   animation: shimmer-sweep 2s infinite;
 }
 
 @keyframes shimmer-sweep {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HACKATHON LAUNCH SYSTEM — CSS
+   All styles below power the admin panel, neon timer, intro overlay,
+   live banner, and launch effects. No existing styles are modified.
+══════════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Neon Hackathon 24h Timer ───────────────────────────────────────────── */
+.countdown-neon-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 40px 0;
+}
+
+.countdown-neon-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  opacity: 0.85;
+}
+
+.countdown-neon-grid {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.countdown-neon-group {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.countdown-neon-card {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border: 1px solid rgba(8, 145, 178, 0.4);
+  border-radius: 12px;
+  padding: 20px 24px;
+  text-align: center;
+  box-shadow:
+    0 0 20px rgba(8, 145, 178, 0.15),
+    0 0 40px rgba(8, 145, 178, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.countdown-neon-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(8, 145, 178, 0.6), transparent);
+}
+
+.countdown-neon-number {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(to bottom, #7dd3fc, #0891b2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: block;
+  letter-spacing: -2px;
+}
+
+.countdown-neon-unit {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(8, 145, 178, 0.7);
+  text-align: center;
+  margin-top: 6px;
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.countdown-neon-sep {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  color: rgba(8, 145, 178, 0.5);
+  padding: 0 8px;
+  align-self: center;
+  margin-bottom: 4px;
+  animation: sep-blink 1s ease-in-out infinite;
+}
+
+@keyframes sep-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.neon-pulse {
+  animation: neon-pulse 2s ease-in-out infinite;
+}
+
+@keyframes neon-pulse {
+
+  0%,
+  100% {
+    text-shadow:
+      0 0 10px rgba(8, 145, 178, 0.8),
+      0 0 20px rgba(8, 145, 178, 0.4);
+  }
+
+  50% {
+    text-shadow:
+      0 0 20px rgba(8, 145, 178, 1),
+      0 0 40px rgba(8, 145, 178, 0.6),
+      0 0 60px rgba(8, 145, 178, 0.2);
+  }
+}
+
+.countdown-neon-ended {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--accent-primary);
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+/* ─── Glitch Text Animation ──────────────────────────────────────────────── */
+.glitch-text {
+  position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.glitch-text::before {
+  color: #0891b2;
+  animation: glitch-1 3.5s infinite linear;
+  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+}
+
+.glitch-text::after {
+  color: #059669;
+  animation: glitch-2 3.5s infinite linear;
+  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+}
+
+@keyframes glitch-1 {
+
+  0%,
+  92%,
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+
+  93% {
+    transform: translate(-3px, 1px);
+    opacity: 0.8;
+  }
+
+  95% {
+    transform: translate(3px, -1px);
+    opacity: 0.8;
+  }
+
+  97% {
+    transform: translate(-2px, 2px);
+    opacity: 0.9;
+  }
+}
+
+@keyframes glitch-2 {
+
+  0%,
+  90%,
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+
+  91% {
+    transform: translate(3px, -2px);
+    opacity: 0.8;
+  }
+
+  93% {
+    transform: translate(-3px, 1px);
+    opacity: 0.8;
+  }
+
+  96% {
+    transform: translate(2px, -1px);
+    opacity: 0.9;
+  }
+}
+
+/* ─── Launch Intro Overlay ───────────────────────────────────────────────── */
+.launch-intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000913;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.intro-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(8, 145, 178, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 145, 178, 0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: grid-scroll 12s linear infinite;
+}
+
+@keyframes grid-scroll {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(60px);
+  }
+}
+
+.intro-radial-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(8, 145, 178, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.intro-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 40px 24px;
+  max-width: 800px;
+  width: 100%;
+}
+
+.intro-started-label {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #0891b2;
+  margin-bottom: 24px;
+  text-shadow: 0 0 20px rgba(8, 145, 178, 0.8);
+}
+
+.intro-title {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 12vw, 9rem);
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, #7dd3fc 0%, #0891b2 40%, #059669 70%, #34d399 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -3px;
+  margin-bottom: 24px;
+}
+
+.intro-tagline {
+  font-family: var(--font-mono);
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(125, 211, 252, 0.6);
+  margin-bottom: 32px;
+}
+
+.intro-divider {
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #0891b2, transparent);
+  margin: 0 auto 24px;
+  transform-origin: center;
+}
+
+.intro-dismiss-hint {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: rgba(125, 211, 252, 0.4);
+  text-transform: uppercase;
+}
+
+.intro-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0, 0, 0, 0.06) 3px,
+      rgba(0, 0, 0, 0.06) 4px);
+  pointer-events: none;
+}
+
+/* ─── Live Banner ────────────────────────────────────────────────────────── */
+.live-launch-banner {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  z-index: 990;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: linear-gradient(to right, #0c1a26, #0f2a1e, #0c1a26);
+  border-bottom: 1px solid rgba(8, 145, 178, 0.3);
+  box-shadow: 0 4px 20px rgba(8, 145, 178, 0.2);
+  overflow: hidden;
+}
+
+.live-launch-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(8, 145, 178, 0.06) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: banner-shimmer 3s linear infinite;
+}
+
+@keyframes banner-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.live-banner-text {
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #7dd3fc;
+  text-shadow: 0 0 12px rgba(8, 145, 178, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.live-banner-text strong {
+  color: #0891b2;
+  text-shadow:
+    0 0 10px rgba(8, 145, 178, 1),
+    0 0 20px rgba(8, 145, 178, 0.5);
+}
+
+.live-banner-pulse {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #0891b2;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(8, 145, 178, 0.8);
+  animation: live-dot-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes live-dot-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(8, 145, 178, 0.8);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow: 0 0 16px rgba(8, 145, 178, 1);
+    transform: scale(1.3);
+  }
+}
+
+/* ─── Floating Admin FAB ─────────────────────────────────────────────────── */
+.admin-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9000;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  color: white;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(8, 145, 178, 0.2);
+  transition: box-shadow 0.3s ease;
+}
+
+.admin-fab:hover {
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 0 0 2px rgba(8, 145, 178, 0.5);
+}
+
+/* ─── Admin Panel ────────────────────────────────────────────────────────── */
+.admin-panel {
+  position: fixed;
+  bottom: 88px;
+  right: 24px;
+  z-index: 9000;
+  width: 300px;
+  background: rgba(10, 18, 32, 0.96);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(8, 145, 178, 0.25);
+  border-radius: 20px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(8, 145, 178, 0.1);
+  overflow: hidden;
+}
+
+.admin-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(8, 145, 178, 0.15);
+}
+
+.admin-panel-title {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(125, 211, 252, 0.9);
+  letter-spacing: 1px;
+}
+
+.admin-close-btn {
+  background: none;
+  border: none;
+  color: rgba(148, 163, 184, 0.6);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+.admin-close-btn:hover {
+  color: rgba(148, 163, 184, 1);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ─── Admin Login Form ───────────────────────────────────────────────────── */
+.admin-login-form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-login-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.6);
+  margin-bottom: 4px;
+}
+
+.admin-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(8, 145, 178, 0.2);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.admin-input::placeholder {
+  color: rgba(148, 163, 184, 0.35);
+}
+
+.admin-input:focus {
+  border-color: rgba(8, 145, 178, 0.6);
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1);
+}
+
+.admin-error {
+  font-size: 0.78rem;
+  color: #f87171;
+  text-align: center;
+  padding: 6px 8px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.admin-login-btn {
+  background: linear-gradient(to right, #0891b2, #059669);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 11px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  margin-top: 4px;
+}
+
+.admin-login-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.admin-login-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─── Admin Dashboard ────────────────────────────────────────────────────── */
+.admin-dashboard,
+.admin-noauth {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+.admin-welcome {
+  font-size: 0.82rem;
+  color: rgba(148, 163, 184, 0.8);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.admin-email-display {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(125, 211, 252, 0.8);
+  word-break: break-all;
+}
+
+.admin-launched-badge {
+  background: linear-gradient(to right, rgba(8, 145, 178, 0.15), rgba(5, 150, 105, 0.15));
+  border: 1px solid rgba(8, 145, 178, 0.3);
+  border-radius: 10px;
+  padding: 12px 20px;
+  color: #7dd3fc;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: center;
+  width: 100%;
+  animation: neon-pulse 2s ease-in-out infinite;
+}
+
+.admin-logout-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 8px;
+  color: rgba(148, 163, 184, 0.6);
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-logout-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.admin-noauth p {
+  font-size: 0.85rem;
+  color: #f87171;
+  text-align: center;
+}
+
+/* ─── Launch Button ──────────────────────────────────────────────────────── */
+.launch-btn {
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #0891b2 0%, #059669 100%);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 4px 20px rgba(8, 145, 178, 0.4),
+    0 0 0 1px rgba(8, 145, 178, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+.launch-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.launch-btn:hover:not(:disabled) {
+  box-shadow:
+    0 8px 30px rgba(8, 145, 178, 0.6),
+    0 0 0 2px rgba(8, 145, 178, 0.5),
+    0 0 40px rgba(8, 145, 178, 0.2);
+}
+
+.launch-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.launch-btn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.launch-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── Responsive overrides ───────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .admin-panel {
+    width: calc(100vw - 32px);
+    right: 16px;
+    bottom: 80px;
+  }
+
+  .admin-fab {
+    bottom: 16px;
+    right: 16px;
+    width: 46px;
+    height: 46px;
+    font-size: 1.1rem;
+  }
+
+  .countdown-neon-card {
+    padding: 14px 16px;
+  }
+
+  .live-banner-text {
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+  }
+
+  .intro-title {
+    letter-spacing: -1px;
+  }
+}
+/* --- Admin Status/Reset Styles --- */
+.admin-status-badge{width:100%;padding:10px 16px;border-radius:10px;font-weight:700;font-size:.85rem;text-align:center}
+.admin-status-badge.live{background:linear-gradient(to right,rgba(8,145,178,.15),rgba(5,150,105,.15));border:1px solid rgba(8,145,178,.35);color:#7dd3fc;animation:neon-pulse 2s ease-in-out infinite}
+.admin-status-badge.idle{background:rgba(255,255,255,.04);border:1px solid rgba(148,163,184,.12);color:rgba(148,163,184,.6)}
+.admin-divider{width:100%;height:1px;background:rgba(8,145,178,.12);margin:2px 0}
+.admin-reset-btn{width:100%;padding:10px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:10px;color:rgba(252,165,165,.85);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s}
+.admin-reset-btn:hover:not(:disabled){background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.4);color:#fca5a5}
+.admin-reset-btn:disabled{opacity:.4;cursor:not-allowed}
+.admin-confirm-reset{width:100%;padding:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;display:flex;flex-direction:column;gap:10px}
+.admin-confirm-text{font-size:.78rem;color:rgba(252,165,165,.85);text-align:center;line-height:1.4}
+.admin-confirm-row{display:flex;gap:8px}
+.admin-confirm-yes{flex:1;padding:8px;background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.4);border-radius:8px;color:#fca5a5;font-weight:700;font-size:.78rem;cursor:pointer;transition:all .2s}
+.admin-confirm-yes:hover:not(:disabled){background:rgba(239,68,68,.35)}
+.admin-confirm-yes:disabled{opacity:.5;cursor:not-allowed}
+.admin-confirm-no{flex:1;padding:8px;background:rgba(255,255,255,.04);border:1px solid rgba(148,163,184,.15);border-radius:8px;color:rgba(148,163,184,.6);font-weight:600;font-size:.78rem;cursor:pointer;transition:all .2s}
+.admin-confirm-no:hover{background:rgba(255,255,255,.08);color:rgba(148,163,184,.9)}
+
+/* -------------------------------------------------------------------
+   NEURAX NEON FLIP CLOCK � 24h Hackathon Timer
+   Classes: nx-outer, nx-top-label, nx-clock-row,
+            nx-card-wrap, nx-card, nx-card-top/bottom/mid,
+            nx-card-digits, nx-card-label, nx-scanline,
+            nx-sep-wrap, nx-dot, nx-energy-bar/fill, nx-flip
+------------------------------------------------------------------- */
+
+/* --- Outer wrapper ----------------------------------------------- */
+.nx-outer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin: 36px 0 20px;
+}
+
+/* --- Live label -------------------------------------------------- */
+.nx-top-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.65rem, 1.3vw, 0.8rem);
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #0891b2;
+  text-shadow: 0 0 14px rgba(8,145,178,0.7);
+}
+
+.nx-live-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: #00f0ff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #00f0ff, 0 0 16px rgba(0,240,255,0.5);
+  animation: nx-dot-pulse 1.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes nx-dot-pulse {
+  0%,100% { transform: scale(1);   box-shadow: 0 0 8px #00f0ff, 0 0 16px rgba(0,240,255,0.5); }
+  50%      { transform: scale(1.4); box-shadow: 0 0 14px #00f0ff, 0 0 28px rgba(0,240,255,0.7); }
+}
+
+/* --- Clock row --------------------------------------------------- */
+.nx-clock-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* --- Card wrapper (holds card + label below) --------------------- */
+.nx-card-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* --- Card -------------------------------------------------------- */
+.nx-card {
+  position: relative;
+  width: clamp(80px, 14vw, 120px);
+  height: clamp(80px, 14vw, 120px);
+  background: linear-gradient(160deg, #0a1628 0%, #0d1f38 50%, #071020 100%);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 0 0 1px rgba(0,240,255,0.08),
+    0 0 20px rgba(0,240,255,0.10),
+    0 0 50px rgba(8,145,178,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    inset 0 -1px 0 rgba(0,0,0,0.4);
+  transition: box-shadow 0.25s ease;
+}
+
+.nx-card:hover {
+  box-shadow:
+    0 0 0 1px rgba(0,240,255,0.35),
+    0 0 30px rgba(0,240,255,0.20),
+    0 0 60px rgba(8,145,178,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+/* Flip animation */
+.nx-card.nx-flip {
+  animation: nx-flip-anim 0.28s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes nx-flip-anim {
+  0%   { transform: rotateX(0deg);   }
+  40%  { transform: rotateX(-18deg); }
+  100% { transform: rotateX(0deg);   }
+}
+
+/* --- Card halves ------------------------------------------------- */
+.nx-card-top,
+.nx-card-bottom {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nx-card-top {
+  align-items: flex-end;
+  padding-bottom: 2px;
+  background: linear-gradient(to bottom, rgba(0,240,255,0.04) 0%, transparent 100%);
+}
+
+.nx-card-bottom {
+  align-items: flex-start;
+  padding-top: 2px;
+  background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 100%);
+}
+
+.nx-card-bottom .nx-card-digits {
+  transform: translateY(-50%);
+  opacity: 0.7;
+}
+
+/* --- Digits ------------------------------------------------------ */
+.nx-card-digits {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -3px;
+  line-height: 1;
+  /* Neon gradient text */
+  background: linear-gradient(to bottom, #e0f7ff 0%, #38bdf8 40%, #0891b2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Glow via filter (works on -webkit-text-fill-color) */
+  filter: drop-shadow(0 0 6px rgba(0,240,255,0.8)) drop-shadow(0 0 14px rgba(8,145,178,0.5));
+  animation: nx-glow-pulse 2.4s ease-in-out infinite;
+  display: block;
+}
+
+@keyframes nx-glow-pulse {
+  0%,100% { filter: drop-shadow(0 0 6px rgba(0,240,255,0.8)) drop-shadow(0 0 14px rgba(8,145,178,0.5)); }
+  50%      { filter: drop-shadow(0 0 12px rgba(0,240,255,1))  drop-shadow(0 0 28px rgba(8,145,178,0.8)); }
+}
+
+/* --- Mid divider line -------------------------------------------- */
+.nx-card-mid {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent 0%, rgba(0,240,255,0.55) 30%, rgba(0,240,255,0.55) 70%, transparent 100%);
+  transform: translateY(-50%);
+  z-index: 3;
+}
+
+/* --- Scan line sweep --------------------------------------------- */
+.nx-scanline {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,240,255,0.07) 50%, transparent 100%);
+  animation: nx-scan 3.5s ease-in-out infinite;
+  z-index: 2;
+  pointer-events: none;
+}
+
+@keyframes nx-scan {
+  0%   { top: -40%; }
+  100% { top: 110%; }
+}
+
+/* --- Card label -------------------------------------------------- */
+.nx-card-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.55rem, 1vw, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(0, 240, 255, 0.55);
+  text-shadow: 0 0 10px rgba(0,240,255,0.3);
+}
+
+/* --- Separator dots ---------------------------------------------- */
+.nx-sep-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-self: center;
+  padding-bottom: 24px;
+}
+
+.nx-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: #00f0ff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #00f0ff, 0 0 16px rgba(0,240,255,0.4);
+  animation: nx-dot-blink 1s ease-in-out infinite;
+}
+
+.nx-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+@keyframes nx-dot-blink {
+  0%,100% { opacity: 1;   box-shadow: 0 0 8px #00f0ff, 0 0 16px rgba(0,240,255,0.4); }
+  50%      { opacity: 0.2; box-shadow: none; }
+}
+
+/* --- Energy bar -------------------------------------------------- */
+.nx-energy-bar {
+  width: clamp(200px, 50vw, 360px);
+  height: 3px;
+  background: rgba(0,240,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.nx-energy-fill {
+  height: 100%;
+  background: linear-gradient(to right, #059669, #0891b2, #00f0ff);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(0,240,255,0.6);
+  transition: width 1s linear;
+}
+
+/* --- Ended state ------------------------------------------------- */
+.nx-ended {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 900;
+  letter-spacing: 3px;
+  background: linear-gradient(to right, #0891b2, #059669);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: nx-glow-pulse 2s ease-in-out infinite;
+}
+
+/* --- Mobile ------------------------------------------------------ */
+@media (max-width: 480px) {
+  .nx-clock-row { gap: 6px; }
+  .nx-card      { border-radius: 10px; }
+  .nx-sep-wrap  { gap: 7px; }
+  .nx-dot       { width: 5px; height: 5px; }
+  .nx-energy-bar{ width: 90vw; }
 }

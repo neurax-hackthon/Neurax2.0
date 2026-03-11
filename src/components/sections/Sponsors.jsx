@@ -11,7 +11,7 @@ const titleSponsor = {
     bg: 'linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,215,0,0.02) 100%)',
     border: 'rgba(255,215,0,0.4)',
     partner: {
-        name: 'StepUpMarkAI',
+        name: 'StepUpMark.AI',
         logo: stepupmarkaiLogo,
         desc: 'Leading the AI revolution by empowering businesses and developers with state-of-the-art AI solutions and marketing strategies.',
         tag: 'Title Sponsor',
@@ -95,7 +95,7 @@ function TitleSponsorCard({ partner, accent, bg, border }) {
         >
             {/* Shimmer effect */}
             <motion.div
-                animate={{ 
+                animate={{
                     x: ['-100%', '200%'],
                 }}
                 transition={{
@@ -119,7 +119,7 @@ function TitleSponsorCard({ partner, accent, bg, border }) {
 
             <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
                 {partner.tag && (
-                    <motion.span 
+                    <motion.span
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
@@ -140,7 +140,7 @@ function TitleSponsorCard({ partner, accent, bg, border }) {
                     </motion.span>
                 )}
 
-                <motion.div 
+                <motion.div
                     whileHover={{ scale: 1.05, rotate: [0, -2, 2, -2, 0] }}
                     transition={{ duration: 0.5 }}
                     style={{
@@ -229,7 +229,7 @@ function PartnerCard({ partner, accent, bg, border }) {
                     pointerEvents: 'none',
                 }}
             />
-            
+
             {partner.tag && (
                 <span style={{
                     background: `${accent}18`,
@@ -327,16 +327,16 @@ export default function Sponsors() {
                 />
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '80px', marginTop: '40px' }}>
-                    
+
                     {/* Title Sponsor Section */}
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                         style={{ width: '100%' }}
                     >
-                        <TitleSponsorCard 
+                        <TitleSponsorCard
                             partner={titleSponsor.partner}
                             accent={titleSponsor.accent}
                             bg={titleSponsor.bg}
