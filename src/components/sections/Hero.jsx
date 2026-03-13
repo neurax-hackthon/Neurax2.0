@@ -45,21 +45,10 @@ export default function Hero() {
     }, [launched, loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const triggerCinematicLaunch = useCallback(() => {
-        // 1. Explosion effect
+        // 1. Explosion and fireworks effect handled inside LaunchEffect component
         setShowLaunchEffect(true);
 
-        // 2. Confetti burst
-        const fire = (ratio, opts) =>
-            confetti({ origin: { y: 0.6 }, ...opts, particleCount: Math.floor(200 * ratio) });
-        setTimeout(() => {
-            fire(0.25, { spread: 26, startVelocity: 55, colors: ['#00f0ff', '#059669', '#ffffff'] });
-            fire(0.2, { spread: 60, colors: ['#f59e0b', '#ef4444', '#a855f7'] });
-            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8, colors: ['#0891b2', '#ffffff'] });
-            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
-            fire(0.1, { spread: 120, startVelocity: 45 });
-        }, 350);
-
-        // 3. Intro screen (appears on top of explosion)
+        // 2. Intro screen (appears slightly after the initial blast)
         setTimeout(() => setShowIntroScreen(true), 700);
     }, []);
 

@@ -1,43 +1,224 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const HACKATHON_DURATION = 24 * 60 * 60 * 1000;
 
-function useFlip(value) {
-    const [flip, setFlip] = useState(false);
-    const prev = useRef(value);
-    useEffect(() => {
-        if (prev.current !== value) {
-            prev.current = value;
-            setFlip(true);
-            const t = setTimeout(() => setFlip(false), 280);
-            return () => clearTimeout(t);
-        }
-    }, [value]);
-    return flip;
+// ─── Confetti Piece ───────────────────────────────────────────────────────────
+const COLORS = ['#FF3D6B', '#FFD700', '#00E5FF', '#7B2FFF', '#FF6B00', '#00FF9D', '#FF00C8', '#FFFFFF'];
+const SHAPES = ['rect', 'circle', 'strip'];
+
+function ConfettiPiece({ id, startX, size, color, shape, delay, duration, rotSpeed, drift }) {
+    const style = {
+        position: 'fixed',
+        left: `${startX}%`,
+        top: '-30px',
+        width: shape === 'strip' ? `${size * 0.3}px` : `${size}px`,
+        height: shape === 'strip' ? `${size * 2.5}px` : `${size}px`,
+        background: color,
+        borderRadius: shape === 'circle' ? '50%' : shape === 'rect' ? '2px' : '1px',
+        zIndex: 9998,
+        pointerEvents: 'none',
+        opacity: 0,
+    };
+
+    return (
+        <motion.div
+            key={id}
+            style={style}
+            initial={{ y: -30, opacity: 0, rotate: 0, x: 0 }}
+            animate={{
+                y: ['0vh', '110vh'],
+                opacity: [0, 1, 1, 0.8, 0],
+                rotate: [0, rotSpeed * 180, rotSpeed * 360, rotSpeed * 540],
+                x: [0, drift * 40, drift * -30, drift * 60, drift * 20],
+            }}
+            exit={{ opacity: 0, transition: { duration: 1.5 } }}
+            transition={{
+                duration: duration,
+                delay: delay,
+                ease: 'linear',
+                repeat: Infinity,
+                repeatDelay: Math.random() * 3 + 1,
+            }}
+        />
+    );
 }
 
-// ─── Motivational Quotes Array ───────────────────────────────────────────────
-const QUOTES = [
-    "“Talk is cheap. Show me the code.” – Linus Torvalds",
-    "“Innovation distinguishes between a leader and a follower.” – Steve Jobs",
-    "“First, solve the problem. Then, write the code.” – John Johnson",
-    "“Code is like humor. When you have to explain it, it’s bad.” – Cory House",
-    "“The best error message is the one that never shows up.” – Thomas Fuchs"
-];
+// ─── Blast Particle ───────────────────────────────────────────────────────────
+function BlastParticle({ angle, color, distance, delay, shape }) {
+    const rad = (angle * Math.PI) / 180;
+    const tx = Math.cos(rad) * distance;
+    const ty = Math.sin(rad) * distance;
 
+    return (
+        <motion.div
+            style={{
+                position: 'absolute',
+                bottom: '0',
+                left: '50%',
+                width: shape === 'circle' ? '10px' : shape === 'strip' ? '4px' : '8px',
+                height: shape === 'circle' ? '10px' : shape === 'strip' ? '18px' : '8px',
+                borderRadius: shape === 'circle' ? '50%' : '2px',
+                background: color,
+                boxShadow: `0 0 8px ${color}`,
+                zIndex: 9999,
+                pointerEvents: 'none',
+            }}
+            initial={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }}
+            animate={{
+                x: tx,
+                y: ty * -1,
+                opacity: [1, 1, 0],
+                scale: [1, 1.3, 0],
+                rotate: angle * 2,
+            }}
+            transition={{ duration: 1.2 + Math.random() * 0.6, delay, ease: 'easeOut' }}
+        />
+    );
+}
+
+// ─── Generate blast particles ─────────────────────────────────────────────────
+function BlastBurst({ originX = 50, count = 60, delay = 0, direction = "up" }) {
+    const particles = useMemo(() => {
+        return Array.from({ length: count }, (_, i) => {
+            // Determine angle based on direction
+            let minAngle, maxAngle;
+            if (direction === "right") {
+                minAngle = -90; maxAngle = 0; // Shoot up and right
+            } else if (direction === "left") {
+                minAngle = 180; maxAngle = 270; // Shoot up and left
+            } else {
+                minAngle = 0; maxAngle = 360; // 360 blast
+            }
+
+            const angle = minAngle + (Math.random() * (maxAngle - minAngle));
+
+            return {
+                id: i,
+                angle: angle,
+                color: COLORS[i % COLORS.length],
+                distance: 120 + Math.random() * 250,
+                delay: delay + Math.random() * 0.2,
+                shape: SHAPES[i % SHAPES.length],
+            };
+        });
+    }, [count, delay, direction]);
+
+    return (
+        <div style={{ position: 'absolute', bottom: 0, left: `${originX}%`, zIndex: 9999 }}>
+            {particles.map(p => (
+                <BlastParticle key={p.id} {...p} />
+            ))}
+        </div>
+    );
+}
+
+// ─── Timer Block ───────────────────────────────────────────────────────────────
+function TimerBlock({ value, label }) {
+    const display = String(value).padStart(2, '0');
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+            <div style={{
+                background: '#ffffff',
+                border: '1px solid rgba(0,0,0,0.08)',
+                backdropFilter: 'blur(12px)',
+                borderRadius: '18px',
+                width: 'clamp(70px, 12vw, 130px)',
+                height: 'clamp(80px, 14vw, 140px)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+                fontWeight: 900,
+                color: '#000',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.5)',
+                fontFamily: "'Orbitron', 'Courier New', monospace",
+                letterSpacing: '0.05em',
+            }}>
+                {display}
+            </div>
+            <span style={{
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                letterSpacing: '0.25em',
+                color: '#000',
+                textTransform: 'uppercase',
+                fontFamily: "'Orbitron', monospace",
+            }}>
+                {label}
+            </span>
+        </div>
+    );
+}
+
+// ─── Main LiveBanner ──────────────────────────────────────────────────────────
 export default function LiveBanner({ launchTime, customMessage }) {
+    // 'blast' (0-2s) -> 'title' (2-5s) -> 'quote' (5-9s) -> 'live' (9s+)
+    const [phase, setPhase] = useState('blast');
     const [hackTime, setHackTime] = useState({ hours: 24, minutes: 0, seconds: 0 });
-    const [ended, setEnded] = useState(false);
-    const [quoteIndex, setQuoteIndex] = useState(0);
+    const [confetti, setConfetti] = useState([]);
 
+    // Sequence Timeline
+    useEffect(() => {
+        // Stage 1: Blast happens immediately (state is already 'blast')
+        
+        // Let's pre-generate confetti from the very absolute start (Phase 1)
+        const initialPieces = Array.from({ length: 150 }, (_, i) => ({
+            id: i,
+            startX: Math.random() * 100,
+            size: Math.random() * 10 + 5,
+            color: COLORS[i % COLORS.length],
+            shape: SHAPES[i % SHAPES.length],
+            delay: Math.random() * 1, // Start dropping fast
+            duration: Math.random() * 4 + 4, // Faster fall
+            rotSpeed: (Math.random() - 0.5) * 4,
+            drift: (Math.random() - 0.5) * 2,
+        }));
+        setConfetti(initialPieces);
+
+        // Stage 2: Show Main Title after blasts clear
+        const t1 = setTimeout(() => setPhase('title'), 1500);
+
+        // Stage 3: Show Quote after title has been read
+        const t2 = setTimeout(() => setPhase('quote'), 4500);
+
+        // Stage 4: Enter Phase 2 (Live timer screen)
+        const t3 = setTimeout(() => {
+            setPhase('live');
+            // Generate confetti pieces early for Phase 1 and 2
+            const pieces = Array.from({ length: 120 }, (_, i) => ({
+                id: i,
+                startX: Math.random() * 100,
+                size: Math.random() * 10 + 5,
+                color: COLORS[i % COLORS.length],
+                shape: SHAPES[i % SHAPES.length],
+                delay: Math.random() * 4,
+                duration: Math.random() * 6 + 5,
+                rotSpeed: (Math.random() - 0.5) * 4,
+                drift: (Math.random() - 0.5) * 2,
+            }));
+            setConfetti(pieces);
+
+            // Stop confetti gracefully after 30 seconds
+            setTimeout(() => {
+                setConfetti([]);
+            }, 30000);
+        }, 9000);
+
+        return () => {
+            clearTimeout(t1);
+            clearTimeout(t2);
+            clearTimeout(t3);
+        };
+    }, []);
+
+    // 24-hour countdown
     useEffect(() => {
         if (!launchTime) return;
         const tick = () => {
             const rem = launchTime + HACKATHON_DURATION - Date.now();
             if (rem <= 0) {
                 setHackTime({ hours: 0, minutes: 0, seconds: 0 });
-                setEnded(true);
                 return;
             }
             setHackTime({
@@ -51,218 +232,412 @@ export default function LiveBanner({ launchTime, customMessage }) {
         return () => clearInterval(id);
     }, [launchTime]);
 
-    // Randomize quote every few seconds when ended
-    useEffect(() => {
-        if (ended) {
-            const qId = setInterval(() => {
-                setQuoteIndex(prev => (prev + 1) % QUOTES.length);
-            }, 5000);
-            return () => clearInterval(qId);
-        }
-    }, [ended]);
-
     return (
-        <section style={{
-            position: 'relative',
-            width: '100%',
-            overflow: 'hidden',
-            background: 'radial-gradient(circle at center 30%, #064e3b 0%, #020617 80%)',
-            padding: '40px 20px 40px',
-            borderBottom: '1px solid var(--border-light)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: '100vh',
-            zIndex: 10
-        }}>
-            {/* Animated Background Overlay */}
-            <motion.div
-                animate={{ opacity: [0.1, 0.3, 0.1] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                style={{
-                    position: 'absolute', inset: 0, zIndex: 0,
-                    background: 'radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.15), transparent 50%), radial-gradient(circle at 20% 20%, rgba(0, 224, 80, 0.15), transparent 50%)',
-                }}
-            />
-
-            {/* Grid overlay for tech feel */}
-            <div style={{
-                position: 'absolute', inset: 0, zIndex: 0,
-                backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)',
-                backgroundSize: '40px 40px',
-                maskImage: 'linear-gradient(to bottom, black, transparent)'
-            }} />
-
-            <motion.div
-                style={{ zIndex: 1, textAlign: 'center', width: '100%', maxWidth: '900px' }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-            >
-                {!ended ? (
-                    <>
-                        <h2 style={{
-                            fontSize: 'clamp(2rem, 5vw, 4rem)',
-                            fontWeight: 800,
-                            letterSpacing: '-0.02em',
-                            margin: '0 0 20px 0',
-                            background: 'linear-gradient(90deg, #00f0ff, #00e050)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            textTransform: 'uppercase',
-                        }}>
-                            NEURAX 2.0 HACKATHON STARTED!
-                        </h2>
-
-                        {/* Big Countdown Timer styling */}
-                        <div style={{
+        <>
+            {/* ── PHASE 1: Blast / Cracker Effect Timeline ── */}
+            <AnimatePresence>
+                {(phase === 'blast' || phase === 'title' || phase === 'quote') && (
+                    <motion.div
+                        key="intro-sequence"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, transition: { duration: 0.8 } }}
+                        style={{
+                            position: 'fixed',
+                            inset: 0,
+                            zIndex: 9990,
                             display: 'flex',
-                            gap: '2vw',
-                            justifyContent: 'center',
+                            flexDirection: 'column',
                             alignItems: 'center',
-                            flexWrap: 'wrap',
-                            marginBottom: '20px'
-                        }}>
-                            <TimerBlock value={hackTime.hours} label="HOURS" />
-                            <span style={{ fontSize: 'clamp(3rem, 5vw, 5rem)', fontWeight: 'bold', color: 'rgba(255,255,255,0.2)' }}>:</span>
-                            <TimerBlock value={hackTime.minutes} label="MINUTES" />
-                            <span style={{ fontSize: 'clamp(3rem, 5vw, 5rem)', fontWeight: 'bold', color: 'rgba(255,255,255,0.2)' }}>:</span>
-                            <TimerBlock value={hackTime.seconds} label="SECONDS" />
-                        </div>
-
-                        {/* Custom Message Broadcast Element */}
+                            justifyContent: 'center',
+                            background: 'radial-gradient(ellipse at bottom, #0a0a1a 0%, #000000 100%)',
+                            overflow: 'hidden',
+                        }}
+                    >
+                        {/* Phase 1 Falling Confetti */}
                         <AnimatePresence>
-                            {customMessage && (
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                                    transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                                    style={{
-                                        marginTop: '20px',
-                                        padding: '16px 32px',
-                                        background: 'rgba(0, 240, 255, 0.1)',
-                                        border: '1px solid rgba(0, 240, 255, 0.3)',
-                                        borderRadius: '24px',
-                                        backdropFilter: 'blur(10px)',
-                                        boxShadow: '0 0 40px rgba(0, 240, 255, 0.2)',
-                                        display: 'inline-block'
-                                    }}
-                                >
-                                    <div style={{
-                                        fontSize: '0.9rem',
-                                        color: '#00f0ff',
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '0.2em',
-                                        marginBottom: '8px',
-                                        fontWeight: 'bold',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        gap: '8px'
-                                    }}>
-                                        <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#00f0ff', boxShadow: '0 0 10px #00f0ff' }}></span>
-                                        Broadcast Message
-                                    </div>
-                                    <div style={{
-                                        fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
-                                        color: '#fff',
-                                        fontWeight: 600,
-                                        letterSpacing: '0.02em',
-                                    }}>
-                                        {customMessage}
-                                    </div>
+                            {confetti.map(p => (
+                                <ConfettiPiece key={`p1-${p.id}`} {...p} duration={p.duration * 0.8} /> // Faster drop for phase 1
+                            ))}
+                        </AnimatePresence>
+
+                        {/* Stage 1: The Blasts (Keep blasts alive during title and quote phases) */}
+                        <AnimatePresence>
+                            {(phase === 'blast' || phase === 'title' || phase === 'quote') && (
+                                <motion.div exit={{ opacity: 0, transition: { duration: 0.5 } }}>
+                                    <BlastBurst originX={0} count={90} delay={0.1} direction="right" />
+                                    <BlastBurst originX={20} count={80} delay={0.2} direction="right" />
+                                    <BlastBurst originX={50} count={120} delay={0} direction="up" />
+                                    <BlastBurst originX={80} count={80} delay={0.2} direction="left" />
+                                    <BlastBurst originX={100} count={90} delay={0.1} direction="left" />
                                 </motion.div>
                             )}
                         </AnimatePresence>
-                    </>
-                ) : (
-                    <>
-                        <h2 style={{
-                            fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-                            fontWeight: 800,
-                            letterSpacing: '-0.02em',
-                            margin: '0 0 20px 0',
-                            color: '#FF3B30',
-                            textTransform: 'uppercase',
-                        }}>
-                            NEURAX HACKATHON ENDED
-                        </h2>
-                        <h3 style={{
-                            fontSize: '1.5rem',
-                            color: 'var(--text-secondary)',
-                            marginBottom: '40px',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.1em'
-                        }}>
-                            Wait for result
-                        </h3>
 
-                        <motion.div
-                            key={quoteIndex}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.5 }}
-                            style={{
-                                padding: '30px',
-                                background: 'rgba(255, 255, 255, 0.02)',
-                                border: '1px solid var(--border-light)',
-                                borderRadius: '16px',
-                                fontSize: '1.25rem',
-                                color: 'var(--text-primary)',
-                                fontStyle: 'italic',
-                                maxWidth: '700px',
-                                margin: '0 auto',
-                                boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
-                            }}
-                        >
-                            {QUOTES[quoteIndex]}
-                        </motion.div>
-                    </>
+                        {/* Text Container */}
+                        <div style={{ textAlign: 'center', zIndex: 9999, padding: '20px' }}>
+                            {/* Stage 2: Main Title Appears */}
+                            <AnimatePresence>
+                                {(phase === 'title' || phase === 'quote') && (
+                                    <motion.h1
+                                        initial={{ scale: 0.5, opacity: 0, y: 50 }}
+                                        animate={{
+                                            scale: 1,
+                                            opacity: 1,
+                                            y: phase === 'quote' ? -20 : 0, // Move up slightly when quote appears
+                                            textShadow: [
+                                                '0 0 40px #00f0ff, 0 0 80px #00f0ff',
+                                                '0 0 60px #FF3D6B, 0 0 120px #FF3D6B',
+                                                '0 0 40px #FFD700, 0 0 80px #FFD700',
+                                                '0 0 40px #00f0ff, 0 0 80px #00f0ff',
+                                            ]
+                                        }}
+                                        transition={{
+                                            y: { type: 'spring', stiffness: 100 },
+                                            opacity: { duration: 0.5 },
+                                            scale: { type: 'spring', stiffness: 200 },
+                                            textShadow: { duration: 1.5, repeat: Infinity, repeatType: 'mirror' }
+                                        }}
+                                        style={{
+                                            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+                                            fontWeight: 900,
+                                            letterSpacing: '-0.02em',
+                                            margin: '0 0 20px 0',
+                                            background: 'linear-gradient(135deg, #00f0ff 0%, #FFD700 40%, #FF3D6B 70%, #7B2FFF 100%)',
+                                            WebkitBackgroundClip: 'text',
+                                            WebkitTextFillColor: 'transparent',
+                                            textTransform: 'uppercase',
+                                            fontFamily: "'Orbitron', 'Black Ops One', sans-serif",
+                                            lineHeight: 1.1,
+                                            position: 'relative',
+                                        }}
+                                    >
+                                        🎉 NeuraX Hackathon<br /> is Live! 🎉
+
+                                        {/* Flash ring behind title when it spawns */}
+                                        <motion.div
+                                            initial={{ scale: 0, opacity: 0 }}
+                                            animate={{ scale: [1, 3], opacity: [0.8, 0] }}
+                                            transition={{ duration: 1, ease: 'easeOut' }}
+                                            style={{
+                                                position: 'absolute',
+                                                width: 100, height: 100,
+                                                borderRadius: '50%',
+                                                background: 'radial-gradient(circle, rgba(0,240,255,0.8) 0%, transparent 70%)',
+                                                top: '50%', left: '50%',
+                                                transform: 'translate(-50%, -50%)',
+                                                pointerEvents: 'none',
+                                                zIndex: -1,
+                                            }}
+                                        />
+                                    </motion.h1>
+                                )}
+                            </AnimatePresence>
+
+                            {/* Stage 3: Quote Appears */}
+                            <AnimatePresence>
+                                {phase === 'quote' && (
+                                    <motion.p
+                                        initial={{ opacity: 0, y: 30, scale: 0.8 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        transition={{ type: 'spring', stiffness: 150, damping: 12 }}
+                                        style={{
+                                            fontSize: 'clamp(1.2rem, 3.5vw, 2.2rem)',
+                                            color: '#ffffff',
+                                            letterSpacing: '0.15em',
+                                            textTransform: 'uppercase',
+                                            fontWeight: 700,
+                                            fontFamily: "'Orbitron', sans-serif",
+                                            textShadow: '0 0 20px rgba(255, 255, 255, 0.5)',
+                                        }}
+                                    >
+                                        ⚡ Build. Innovate. Win. ⚡
+                                    </motion.p>
+                                )}
+                            </AnimatePresence>
+                        </div>
+
+                        {/* Flickering lights at bottom */}
+                        {[...Array(12)].map((_, i) => (
+                            <motion.div
+                                key={i}
+                                animate={{
+                                    opacity: [0, 1, 0, 1, 0],
+                                    scale: [0.5, 1.5, 0.8, 1.2, 0],
+                                }}
+                                transition={{
+                                    duration: 0.6 + Math.random() * 0.8,
+                                    delay: Math.random() * 1.5,
+                                    repeat: 3,
+                                }}
+                                style={{
+                                    position: 'absolute',
+                                    bottom: `${Math.random() * 20}%`,
+                                    left: `${4 + i * 8}%`,
+                                    width: '8px',
+                                    height: '8px',
+                                    borderRadius: '50%',
+                                    background: COLORS[i % COLORS.length],
+                                    boxShadow: `0 0 20px ${COLORS[i % COLORS.length]}`,
+                                    pointerEvents: 'none',
+                                    zIndex: 9995,
+                                }}
+                            />
+                        ))}
+                    </motion.div>
                 )}
-            </motion.div>
-        </section>
-    );
-}
+            </AnimatePresence>
 
-function TimerBlock({ value, label }) {
-    const display = String(value).padStart(2, '0');
-    return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '10px'
-        }}>
-            <div style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '24px',
-                width: 'clamp(100px, 15vw, 160px)',
-                height: 'clamp(120px, 18vw, 190px)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 'clamp(3.5rem, 8vw, 6rem)',
-                fontWeight: 800,
-                color: '#fff',
-                textShadow: '0 0 30px rgba(0, 240, 255, 0.5)',
-                boxShadow: 'inset 0 0 40px rgba(0,255,150,0.05), 0 20px 40px rgba(0,0,0,0.5)'
-            }}>
-                {display}
-            </div>
-            <span style={{
-                fontSize: '0.9rem',
-                fontWeight: 600,
-                letterSpacing: '0.2em',
-                color: 'var(--text-tertiary)',
-                textTransform: 'uppercase'
-            }}>
-                {label}
-            </span>
-        </div>
+            {/* ── PHASE 2: Live Full-Screen with Falling Confetti ── */}
+            <AnimatePresence>
+                {phase === 'live' && (
+                    <motion.section
+                        key="live-screen"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.8 }}
+                        style={{
+                            position: 'relative',
+                            width: '100%',
+                            minHeight: '100vh',
+                            overflow: 'hidden',
+                            background: '#ffffff',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingTop: '100px', // Push content below navbar
+                            paddingBottom: '40px',
+                            paddingLeft: '20px',
+                            paddingRight: '20px',
+                            zIndex: 10,
+                        }}
+                    >
+                        {/* Falling confetti */}
+                        <AnimatePresence>
+                            {confetti.map(p => (
+                                <ConfettiPiece key={p.id} {...p} />
+                            ))}
+                        </AnimatePresence>
+
+                        {/* Subtle grid background */}
+                        <div style={{
+                            position: 'absolute', inset: 0, zIndex: 0,
+                            backgroundImage: 'linear-gradient(rgba(0,100,200,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,100,200,0.06) 1px, transparent 1px)',
+                            backgroundSize: '50px 50px',
+                        }} />
+
+                        {/* Ambient glow orbs */}
+                        <div style={{
+                            position: 'absolute', width: '600px', height: '600px',
+                            borderRadius: '50%',
+                            background: 'radial-gradient(circle, rgba(0,224,80,0.08) 0%, transparent 70%)',
+                            top: '10%', left: '-10%', pointerEvents: 'none', zIndex: 0,
+                        }} />
+                        <div style={{
+                            position: 'absolute', width: '500px', height: '500px',
+                            borderRadius: '50%',
+                            background: 'radial-gradient(circle, rgba(0,150,255,0.08) 0%, transparent 70%)',
+                            bottom: '5%', right: '-10%', pointerEvents: 'none', zIndex: 0,
+                        }} />
+
+                        {/* Content */}
+                        <motion.div
+                            initial={{ y: 30, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ duration: 1, type: 'spring', stiffness: 80 }}
+                            style={{ position: 'relative', zIndex: 2, textAlign: 'center', width: '100%', maxWidth: '1000px' }}
+                        >
+                            {/* LIVE badge */}
+                            <motion.div
+                                animate={{ scale: [1, 1.05, 1] }}
+                                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '10px',
+                                    background: 'rgba(255,61,107,0.15)',
+                                    border: '1px solid rgba(255,61,107,0.5)',
+                                    borderRadius: '100px',
+                                    padding: '8px 22px',
+                                    marginBottom: '20px',
+                                    backdropFilter: 'blur(10px)',
+                                }}
+                            >
+                                <motion.span
+                                    animate={{ opacity: [1, 0, 1] }}
+                                    transition={{ duration: 0.8, repeat: Infinity }}
+                                    style={{
+                                        width: 10, height: 10,
+                                        borderRadius: '50%',
+                                        background: '#FF3D6B',
+                                        boxShadow: '0 0 12px #FF3D6B',
+                                        display: 'inline-block',
+                                    }}
+                                />
+                                <span style={{
+                                    color: '#FF3D6B',
+                                    fontWeight: 800,
+                                    fontSize: '0.9rem',
+                                    letterSpacing: '0.25em',
+                                    textTransform: 'uppercase',
+                                    fontFamily: "'Orbitron', monospace",
+                                }}>
+                                    Live Now
+                                </span>
+                            </motion.div>
+
+                            {/* Main title */}
+                            <motion.h1
+                                animate={{
+                                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                                }}
+                                transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+                                style={{
+                                    fontSize: 'clamp(2.2rem, 6vw, 5rem)',
+                                    fontWeight: 900,
+                                    letterSpacing: '-0.02em',
+                                    margin: '0 0 8px 0',
+                                    background: 'linear-gradient(135deg, #00f0ff 0%, #00e050 30%, #7B2FFF 60%, #00f0ff 100%)',
+                                    backgroundSize: '200% 200%',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    textTransform: 'uppercase',
+                                    fontFamily: "'Orbitron', 'Black Ops One', sans-serif",
+                                    lineHeight: 1.05,
+                                    textShadow: 'none',
+                                    filter: 'drop-shadow(0 0 30px rgba(0,240,255,0.4))',
+                                }}
+                            >
+                                NeuraX<br />Hackathon
+                            </motion.h1>
+
+                            <motion.p
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.5 }}
+                                style={{
+                                    fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+                                    color: 'rgba(0,0,0,0.45)',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.35em',
+                                    marginBottom: '30px',
+                                    fontFamily: "'Orbitron', monospace",
+                                    fontWeight: 500,
+                                }}
+                            >
+                                Is Live
+                            </motion.p>
+
+                            {/* 24hr Countdown */}
+                            <div style={{
+                                display: 'flex',
+                                gap: 'clamp(10px, 3vw, 30px)',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                flexWrap: 'wrap',
+                            }}>
+
+                                <TimerBlock value={hackTime.hours} label="Hours" />
+                                <motion.span
+                                    animate={{ opacity: [1, 0.2, 1] }}
+                                    transition={{ duration: 1, repeat: Infinity }}
+                                    style={{
+                                        fontSize: 'clamp(3rem, 6vw, 5rem)',
+                                        fontWeight: 900,
+                                        color: 'rgba(0,0,0,0.3)',
+                                        fontFamily: 'monospace',
+                                        lineHeight: 1,
+                                        marginBottom: '24px',
+                                    }}
+                                >:</motion.span>
+                                <TimerBlock value={hackTime.minutes} label="Minutes" />
+                                <motion.span
+                                    animate={{ opacity: [1, 0.2, 1] }}
+                                    transition={{ duration: 1, repeat: Infinity }}
+                                    style={{
+                                        fontSize: 'clamp(3rem, 6vw, 5rem)',
+                                        fontWeight: 900,
+                                        color: 'rgba(0,0,0,0.3)',
+                                        fontFamily: 'monospace',
+                                        lineHeight: 1,
+                                        marginBottom: '24px',
+                                    }}
+                                >:</motion.span>
+                                <TimerBlock value={hackTime.seconds} label="Seconds" />
+                            </div>
+
+                            {/* Remaining label */}
+                            <motion.p
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.8 }}
+                                style={{
+                                    marginTop: '20px',
+                                    fontSize: '0.85rem',
+                                    color: 'rgba(0,0,0,0.4)',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.3em',
+                                    fontFamily: "'Orbitron', monospace",
+                                }}
+                            >
+                                ⏳ Remaining to Code & Conquer
+                            </motion.p>
+
+                            {/* Custom Broadcast Message */}
+                            <AnimatePresence>
+                                {customMessage && (
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                                        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                                        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                                        style={{
+                                            marginTop: '20px',
+                                            padding: '12px 24px',
+                                            background: 'rgba(0, 100, 220, 0.08)',
+                                            border: '1px solid rgba(0, 100, 220, 0.25)',
+                                            borderRadius: '20px',
+                                            backdropFilter: 'blur(10px)',
+                                            boxShadow: '0 8px 30px rgba(0,100,220,0.15)',
+                                            display: 'inline-block',
+                                        }}
+                                    >
+                                        <div style={{
+                                            fontSize: '0.8rem',
+                                            color: '#0064dc',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.2em',
+                                            marginBottom: '8px',
+                                            fontWeight: 700,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '8px',
+                                            fontFamily: "'Orbitron', monospace",
+                                        }}>
+                                            <motion.span
+                                                animate={{ opacity: [1, 0, 1] }}
+                                                transition={{ duration: 0.8, repeat: Infinity }}
+                                                style={{ width: 8, height: 8, borderRadius: '50%', background: '#0064dc', boxShadow: '0 0 8px #0064dc', display: 'inline-block' }}
+                                            />
+                                            📢 Broadcast Message
+                                        </div>
+                                        <div style={{
+                                            fontSize: 'clamp(1.2rem, 3vw, 2rem)',
+                                            color: '#111',
+                                            fontWeight: 700,
+                                            letterSpacing: '0.02em',
+                                        }}>
+                                            {customMessage}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </motion.div>
+                    </motion.section>
+                )}
+            </AnimatePresence>
+        </>
     );
 }
