@@ -45,61 +45,56 @@ function ConfettiPiece({ id, startX, size, color, shape, delay, duration, rotSpe
 }
 
 // ─── Blast Particle ───────────────────────────────────────────────────────────
-function BlastParticle({ angle, color, distance, delay, shape }) {
-    const rad = (angle * Math.PI) / 180;
-    const tx = Math.cos(rad) * distance;
-    const ty = Math.sin(rad) * distance;
-
+function BlastParticle({ tx, ty, color, delay, size }) {
     return (
         <motion.div
             style={{
                 position: 'absolute',
                 bottom: '0',
                 left: '50%',
-                width: shape === 'circle' ? '10px' : shape === 'strip' ? '4px' : '8px',
-                height: shape === 'circle' ? '10px' : shape === 'strip' ? '18px' : '8px',
-                borderRadius: shape === 'circle' ? '50%' : '2px',
+                width: `${size}px`,
+                height: `${size}px`,
+                borderRadius: '50%',
                 background: color,
-                boxShadow: `0 0 8px ${color}`,
+                boxShadow: `0 0 10px ${color}`,
                 zIndex: 9999,
                 pointerEvents: 'none',
             }}
-            initial={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }}
+            initial={{ opacity: 1, x: 0, y: 0, scale: 0 }}
             animate={{
                 x: tx,
-                y: ty * -1,
+                y: ty,
                 opacity: [1, 1, 0],
-                scale: [1, 1.3, 0],
-                rotate: angle * 2,
+                scale: [0, 1.5, 0],
             }}
-            transition={{ duration: 1.2 + Math.random() * 0.6, delay, ease: 'easeOut' }}
+            transition={{ duration: 1.5, delay, ease: 'easeOut' }}
         />
     );
 }
 
 // ─── Generate blast particles ─────────────────────────────────────────────────
-function BlastBurst({ originX = 50, count = 60, delay = 0, direction = "up" }) {
+function BlastBurst({ originX = 50, count = 40, delay = 0, direction = "up" }) {
     const particles = useMemo(() => {
         return Array.from({ length: count }, (_, i) => {
-            // Determine angle based on direction
             let minAngle, maxAngle;
             if (direction === "right") {
-                minAngle = -90; maxAngle = 0; // Shoot up and right
+                minAngle = -60; maxAngle = 30; 
             } else if (direction === "left") {
-                minAngle = 180; maxAngle = 270; // Shoot up and left
+                minAngle = 150; maxAngle = 240;
             } else {
-                minAngle = 0; maxAngle = 360; // 360 blast
+                minAngle = -120; maxAngle = -60; // Upwards spread
             }
 
-            const angle = minAngle + (Math.random() * (maxAngle - minAngle));
-
+            const angle = (minAngle + Math.random() * (maxAngle - minAngle)) * (Math.PI / 180);
+            const dist = 150 + Math.random() * 200;
+            
             return {
                 id: i,
-                angle: angle,
+                tx: Math.cos(angle) * dist,
+                ty: Math.sin(angle) * dist,
                 color: COLORS[i % COLORS.length],
-                distance: 120 + Math.random() * 250,
-                delay: delay + Math.random() * 0.2,
-                shape: SHAPES[i % SHAPES.length],
+                delay: delay + Math.random() * 0.3,
+                size: 6 + Math.random() * 6,
             };
         });
     }, [count, delay, direction]);
@@ -163,16 +158,16 @@ export default function LiveBanner({ launchTime, customMessage }) {
         // Stage 1: Blast happens immediately (state is already 'blast')
         
         // Let's pre-generate confetti from the very absolute start (Phase 1)
-        const initialPieces = Array.from({ length: 150 }, (_, i) => ({
+        const initialPieces = Array.from({ length: 200 }, (_, i) => ({
             id: i,
             startX: Math.random() * 100,
-            size: Math.random() * 10 + 5,
+            size: 5 + Math.random() * 8,
             color: COLORS[i % COLORS.length],
             shape: SHAPES[i % SHAPES.length],
-            delay: Math.random() * 1, // Start dropping fast
-            duration: Math.random() * 4 + 4, // Faster fall
-            rotSpeed: (Math.random() - 0.5) * 4,
-            drift: (Math.random() - 0.5) * 2,
+            delay: Math.random() * 1.5, // Spread out the start
+            duration: 4.5 + Math.random() * 3.5,
+            rotSpeed: (Math.random() - 0.5) * 3,
+            drift: (Math.random() - 0.5) * 1.5,
         }));
         setConfetti(initialPieces);
 
@@ -185,15 +180,15 @@ export default function LiveBanner({ launchTime, customMessage }) {
         // Stage 4: Enter Phase 2 (Live timer screen)
         const t3 = setTimeout(() => {
             setPhase('live');
-            // Generate confetti pieces early for Phase 1 and 2
-            const pieces = Array.from({ length: 120 }, (_, i) => ({
+            // Generate even more confetti pieces for the main screen
+            const pieces = Array.from({ length: 180 }, (_, i) => ({
                 id: i,
                 startX: Math.random() * 100,
                 size: Math.random() * 10 + 5,
                 color: COLORS[i % COLORS.length],
                 shape: SHAPES[i % SHAPES.length],
-                delay: Math.random() * 4,
-                duration: Math.random() * 6 + 5,
+                delay: Math.random() * 5,
+                duration: Math.random() * 6 + 6,
                 rotSpeed: (Math.random() - 0.5) * 4,
                 drift: (Math.random() - 0.5) * 2,
             }));
@@ -265,11 +260,11 @@ export default function LiveBanner({ launchTime, customMessage }) {
                         <AnimatePresence>
                             {(phase === 'blast' || phase === 'title' || phase === 'quote') && (
                                 <motion.div exit={{ opacity: 0, transition: { duration: 0.5 } }}>
-                                    <BlastBurst originX={0} count={90} delay={0.1} direction="right" />
-                                    <BlastBurst originX={20} count={80} delay={0.2} direction="right" />
-                                    <BlastBurst originX={50} count={120} delay={0} direction="up" />
-                                    <BlastBurst originX={80} count={80} delay={0.2} direction="left" />
-                                    <BlastBurst originX={100} count={90} delay={0.1} direction="left" />
+                                    <BlastBurst originX={0} count={70} delay={0.15} direction="right" />
+                                    <BlastBurst originX={20} count={60} delay={0.4} direction="right" />
+                                    <BlastBurst originX={50} count={100} delay={0} direction="up" />
+                                    <BlastBurst originX={80} count={60} delay={0.4} direction="left" />
+                                    <BlastBurst originX={100} count={70} delay={0.15} direction="left" />
                                 </motion.div>
                             )}
                         </AnimatePresence>

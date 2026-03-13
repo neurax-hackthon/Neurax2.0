@@ -19,49 +19,57 @@ export default function LaunchEffect({ onComplete }) {
     useEffect(() => {
         if (phase !== 'blast') return;
 
-        const duration = BLAST_MS + 500; // confetti lasts a bit longer
-        const end = Date.now() + duration;
-
-        const frame = () => {
+        // Wave 1: Immediate Side Blasts
+        const fire = (particleCount, velocity, angle, spread, x, y) => {
             confetti({
-                particleCount: 12,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0, y: 0.8 },
-                colors: ['#00f0ff', '#059669', '#34d399', '#f59e0b', '#ffffff', '#a78bfa', '#f472b6'],
-                zIndex: 8001
+                particleCount,
+                angle,
+                spread,
+                origin: { x, y },
+                colors: ['#00f0ff', '#FF3D6B', '#FFD700', '#ffffff'],
+                zIndex: 8001,
+                startVelocity: velocity,
             });
-            confetti({
-                particleCount: 12,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1, y: 0.8 },
-                colors: ['#00f0ff', '#059669', '#34d399', '#f59e0b', '#ffffff', '#a78bfa', '#f472b6'],
-                zIndex: 8001
-            });
-
-            if (Date.now() < end) {
-                requestAnimationFrame(frame);
-            }
         };
-        frame();
 
-        // Extra large burst in the middle
-        setTimeout(() => {
+        // Initial burst
+        fire(60, 45, 60, 55, 0, 0.6);
+        fire(60, 45, 120, 55, 1, 0.6);
+
+        // Wave 2: Staggered side burst
+        const t1 = setTimeout(() => {
+            fire(40, 35, 70, 60, 0, 0.7);
+            fire(40, 35, 110, 60, 1, 0.7);
+        }, 400);
+
+        // Wave 3: Main center explosion
+        const t2 = setTimeout(() => {
             confetti({
-                particleCount: 200,
-                spread: 160,
+                particleCount: 150,
+                spread: 120,
                 origin: { y: 0.6 },
-                colors: ['#00f0ff', '#059669', '#ffffff'],
-                zIndex: 8001
+                colors: ['#00f0ff', '#FF3D6B', '#ffffff'],
+                zIndex: 8001,
+                startVelocity: 55,
             });
-        }, 500);
+        }, 800);
 
-        const t = setTimeout(() => {
+        // Wave 4: Late lingering burst
+        const t3 = setTimeout(() => {
+            fire(30, 30, 50, 40, 0, 0.5);
+            fire(30, 30, 130, 40, 1, 0.5);
+        }, 1200);
+
+        const tFinal = setTimeout(() => {
             setPhase('quote');
         }, BLAST_MS);
 
-        return () => clearTimeout(t);
+        return () => {
+            clearTimeout(t1);
+            clearTimeout(t2);
+            clearTimeout(t3);
+            clearTimeout(tFinal);
+        };
     }, [phase]);
 
     // Quote auto-dismiss
