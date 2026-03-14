@@ -152,6 +152,7 @@ export default function LiveBanner({ launchTime, customMessage }) {
     const [phase, setPhase] = useState('blast');
     const [hackTime, setHackTime] = useState({ hours: 24, minutes: 0, seconds: 0 });
     const [confetti, setConfetti] = useState([]);
+    const [isEnded, setIsEnded] = useState(false);
 
     // Sequence Timeline
     useEffect(() => {
@@ -214,6 +215,7 @@ export default function LiveBanner({ launchTime, customMessage }) {
             const rem = launchTime + HACKATHON_DURATION - Date.now();
             if (rem <= 0) {
                 setHackTime({ hours: 0, minutes: 0, seconds: 0 });
+                setIsEnded(true);
                 return;
             }
             setHackTime({
@@ -444,140 +446,186 @@ export default function LiveBanner({ launchTime, customMessage }) {
                             style={{ position: 'relative', zIndex: 2, textAlign: 'center', width: '100%', maxWidth: '1000px' }}
                         >
                             {/* LIVE badge */}
-                            <motion.div
-                                animate={{ scale: [1, 1.05, 1] }}
-                                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-                                style={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '10px',
-                                    background: 'rgba(255,61,107,0.15)',
-                                    border: '1px solid rgba(255,61,107,0.5)',
-                                    borderRadius: '100px',
-                                    padding: '8px 22px',
-                                    marginBottom: '20px',
-                                    backdropFilter: 'blur(10px)',
-                                }}
-                            >
-                                <motion.span
-                                    animate={{ opacity: [1, 0, 1] }}
-                                    transition={{ duration: 0.8, repeat: Infinity }}
-                                    style={{
-                                        width: 10, height: 10,
-                                        borderRadius: '50%',
-                                        background: '#FF3D6B',
-                                        boxShadow: '0 0 12px #FF3D6B',
-                                        display: 'inline-block',
-                                    }}
-                                />
-                                <span style={{
-                                    color: '#FF3D6B',
-                                    fontWeight: 800,
-                                    fontSize: '0.9rem',
-                                    letterSpacing: '0.25em',
-                                    textTransform: 'uppercase',
-                                    fontFamily: "'Orbitron', monospace",
-                                }}>
-                                    Live Now
-                                </span>
-                            </motion.div>
+                            {!isEnded ? (
+                                <>
+                                    <motion.div
+                                        animate={{ scale: [1, 1.05, 1] }}
+                                        transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                                        style={{
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            gap: '10px',
+                                            background: 'rgba(255,61,107,0.15)',
+                                            border: '1px solid rgba(255,61,107,0.5)',
+                                            borderRadius: '100px',
+                                            padding: '8px 22px',
+                                            marginBottom: '20px',
+                                            backdropFilter: 'blur(10px)',
+                                        }}
+                                    >
+                                        <motion.span
+                                            animate={{ opacity: [1, 0, 1] }}
+                                            transition={{ duration: 0.8, repeat: Infinity }}
+                                            style={{
+                                                width: 10, height: 10,
+                                                borderRadius: '50%',
+                                                background: '#FF3D6B',
+                                                boxShadow: '0 0 12px #FF3D6B',
+                                                display: 'inline-block',
+                                            }}
+                                        />
+                                        <span style={{
+                                            color: '#FF3D6B',
+                                            fontWeight: 800,
+                                            fontSize: '0.9rem',
+                                            letterSpacing: '0.25em',
+                                            textTransform: 'uppercase',
+                                            fontFamily: "'Orbitron', monospace",
+                                        }}>
+                                            Live Now
+                                        </span>
+                                    </motion.div>
 
-                            {/* Main title */}
-                            <motion.h1
-                                animate={{
-                                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                                }}
-                                transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
-                                style={{
-                                    fontSize: 'clamp(2.2rem, 6vw, 5rem)',
-                                    fontWeight: 900,
-                                    letterSpacing: '-0.02em',
-                                    margin: '0 0 8px 0',
-                                    background: 'linear-gradient(135deg, #00f0ff 0%, #00e050 30%, #7B2FFF 60%, #00f0ff 100%)',
-                                    backgroundSize: '200% 200%',
-                                    WebkitBackgroundClip: 'text',
-                                    WebkitTextFillColor: 'transparent',
-                                    textTransform: 'uppercase',
-                                    fontFamily: "'Orbitron', 'Black Ops One', sans-serif",
-                                    lineHeight: 1.05,
-                                    textShadow: 'none',
-                                    filter: 'drop-shadow(0 0 30px rgba(0,240,255,0.4))',
-                                }}
-                            >
-                                NeuraX<br />Hackathon
-                            </motion.h1>
+                                    {/* Main title */}
+                                    <motion.h1
+                                        animate={{
+                                            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                                        }}
+                                        transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+                                        style={{
+                                            fontSize: 'clamp(2.2rem, 6vw, 5rem)',
+                                            fontWeight: 900,
+                                            letterSpacing: '-0.02em',
+                                            margin: '0 0 8px 0',
+                                            background: 'linear-gradient(135deg, #00f0ff 0%, #00e050 30%, #7B2FFF 60%, #00f0ff 100%)',
+                                            backgroundSize: '200% 200%',
+                                            WebkitBackgroundClip: 'text',
+                                            WebkitTextFillColor: 'transparent',
+                                            textTransform: 'uppercase',
+                                            fontFamily: "'Orbitron', 'Black Ops One', sans-serif",
+                                            lineHeight: 1.05,
+                                            textShadow: 'none',
+                                            filter: 'drop-shadow(0 0 30px rgba(0,240,255,0.4))',
+                                        }}
+                                    >
+                                        NeuraX<br />Hackathon
+                                    </motion.h1>
 
-                            <motion.p
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.5 }}
-                                style={{
-                                    fontSize: 'clamp(1rem, 2vw, 1.3rem)',
-                                    color: 'rgba(0,0,0,0.45)',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.35em',
-                                    marginBottom: '30px',
-                                    fontFamily: "'Orbitron', monospace",
-                                    fontWeight: 500,
-                                }}
-                            >
-                                Is Live
-                            </motion.p>
+                                    <motion.p
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ delay: 0.5 }}
+                                        style={{
+                                            fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+                                            color: 'rgba(0,0,0,0.45)',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.35em',
+                                            marginBottom: '30px',
+                                            fontFamily: "'Orbitron', monospace",
+                                            fontWeight: 500,
+                                        }}
+                                    >
+                                        Is Live
+                                    </motion.p>
 
-                            {/* 24hr Countdown */}
-                            <div style={{
-                                display: 'flex',
-                                gap: 'clamp(10px, 3vw, 30px)',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                flexWrap: 'wrap',
-                            }}>
+                                    {/* 24hr Countdown */}
+                                    <div style={{
+                                        display: 'flex',
+                                        gap: 'clamp(10px, 3vw, 30px)',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        flexWrap: 'wrap',
+                                    }}>
 
-                                <TimerBlock value={hackTime.hours} label="Hours" />
-                                <motion.span
-                                    animate={{ opacity: [1, 0.2, 1] }}
-                                    transition={{ duration: 1, repeat: Infinity }}
-                                    style={{
-                                        fontSize: 'clamp(3rem, 6vw, 5rem)',
-                                        fontWeight: 900,
-                                        color: 'rgba(0,0,0,0.3)',
-                                        fontFamily: 'monospace',
-                                        lineHeight: 1,
-                                        marginBottom: '24px',
-                                    }}
-                                >:</motion.span>
-                                <TimerBlock value={hackTime.minutes} label="Minutes" />
-                                <motion.span
-                                    animate={{ opacity: [1, 0.2, 1] }}
-                                    transition={{ duration: 1, repeat: Infinity }}
-                                    style={{
-                                        fontSize: 'clamp(3rem, 6vw, 5rem)',
-                                        fontWeight: 900,
-                                        color: 'rgba(0,0,0,0.3)',
-                                        fontFamily: 'monospace',
-                                        lineHeight: 1,
-                                        marginBottom: '24px',
-                                    }}
-                                >:</motion.span>
-                                <TimerBlock value={hackTime.seconds} label="Seconds" />
-                            </div>
+                                        <TimerBlock value={hackTime.hours} label="Hours" />
+                                        <motion.span
+                                            animate={{ opacity: [1, 0.2, 1] }}
+                                            transition={{ duration: 1, repeat: Infinity }}
+                                            style={{
+                                                fontSize: 'clamp(3rem, 6vw, 5rem)',
+                                                fontWeight: 900,
+                                                color: 'rgba(0,0,0,0.3)',
+                                                fontFamily: 'monospace',
+                                                lineHeight: 1,
+                                                marginBottom: '24px',
+                                            }}
+                                        >:</motion.span>
+                                        <TimerBlock value={hackTime.minutes} label="Minutes" />
+                                        <motion.span
+                                            animate={{ opacity: [1, 0.2, 1] }}
+                                            transition={{ duration: 1, repeat: Infinity }}
+                                            style={{
+                                                fontSize: 'clamp(3rem, 6vw, 5rem)',
+                                                fontWeight: 900,
+                                                color: 'rgba(0,0,0,0.3)',
+                                                fontFamily: 'monospace',
+                                                lineHeight: 1,
+                                                marginBottom: '24px',
+                                            }}
+                                        >:</motion.span>
+                                        <TimerBlock value={hackTime.seconds} label="Seconds" />
+                                    </div>
 
-                            {/* Remaining label */}
-                            <motion.p
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.8 }}
-                                style={{
-                                    marginTop: '20px',
-                                    fontSize: '0.85rem',
-                                    color: 'rgba(0,0,0,0.4)',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.3em',
-                                    fontFamily: "'Orbitron', monospace",
-                                }}
-                            >
-                                ⏳ Remaining to Code & Conquer
-                            </motion.p>
+                                    {/* Remaining label */}
+                                    <motion.p
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ delay: 0.8 }}
+                                        style={{
+                                            marginTop: '20px',
+                                            fontSize: '0.85rem',
+                                            color: 'rgba(0,0,0,0.4)',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.3em',
+                                            fontFamily: "'Orbitron', monospace",
+                                        }}
+                                    >
+                                        ⏳ Remaining to Code & Conquer
+                                    </motion.p>
+                                </>
+                            ) : (
+                                <>
+                                    {/* Ended message */}
+                                    <motion.h1
+                                        initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                                        transition={{ duration: 1, type: 'spring', stiffness: 100 }}
+                                        style={{
+                                            fontSize: 'clamp(2.2rem, 6vw, 5rem)',
+                                            fontWeight: 900,
+                                            letterSpacing: '-0.02em',
+                                            margin: '0 0 20px 0',
+                                            background: 'linear-gradient(135deg, #FF3D6B 0%, #FFD700 50%, #FF6B00 100%)',
+                                            backgroundSize: '200% 200%',
+                                            WebkitBackgroundClip: 'text',
+                                            WebkitTextFillColor: 'transparent',
+                                            textTransform: 'uppercase',
+                                            fontFamily: "'Orbitron', 'Black Ops One', sans-serif",
+                                            lineHeight: 1.05,
+                                            filter: 'drop-shadow(0 0 30px rgba(255, 61, 107, 0.4))',
+                                        }}
+                                    >
+                                        Hackathon Ended
+                                    </motion.h1>
+
+                                    <motion.p
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ delay: 0.5, duration: 1 }}
+                                        style={{
+                                            fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
+                                            color: 'rgba(0,0,0,0.6)',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.2em',
+                                            marginBottom: '30px',
+                                            fontFamily: "'Orbitron', monospace",
+                                            fontWeight: 600,
+                                        }}
+                                    >
+                                        Thank you for your participation!
+                                    </motion.p>
+                                </>
+                            )}
 
                             {/* Custom Broadcast Message */}
                             <AnimatePresence>
