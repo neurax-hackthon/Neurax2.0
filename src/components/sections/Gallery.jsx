@@ -2,142 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SectionHeader from '../ui/SectionHeader';
 import { leftSlideImages, codingImages, activityImages, organizationImages, inaugurationImages, awardsImages } from '../../data/gallery';
-import heic2any from 'heic2any';
+import ImageRenderer from '../ui/ImageRenderer';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const SLIDE_INTERVAL = 4000;
 
 // ── Components ───────────────────────────────────────────────────────────────
 
-function GalleryImage({ item, className = "", style = {} }) {
-    const [src, setSrc] = useState(null);
-    const [status, setStatus] = useState('idle'); // idle | loading | loaded | error
-    const objectUrlRef = useRef(null);
-
-    useEffect(() => {
-        let isMounted = true;
-
-        // Cleanup function to revoke object URLs
-        const cleanup = () => {
-            if (objectUrlRef.current) {
-                URL.revokeObjectURL(objectUrlRef.current);
-                objectUrlRef.current = null;
-            }
-        };
-
-        if (!item?.src) {
-            setSrc(null);
-            setStatus('idle');
-            return;
-        }
-
-        const isHeic = /\.(heic|HEIC)(\?.*)?$/.test(item.src);
-        const encodedPath = item.src;
-
-        setStatus('loading');
-
-        if (isHeic) {
-            console.log("[HEIC Decode] File detected:", encodedPath);
-            const cached = sessionStorage.getItem(`heic_${item.src}`);
-            if (cached) {
-                console.log("[HEIC Decode] Cache hit:", encodedPath);
-                if (isMounted) {
-                    setSrc(cached);
-                    setStatus('loaded');
-                }
-            } else {
-                fetch(encodedPath)
-                    .then(res => {
-                        console.log("[HEIC Decode] Fetch response:", res.status, res.ok);
-                        if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-                        return res.blob();
-                    })
-                    .then(blob => {
-                        console.log("[HEIC Decode] Blob size:", blob.size, "type:", blob.type);
-                        if (blob.size === 0) throw new Error("Empty blob received");
-                        return heic2any({
-                            blob,
-                            toType: 'image/jpeg',
-                            quality: 0.7
-                        });
-                    })
-                    .then(converted => {
-                        console.log("[HEIC Decode] Conversion success");
-                        const blob = Array.isArray(converted) ? converted[0] : converted;
-                        const url = URL.createObjectURL(blob);
-                        objectUrlRef.current = url;
-                        sessionStorage.setItem(`heic_${item.src}`, url);
-                        if (isMounted) {
-                            setSrc(url);
-                            setStatus('loaded');
-                        }
-                    })
-                    .catch(err => {
-                        console.error("[HEIC Decode] CRITICAL FAILURE:", encodedPath, err);
-                        if (isMounted) setStatus('error');
-                    });
-            }
-        } else {
-            setSrc(encodedPath);
-            // Non-HEIC images will trigger onLoad or onError on the img element
-        }
-
-        return () => {
-            isMounted = false;
-            // Note: We don't revoke immediately on unmount because the image might still be visible
-            // in transitions. We depend on the next effect or final cleanup.
-        };
-    }, [item?.src]);
-
-    const handleLoad = () => setStatus('loaded');
-    const handleError = (e) => {
-        if (status === 'error') return; // Prevent infinite loops
-        console.warn("Image load failed, showing fallback:", item.src);
-        setStatus('error');
-    };
-
-    // Fallback source if image fails or path is missing
-    const displaySrc = status === 'error' ? 'https://via.placeholder.com/800x600/f1f5f9/94a3b8?text=Image+Preview+Unavailable' : src;
-
-    return (
-        <div className={`relative w-full h-full overflow-hidden ${className}`} style={style}>
-            {/* Shimmer / Loading State */}
-            {(status === 'loading' || status === 'idle') && (
-                <div className="absolute inset-0 z-10 overflow-hidden">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer-sweep bg-gradient-to-r from-transparent via-slate-200/20 to-transparent" />
-                </div>
-            )}
-
-            {/* Error Overlay (Only for Dev Debugging or if serious) */}
-            {status === 'error' && (
-                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-4 text-center">
-                    <span className="text-2xl mb-2">⚠️</span>
-                    <p className="text-[9px] text-red-400 mt-1 uppercase font-bold">Preview Unavailable</p>
-                </div>
-            )}
-
-            {/* Empty State */}
-            {!item?.src && status !== 'loading' && (
-                <div className="flex items-center justify-center w-full h-full"
-                    style={{ background: item?.color || 'transparent' }}>
-                    <span className="text-4xl opacity-50">📸</span>
-                </div>
-            )}
-
-            {item?.src && (
-                <img
-                    key={item.src}
-                    src={displaySrc}
-                    alt={item?.caption || "Gallery Image"}
-                    onLoad={handleLoad}
-                    onError={handleError}
-                    loading="lazy"
-                    className={`w-full h-full object-cover object-center transition-opacity duration-500 ${(status === 'loaded' || status === 'error') ? 'opacity-100' : 'opacity-0'}`}
-                />
-            )}
-        </div>
-    );
-}
 
 function Lightbox({ images, index, onClose }) {
     const [curr, setCurr] = useState(index);
@@ -159,7 +30,7 @@ function Lightbox({ images, index, onClose }) {
             <button className="absolute top-8 right-8 text-white text-4xl hover:text-cyan-400 transition-colors z-20" onClick={onClose}>&times;</button>
 
             <div className="relative w-full max-w-5xl aspect-video bg-slate-900 rounded-3xl overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
-                <AnimatePresence>
+                        <AnimatePresence>
                     <motion.div
                         key={images[curr].id}
                         initial={{ opacity: 0, x: 20 }}
@@ -168,7 +39,7 @@ function Lightbox({ images, index, onClose }) {
                         transition={{ duration: 0.4 }}
                         className="w-full h-full"
                     >
-                        <GalleryImage item={images[curr]} />
+                        <ImageRenderer src={images[curr].src} alt={images[curr].caption} />
                     </motion.div>
                 </AnimatePresence>
 
@@ -254,7 +125,7 @@ export default function Gallery() {
                                     transition={{ duration: 0.4, ease: "easeInOut" }}
                                     className="absolute inset-0"
                                 >
-                                    <GalleryImage item={leftSlideImages[leftIdx]} />
+                                    <ImageRenderer src={leftSlideImages[leftIdx].src} alt={leftSlideImages[leftIdx].caption} />
                                 </motion.div>
                             </AnimatePresence>
                         ) : (
@@ -294,8 +165,9 @@ export default function Gallery() {
                                 onClick={() => slot.images.length > 0 && setLightbox({ images: slot.images, index: 0 })}
                                 className="relative aspect-[16/9] rounded-3xl overflow-hidden shadow-lg border border-slate-100 cursor-zoom-in group"
                             >
-                                <GalleryImage
-                                    item={slot.images[0]}
+                                <ImageRenderer
+                                    src={slot.images[0].src}
+                                    alt={slot.images[0].caption}
                                     className="transition-transform duration-700 group-hover:scale-110"
                                 />
 
