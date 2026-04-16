@@ -207,10 +207,10 @@ export const slideshowImages = [
     caption: '🚀 Mid-Hack Hustle',
     category: 'Participants',
   },
-  {
-    id: 'slide-9',
-    src: '/neurax2/organizing-team/IMG_3925.jpg',
-    caption: '✨ The NeuraX 2.0 Organizing Family',
-    category: 'Team',
-  },
+  // {
+  //   id: 'slide-9',
+  //   src: '/neurax2/organizing-team/IMG_3925.jpg',
+  //   caption: '✨ The NeuraX 2.0 Organizing Family',
+  //   category: 'Team',
+  // },
 ];
