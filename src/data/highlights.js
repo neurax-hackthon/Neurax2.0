@@ -159,30 +159,30 @@ export const slideshowImages = [
     caption: '',
     category: '',
   },
-  {
-    id: 'slide-14',
-    src: '/neurax2/organizing-team/neurax_in_03 (2).jpg',
-    caption: '',
-    category: '',
-  },
+  // {
+  //   id: 'slide-14',
+  //   src: '/neurax2/organizing-team/neurax_in_03 (2).jpg',
+  //   caption: '',
+  //   category: '',
+  // },
   {
     id: 'slide-13',
     src: '/neurax2/organizing-team/neurax_in_02.jpg',
     caption: '',
     category: '',
   },
-  {
-    id: 'slide-10',
-    src: '/neurax2/organizing-team/20260314_104455.jpg',
-    caption: '',
-    category: '',
-  },
-  {
-    id: 'slide-12',
-    src: '/neurax2/organizing-team/20260315_121452.jpg',
-    caption: '',
-    category: '',
-  },
+  // {
+  //   id: 'slide-10',
+  //   src: '/neurax2/organizing-team/20260314_104455.jpg',
+  //   caption: '',
+  //   category: '',
+  // },
+  // {
+  //   id: 'slide-12',
+  //   src: '/neurax2/organizing-team/20260315_121452.jpg',
+  //   caption: '',
+  //   category: '',
+  // },
   {
     id: 'slide-4',
     src: '/neurax2/participants/20260314_100831.jpg',
