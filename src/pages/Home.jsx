@@ -10,7 +10,6 @@ import Prizes from '../components/sections/Prizes';
 import Statistics from '../components/sections/Statistics';
 import Gallery from '../components/sections/Gallery';
 import ThankYouBanner from '../components/sections/ThankYouBanner';
-import NeuraXSlideshow from '../components/sections/NeuraXSlideshow';
 import FAQ from '../components/sections/FAQ';
 import Sponsors from '../components/sections/Sponsors';
 import Contact from '../components/sections/Contact';
@@ -26,7 +25,6 @@ export default function Home() {
             <main>
                 {launched && <LiveBanner launchTime={launchTime} customMessage={customMessage} />}
                 <ThankYouBanner />
-                <NeuraXSlideshow />
                 <Hero />
                 <About />
                 <WhyParticipate />
